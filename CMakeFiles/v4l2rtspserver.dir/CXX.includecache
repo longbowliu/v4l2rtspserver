@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/demo/Desktop/v4l2rtspserver/main.cpp
+/home/demo/v4l2rtspserver/main.cpp
 stdio.h
 -
 stdlib.h
@@ -26,15 +26,15 @@ sstream
 linux/videodev2.h
 -
 logger.h
-/home/demo/Desktop/v4l2rtspserver/logger.h
+/home/demo/v4l2rtspserver/logger.h
 V4l2Device.h
-/home/demo/Desktop/v4l2rtspserver/V4l2Device.h
+/home/demo/v4l2rtspserver/V4l2Device.h
 V4l2Output.h
-/home/demo/Desktop/v4l2rtspserver/V4l2Output.h
+/home/demo/v4l2rtspserver/V4l2Output.h
 DeviceSourceFactory.h
-/home/demo/Desktop/v4l2rtspserver/DeviceSourceFactory.h
+/home/demo/v4l2rtspserver/DeviceSourceFactory.h
 V4l2RTSPServer.h
-/home/demo/Desktop/v4l2rtspserver/V4l2RTSPServer.h
+/home/demo/v4l2rtspserver/V4l2RTSPServer.h
 
 /usr/local/include/BasicUsageEnvironment/BasicUsageEnvironment.hh
 BasicUsageEnvironment0.hh

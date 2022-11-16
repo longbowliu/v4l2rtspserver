@@ -14,6 +14,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o"
   "CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.o"
   "CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o"
+  "CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o"
   "liblibv4l2rtspserver.pdb"
   "liblibv4l2rtspserver.a"
 )

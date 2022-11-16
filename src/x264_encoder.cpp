@@ -18,6 +18,9 @@
 #include <string.h>
 #include <stdint.h>
 #include "../x264/inc/x264_encoder.h"
+#include <algorithm>
+#include <chrono>
+#include<string>
  
 
  
@@ -175,7 +178,11 @@ x264_encoder::x264_encoder( int width, int height)
 
 	encoded_frame=(uint8_t *)malloc(sizeof(uint8_t)*width*height*3);
 	if(encoded_frame==NULL)printf("X264缓冲区申请失败!\n");
-	file = fopen("/home/demo/x264_test.h264","wa+");
+	std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+	int64_t timepoint = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+	std::string fn = "/home/demo/";
+	fn += std::to_string(timepoint);
+	file = fopen(fn.c_str(),"wa+");
 	// fifo =  "/tmp/fifo";
 	// mkfifo(fifo, 0777);
 	// h264_fp = fopen(fifo, "wa+");

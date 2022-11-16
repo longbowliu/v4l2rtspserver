@@ -1647,3 +1647,8 @@ CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o: x264/inc/x264.h
 CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o: x264/inc/x264_config.h
 CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o: x264/inc/x264_encoder.h
 
+CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o: src/x264_encoder_.cpp
+CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o: x264/inc/x264.h
+CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o: x264/inc/x264_config.h
+CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o: x264/inc/x264_encoder.h
+

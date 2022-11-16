@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/demo/Desktop/v4l2rtspserver
+CMAKE_SOURCE_DIR = /home/demo/v4l2rtspserver
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/demo/Desktop/v4l2rtspserver
+CMAKE_BINARY_DIR = /home/demo/v4l2rtspserver
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -126,7 +126,7 @@ package/fast: package
 # Special rule for the target package_source
 package_source:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool for source..."
-	/usr/bin/cpack --config ./CPackSourceConfig.cmake /home/demo/Desktop/v4l2rtspserver/CPackSourceConfig.cmake
+	/usr/bin/cpack --config ./CPackSourceConfig.cmake /home/demo/v4l2rtspserver/CPackSourceConfig.cmake
 .PHONY : package_source
 
 # Special rule for the target package_source
@@ -159,9 +159,9 @@ test/fast: test
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/demo/Desktop/v4l2rtspserver/CMakeFiles /home/demo/Desktop/v4l2rtspserver/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/demo/v4l2rtspserver/CMakeFiles /home/demo/v4l2rtspserver/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/demo/Desktop/v4l2rtspserver/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/demo/v4l2rtspserver/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -673,6 +673,33 @@ src/x264_encoder.cpp.s:
 	$(MAKE) -f CMakeFiles/libv4l2rtspserver.dir/build.make CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.s
 .PHONY : src/x264_encoder.cpp.s
 
+src/x264_encoder_.o: src/x264_encoder_.cpp.o
+
+.PHONY : src/x264_encoder_.o
+
+# target to build an object file
+src/x264_encoder_.cpp.o:
+	$(MAKE) -f CMakeFiles/libv4l2rtspserver.dir/build.make CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o
+.PHONY : src/x264_encoder_.cpp.o
+
+src/x264_encoder_.i: src/x264_encoder_.cpp.i
+
+.PHONY : src/x264_encoder_.i
+
+# target to preprocess a source file
+src/x264_encoder_.cpp.i:
+	$(MAKE) -f CMakeFiles/libv4l2rtspserver.dir/build.make CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.i
+.PHONY : src/x264_encoder_.cpp.i
+
+src/x264_encoder_.s: src/x264_encoder_.cpp.s
+
+.PHONY : src/x264_encoder_.s
+
+# target to generate assembly for a file
+src/x264_encoder_.cpp.s:
+	$(MAKE) -f CMakeFiles/libv4l2rtspserver.dir/build.make CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.s
+.PHONY : src/x264_encoder_.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -740,6 +767,9 @@ help:
 	@echo "... src/x264_encoder.o"
 	@echo "... src/x264_encoder.i"
 	@echo "... src/x264_encoder.s"
+	@echo "... src/x264_encoder_.o"
+	@echo "... src/x264_encoder_.i"
+	@echo "... src/x264_encoder_.s"
 .PHONY : help
 
 

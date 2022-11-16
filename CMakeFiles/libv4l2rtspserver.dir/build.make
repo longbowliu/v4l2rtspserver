@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/demo/Desktop/v4l2rtspserver
+CMAKE_SOURCE_DIR = /home/demo/v4l2rtspserver
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/demo/Desktop/v4l2rtspserver
+CMAKE_BINARY_DIR = /home/demo/v4l2rtspserver
 
 # Include any dependencies generated for this target.
 include CMakeFiles/libv4l2rtspserver.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/libv4l2rtspserver.dir/flags.make
 
 CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.o: CMakeFiles/libv4l2rtspserver.dir/flags.make
 CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.o: src/ALSACapture.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/Desktop/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.o -c /home/demo/Desktop/v4l2rtspserver/src/ALSACapture.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.o -c /home/demo/v4l2rtspserver/src/ALSACapture.cpp
 
 CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/Desktop/v4l2rtspserver/src/ALSACapture.cpp > CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/v4l2rtspserver/src/ALSACapture.cpp > CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.i
 
 CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/Desktop/v4l2rtspserver/src/ALSACapture.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/v4l2rtspserver/src/ALSACapture.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.s
 
 CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.o.provides.build: CMakeFile
 
 CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.o: CMakeFiles/libv4l2rtspserver.dir/flags.make
 CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.o: src/H264_V4l2DeviceSource.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/Desktop/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.o -c /home/demo/Desktop/v4l2rtspserver/src/H264_V4l2DeviceSource.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.o -c /home/demo/v4l2rtspserver/src/H264_V4l2DeviceSource.cpp
 
 CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/Desktop/v4l2rtspserver/src/H264_V4l2DeviceSource.cpp > CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/v4l2rtspserver/src/H264_V4l2DeviceSource.cpp > CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.i
 
 CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/Desktop/v4l2rtspserver/src/H264_V4l2DeviceSource.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/v4l2rtspserver/src/H264_V4l2DeviceSource.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.s
 
 CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.o.requires:
 
@@ -107,16 +107,16 @@ CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.o.provides.build:
 
 CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.o: CMakeFiles/libv4l2rtspserver.dir/flags.make
 CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.o: src/H265_V4l2DeviceSource.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/Desktop/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.o -c /home/demo/Desktop/v4l2rtspserver/src/H265_V4l2DeviceSource.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.o -c /home/demo/v4l2rtspserver/src/H265_V4l2DeviceSource.cpp
 
 CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/Desktop/v4l2rtspserver/src/H265_V4l2DeviceSource.cpp > CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/v4l2rtspserver/src/H265_V4l2DeviceSource.cpp > CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.i
 
 CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/Desktop/v4l2rtspserver/src/H265_V4l2DeviceSource.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/v4l2rtspserver/src/H265_V4l2DeviceSource.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.s
 
 CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.o.requires:
 
@@ -131,16 +131,16 @@ CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.o.provides.build:
 
 CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.o: CMakeFiles/libv4l2rtspserver.dir/flags.make
 CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.o: src/H26x_V4l2DeviceSource.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/Desktop/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.o -c /home/demo/Desktop/v4l2rtspserver/src/H26x_V4l2DeviceSource.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.o -c /home/demo/v4l2rtspserver/src/H26x_V4l2DeviceSource.cpp
 
 CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/Desktop/v4l2rtspserver/src/H26x_V4l2DeviceSource.cpp > CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/v4l2rtspserver/src/H26x_V4l2DeviceSource.cpp > CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.i
 
 CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/Desktop/v4l2rtspserver/src/H26x_V4l2DeviceSource.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/v4l2rtspserver/src/H26x_V4l2DeviceSource.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.s
 
 CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.o.requires:
 
@@ -155,16 +155,16 @@ CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.o.provides.build:
 
 CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.o: CMakeFiles/libv4l2rtspserver.dir/flags.make
 CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.o: src/HTTPServer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/Desktop/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.o -c /home/demo/Desktop/v4l2rtspserver/src/HTTPServer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.o -c /home/demo/v4l2rtspserver/src/HTTPServer.cpp
 
 CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/Desktop/v4l2rtspserver/src/HTTPServer.cpp > CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/v4l2rtspserver/src/HTTPServer.cpp > CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.i
 
 CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/Desktop/v4l2rtspserver/src/HTTPServer.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/v4l2rtspserver/src/HTTPServer.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.s
 
 CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.o.requires:
 
@@ -179,16 +179,16 @@ CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.o.provides.build: CMakeFiles
 
 CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.o: CMakeFiles/libv4l2rtspserver.dir/flags.make
 CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.o: src/MJPEGVideoSource.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/Desktop/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.o -c /home/demo/Desktop/v4l2rtspserver/src/MJPEGVideoSource.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.o -c /home/demo/v4l2rtspserver/src/MJPEGVideoSource.cpp
 
 CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/Desktop/v4l2rtspserver/src/MJPEGVideoSource.cpp > CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/v4l2rtspserver/src/MJPEGVideoSource.cpp > CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.i
 
 CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/Desktop/v4l2rtspserver/src/MJPEGVideoSource.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/v4l2rtspserver/src/MJPEGVideoSource.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.s
 
 CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.o.requires:
 
@@ -203,16 +203,16 @@ CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.o.provides.build: CMak
 
 CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.o: CMakeFiles/libv4l2rtspserver.dir/flags.make
 CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.o: src/MemoryBufferSink.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/Desktop/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.o -c /home/demo/Desktop/v4l2rtspserver/src/MemoryBufferSink.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.o -c /home/demo/v4l2rtspserver/src/MemoryBufferSink.cpp
 
 CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/Desktop/v4l2rtspserver/src/MemoryBufferSink.cpp > CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/v4l2rtspserver/src/MemoryBufferSink.cpp > CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.i
 
 CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/Desktop/v4l2rtspserver/src/MemoryBufferSink.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/v4l2rtspserver/src/MemoryBufferSink.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.s
 
 CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.o.requires:
 
@@ -227,16 +227,16 @@ CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.o.provides.build: CMak
 
 CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.o: CMakeFiles/libv4l2rtspserver.dir/flags.make
 CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.o: src/MulticastServerMediaSubsession.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/Desktop/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.o -c /home/demo/Desktop/v4l2rtspserver/src/MulticastServerMediaSubsession.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.o -c /home/demo/v4l2rtspserver/src/MulticastServerMediaSubsession.cpp
 
 CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/Desktop/v4l2rtspserver/src/MulticastServerMediaSubsession.cpp > CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/v4l2rtspserver/src/MulticastServerMediaSubsession.cpp > CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.i
 
 CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/Desktop/v4l2rtspserver/src/MulticastServerMediaSubsession.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/v4l2rtspserver/src/MulticastServerMediaSubsession.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.s
 
 CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.o.requires:
 
@@ -251,16 +251,16 @@ CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.o.provid
 
 CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.o: CMakeFiles/libv4l2rtspserver.dir/flags.make
 CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.o: src/ServerMediaSubsession.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/Desktop/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.o -c /home/demo/Desktop/v4l2rtspserver/src/ServerMediaSubsession.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.o -c /home/demo/v4l2rtspserver/src/ServerMediaSubsession.cpp
 
 CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/Desktop/v4l2rtspserver/src/ServerMediaSubsession.cpp > CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/v4l2rtspserver/src/ServerMediaSubsession.cpp > CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.i
 
 CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/Desktop/v4l2rtspserver/src/ServerMediaSubsession.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/v4l2rtspserver/src/ServerMediaSubsession.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.s
 
 CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.o.requires:
 
@@ -275,16 +275,16 @@ CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.o.provides.build:
 
 CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.o: CMakeFiles/libv4l2rtspserver.dir/flags.make
 CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.o: src/TSServerMediaSubsession.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/Desktop/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.o -c /home/demo/Desktop/v4l2rtspserver/src/TSServerMediaSubsession.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.o -c /home/demo/v4l2rtspserver/src/TSServerMediaSubsession.cpp
 
 CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/Desktop/v4l2rtspserver/src/TSServerMediaSubsession.cpp > CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/v4l2rtspserver/src/TSServerMediaSubsession.cpp > CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.i
 
 CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/Desktop/v4l2rtspserver/src/TSServerMediaSubsession.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/v4l2rtspserver/src/TSServerMediaSubsession.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.s
 
 CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.o.requires:
 
@@ -299,16 +299,16 @@ CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.o.provides.buil
 
 CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.o: CMakeFiles/libv4l2rtspserver.dir/flags.make
 CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.o: src/UnicastServerMediaSubsession.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/Desktop/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.o -c /home/demo/Desktop/v4l2rtspserver/src/UnicastServerMediaSubsession.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.o -c /home/demo/v4l2rtspserver/src/UnicastServerMediaSubsession.cpp
 
 CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/Desktop/v4l2rtspserver/src/UnicastServerMediaSubsession.cpp > CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/v4l2rtspserver/src/UnicastServerMediaSubsession.cpp > CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.i
 
 CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/Desktop/v4l2rtspserver/src/UnicastServerMediaSubsession.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/v4l2rtspserver/src/UnicastServerMediaSubsession.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.s
 
 CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.o.requires:
 
@@ -323,16 +323,16 @@ CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.o.provides
 
 CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.o: CMakeFiles/libv4l2rtspserver.dir/flags.make
 CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.o: src/V4L2DeviceSource.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/Desktop/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.o -c /home/demo/Desktop/v4l2rtspserver/src/V4L2DeviceSource.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.o -c /home/demo/v4l2rtspserver/src/V4L2DeviceSource.cpp
 
 CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/Desktop/v4l2rtspserver/src/V4L2DeviceSource.cpp > CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/v4l2rtspserver/src/V4L2DeviceSource.cpp > CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.i
 
 CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/Desktop/v4l2rtspserver/src/V4L2DeviceSource.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/v4l2rtspserver/src/V4L2DeviceSource.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.s
 
 CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.o.requires:
 
@@ -347,16 +347,16 @@ CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.o.provides.build: CMak
 
 CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o: CMakeFiles/libv4l2rtspserver.dir/flags.make
 CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o: src/V4l2RTSPServer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/Desktop/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o -c /home/demo/Desktop/v4l2rtspserver/src/V4l2RTSPServer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o -c /home/demo/v4l2rtspserver/src/V4l2RTSPServer.cpp
 
 CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/Desktop/v4l2rtspserver/src/V4l2RTSPServer.cpp > CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/v4l2rtspserver/src/V4l2RTSPServer.cpp > CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.i
 
 CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/Desktop/v4l2rtspserver/src/V4l2RTSPServer.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/v4l2rtspserver/src/V4l2RTSPServer.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.s
 
 CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o.requires:
 
@@ -371,16 +371,16 @@ CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o.provides.build: CMakeF
 
 CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.o: CMakeFiles/libv4l2rtspserver.dir/flags.make
 CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.o: src/jpeg2.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/Desktop/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.o -c /home/demo/Desktop/v4l2rtspserver/src/jpeg2.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.o -c /home/demo/v4l2rtspserver/src/jpeg2.cpp
 
 CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/Desktop/v4l2rtspserver/src/jpeg2.cpp > CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/v4l2rtspserver/src/jpeg2.cpp > CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.i
 
 CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/Desktop/v4l2rtspserver/src/jpeg2.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/v4l2rtspserver/src/jpeg2.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.s
 
 CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.o.requires:
 
@@ -395,16 +395,16 @@ CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.o.provides.build: CMakeFiles/libv
 
 CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o: CMakeFiles/libv4l2rtspserver.dir/flags.make
 CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o: src/x264_encoder.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/Desktop/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o -c /home/demo/Desktop/v4l2rtspserver/src/x264_encoder.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o -c /home/demo/v4l2rtspserver/src/x264_encoder.cpp
 
 CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/Desktop/v4l2rtspserver/src/x264_encoder.cpp > CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/v4l2rtspserver/src/x264_encoder.cpp > CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.i
 
 CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/Desktop/v4l2rtspserver/src/x264_encoder.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/v4l2rtspserver/src/x264_encoder.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.s
 
 CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o.requires:
 
@@ -415,6 +415,30 @@ CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o.provides: CMakeFiles/lib
 .PHONY : CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o.provides
 
 CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o.provides.build: CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o
+
+
+CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o: CMakeFiles/libv4l2rtspserver.dir/flags.make
+CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o: src/x264_encoder_.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o -c /home/demo/v4l2rtspserver/src/x264_encoder_.cpp
+
+CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/demo/v4l2rtspserver/src/x264_encoder_.cpp > CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.i
+
+CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/demo/v4l2rtspserver/src/x264_encoder_.cpp -o CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.s
+
+CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o.requires:
+
+.PHONY : CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o.requires
+
+CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o.provides: CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o.requires
+	$(MAKE) -f CMakeFiles/libv4l2rtspserver.dir/build.make CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o.provides.build
+.PHONY : CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o.provides
+
+CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o.provides.build: CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o
 
 
 # Object files for target libv4l2rtspserver
@@ -433,7 +457,8 @@ libv4l2rtspserver_OBJECTS = \
 "CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.o" \
 "CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o" \
 "CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.o" \
-"CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o"
+"CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o" \
+"CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o"
 
 # External object files for target libv4l2rtspserver
 libv4l2rtspserver_EXTERNAL_OBJECTS =
@@ -453,9 +478,10 @@ liblibv4l2rtspserver.a: CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cp
 liblibv4l2rtspserver.a: CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o
 liblibv4l2rtspserver.a: CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.o
 liblibv4l2rtspserver.a: CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o
+liblibv4l2rtspserver.a: CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o
 liblibv4l2rtspserver.a: CMakeFiles/libv4l2rtspserver.dir/build.make
 liblibv4l2rtspserver.a: CMakeFiles/libv4l2rtspserver.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/demo/Desktop/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking CXX static library liblibv4l2rtspserver.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX static library liblibv4l2rtspserver.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/libv4l2rtspserver.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/libv4l2rtspserver.dir/link.txt --verbose=$(VERBOSE)
 
@@ -479,6 +505,7 @@ CMakeFiles/libv4l2rtspserver.dir/requires: CMakeFiles/libv4l2rtspserver.dir/src/
 CMakeFiles/libv4l2rtspserver.dir/requires: CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o.requires
 CMakeFiles/libv4l2rtspserver.dir/requires: CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.o.requires
 CMakeFiles/libv4l2rtspserver.dir/requires: CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o.requires
+CMakeFiles/libv4l2rtspserver.dir/requires: CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o.requires
 
 .PHONY : CMakeFiles/libv4l2rtspserver.dir/requires
 
@@ -487,6 +514,6 @@ CMakeFiles/libv4l2rtspserver.dir/clean:
 .PHONY : CMakeFiles/libv4l2rtspserver.dir/clean
 
 CMakeFiles/libv4l2rtspserver.dir/depend:
-	cd /home/demo/Desktop/v4l2rtspserver && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/demo/Desktop/v4l2rtspserver /home/demo/Desktop/v4l2rtspserver /home/demo/Desktop/v4l2rtspserver /home/demo/Desktop/v4l2rtspserver /home/demo/Desktop/v4l2rtspserver/CMakeFiles/libv4l2rtspserver.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/demo/v4l2rtspserver && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/demo/v4l2rtspserver /home/demo/v4l2rtspserver /home/demo/v4l2rtspserver /home/demo/v4l2rtspserver /home/demo/v4l2rtspserver/CMakeFiles/libv4l2rtspserver.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/libv4l2rtspserver.dir/depend
 
