@@ -154,18 +154,18 @@ x264_encoder::x264_encoder( int width, int height)
 	x264_param_apply_preset(en->param,"medium");
 	en->param->i_width = width; //设置图像宽度
 	en->param->i_height = height; //设置图像高度
-	// en->param->i_fps_num = 60;
-	// en->param->i_fps_den = 1;
-	// // Intra refres:
-	// en->param->i_keyint_max = 60;
-	// en->param->b_intra_refresh = 1;
-	// //Rate control:
-	// en->param->rc.i_rc_method = X264_RC_CRF;
-	// en->param->rc.f_rf_constant = 25;
-	// en->param->rc.f_rf_constant_max = 35;
-	// en->param->i_sps_id = 7;
-	// //For streaming:
-	// en->param->b_repeat_headers = 1;
+	en->param->i_fps_num = 30;
+	en->param->i_fps_den = 1;
+	// Intra refres:
+	en->param->i_keyint_max = 60;
+	en->param->b_intra_refresh = 1;
+	//Rate control:
+	en->param->rc.i_rc_method = X264_RC_CRF;
+	en->param->rc.f_rf_constant = 25;
+	en->param->rc.f_rf_constant_max = 30;
+	en->param->i_sps_id = 7;
+	//For streaming:
+	en->param->b_repeat_headers = 1;
 	// en->param->b_annexb = 1;
 	if((en->handle = x264_encoder_open(en->param)) == 0)
 	{
@@ -178,11 +178,11 @@ x264_encoder::x264_encoder( int width, int height)
 
 	encoded_frame=(uint8_t *)malloc(sizeof(uint8_t)*width*height*3);
 	if(encoded_frame==NULL)printf("X264缓冲区申请失败!\n");
-	std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
-	int64_t timepoint = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
-	std::string fn = "/home/demo/";
-	fn += std::to_string(timepoint);
-	file = fopen(fn.c_str(),"wa+");
+	// std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+	// int64_t timepoint = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+	// std::string fn = "/home/demo/";
+	// fn += std::to_string(timepoint);
+	// file = fopen(fn.c_str(),"wa+");
 	// fifo =  "/tmp/fifo";
 	// mkfifo(fifo, 0777);
 	// h264_fp = fopen(fifo, "wa+");
@@ -292,17 +292,17 @@ int x264_encoder::encode_frame(uint8_t *yuv_frame)
 	{
 		// printf("h264_length=%d\n",h264_length);
 		//写入视频文件
-		if(file_test){
-			fwrite(encoded_frame, h264_length,1,file);
-		}
+		// if(file_test){
+		// 	fwrite(encoded_frame, h264_length,1,file);
+		// }
 	}
 	return h264_length;
 }
 
 x264_encoder::~x264_encoder(){
-	fclose(file);
+	// fclose(file);
 	free(encoded_frame);
-	fclose(h264_fp);
+	// fclose(h264_fp);
 }
  
  

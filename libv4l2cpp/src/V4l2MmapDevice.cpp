@@ -33,11 +33,11 @@
 
  x264_encoder *encoder_;
 
-FILE *h264_fp = fopen("/home/demo/test_buf_recorder777.h264","wa+");
+FILE *h264_fp = fopen("/home/demo/INNO/repos/live/testProgs/test.264","wa+");
+
 V4l2MmapDevice::V4l2MmapDevice(const V4L2DeviceParameters & params, v4l2_buf_type deviceType) : V4l2Device(params, deviceType), n_buffers(0) 
 {
-	// encoder_ = new x264_encoder(176 , 144);
-	encoder_ = new x264_encoder(1920 , 1080);
+	
 	memset(&m_buffer, 0, sizeof(m_buffer));
 }
 
@@ -46,6 +46,7 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 	bool ret = V4l2Device::init(mandatoryCapabilities);
 	if (ret)
 	{
+		encoder_ = new x264_encoder(m_width , m_height);
 		ret = this->start();
 	}
 	return ret;
@@ -218,12 +219,12 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 			auto start = std::chrono::system_clock::now();
 
 
-		   unsigned char *jpg_p=(unsigned char *)malloc(1080*1920*3);
+		   unsigned char *jpg_p=(unsigned char *)malloc(m_height*m_width*3);
 		   int h_size = encoder_->encode_frame((unsigned char *)m_buffer[buf.index].start);
-		// 	fwrite(encoder_->encoded_frame, size,1,h264_fp);
+		   fwrite(encoder_->encoded_frame, h_size,1,h264_fp);
 
-			int ret = yuv_to_jpeg(1920,1080,1080*1920*3,(unsigned char *)m_buffer[buf.index].start,jpg_p,80);
-			// int ret = compress_yuyv_to_jpeg( temp, dest, (1920 * 1080), 80);  //....
+			int ret = yuv_to_jpeg(m_width,m_height,m_height*m_width*3,(unsigned char *)m_buffer[buf.index].start,jpg_p,80);
+			// int ret = compress_yuyv_to_jpeg( temp, dest, (m_width * m_height), 80);  //....
 			auto end = std::chrono::system_clock::now();
 			auto duration =
 				std::chrono::duration_cast<std::chrono::milliseconds>(end - start)

@@ -19,7 +19,6 @@
 // #include "x264_encoder.cpp"
 
 //  x264_encoder *encoder_;
-//  FILE *h264_fp = fopen("/home/demo/test_buf_recorder777.h264","wa+");
 // ---------------------------------
 // V4L2 FramedSource Stats
 // ---------------------------------

@@ -97,7 +97,7 @@ endif()
 
 # librtsp
 aux_source_directory(src LIBV4L2RTSP_SRC_FILES)
-add_library (libv4l2rtspserver STATIC ${LIVESOURCE} ${LIBV4L2RTSP_SRC_FILES})	
+add_library (libv4l2rtspserver STATIC ${LIVESOURCE} ${LIBV4L2RTSP_SRC_FILES} x264)	
 target_include_directories(libv4l2rtspserver PUBLIC inc ${LIVEINCLUDE})
 target_link_libraries (${PROJECT_NAME} libv4l2rtspserver ${LIVE_LIBRARIES}) 
 if (OpenSSL_FOUND)

@@ -22,9 +22,9 @@ class x264_encoder{
         int compress_frame(Encoder *en, int type, uint8_t *in, uint8_t *out);
         int encode_frame(uint8_t *yuv_frame);
          Encoder my_encoder;
-       FILE  * file ;
-       char const* fifo;
-       FILE *h264_fp;
+      //  FILE  * file ;
+      //  char const* fifo;
+      //  FILE *h264_fp;
 
         ~x264_encoder();
 
