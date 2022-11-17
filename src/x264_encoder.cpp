@@ -159,11 +159,7 @@ x264_encoder::x264_encoder( int width, int height)
 	//Rate control:
 	en->param->rc.i_rc_method = X264_RC_CRF;
 	en->param->rc.f_rf_constant = 25;
-<<<<<<< HEAD
 	en->param->rc.f_rf_constant_max = 30;
-=======
-	en->param->rc.f_rf_constant_max = 35;
->>>>>>> 5533fd42b30c7e82e73de44970fff3697a3ad43b
 	en->param->i_sps_id = 7;
 	//For streaming:
 	en->param->b_repeat_headers = 1;
@@ -179,15 +175,11 @@ x264_encoder::x264_encoder( int width, int height)
 
 	encoded_frame=(uint8_t *)malloc(sizeof(uint8_t)*width*height*3);
 	if(encoded_frame==NULL)printf("X264缓冲区申请失败!\n");
-<<<<<<< HEAD
 	// std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
 	// int64_t timepoint = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
 	// std::string fn = "/home/demo/";
 	// fn += std::to_string(timepoint);
 	// file = fopen(fn.c_str(),"wa+");
-=======
-	file = fopen("/home/demo/x264_test.h264","wa+");
->>>>>>> 5533fd42b30c7e82e73de44970fff3697a3ad43b
 	// fifo =  "/tmp/fifo";
 	// mkfifo(fifo, 0777);
 	// h264_fp = fopen(fifo, "wa+");

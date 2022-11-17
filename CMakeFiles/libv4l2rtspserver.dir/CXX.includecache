@@ -209,12 +209,6 @@ stdint.h
 -
 ../x264/inc/x264_encoder.h
 /home/demo/v4l2rtspserver/x264/inc/x264_encoder.h
-algorithm
--
-chrono
--
-string
--
 
 /home/demo/v4l2rtspserver/src/x264_encoder_.cpp
 stdio.h
