@@ -175,7 +175,7 @@ x264_encoder::x264_encoder( int width, int height)
 
 	encoded_frame=(uint8_t *)malloc(sizeof(uint8_t)*width*height*3);
 	if(encoded_frame==NULL)printf("X264缓冲区申请失败!\n");
-	file = fopen("/home/demo/x264_test.h264","wa+");
+	// file = fopen("/home/demo/x264_test.h264","wa+");
 	// fifo =  "/tmp/fifo";
 	// mkfifo(fifo, 0777);
 	// h264_fp = fopen(fifo, "wa+");
@@ -285,17 +285,17 @@ int x264_encoder::encode_frame(uint8_t *yuv_frame)
 	{
 		// printf("h264_length=%d\n",h264_length);
 		//写入视频文件
-		if(file_test){
-			fwrite(encoded_frame, h264_length,1,file);
-		}
+		// if(file_test){
+		// 	fwrite(encoded_frame, h264_length,1,file);
+		// }
 	}
 	return h264_length;
 }
 
 x264_encoder::~x264_encoder(){
-	fclose(file);
+	// fclose(file);
 	free(encoded_frame);
-	fclose(h264_fp);
+	// fclose(h264_fp);
 }
  
  

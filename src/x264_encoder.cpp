@@ -18,9 +18,6 @@
 #include <string.h>
 #include <stdint.h>
 #include "../x264/inc/x264_encoder.h"
-#include <algorithm>
-#include <chrono>
-#include<string>
  
 
  
@@ -151,21 +148,21 @@ x264_encoder::x264_encoder( int width, int height)
 	x264_param_default(en->param); //编码器默认设置
  
 	/*订制编码器压缩的性能*/
-	x264_param_apply_preset(en->param,"medium");
+	x264_param_apply_preset(en->param,"ultrafast");
 	en->param->i_width = width; //设置图像宽度
 	en->param->i_height = height; //设置图像高度
-	// en->param->i_fps_num = 60;
-	// en->param->i_fps_den = 1;
-	// // Intra refres:
-	// en->param->i_keyint_max = 60;
-	// en->param->b_intra_refresh = 1;
-	// //Rate control:
-	// en->param->rc.i_rc_method = X264_RC_CRF;
-	// en->param->rc.f_rf_constant = 25;
-	// en->param->rc.f_rf_constant_max = 35;
-	// en->param->i_sps_id = 7;
-	// //For streaming:
-	// en->param->b_repeat_headers = 1;
+	en->param->i_fps_num = 60;
+	en->param->i_fps_den = 1;
+	// Intra refres:
+	en->param->i_keyint_max = 60;
+	en->param->b_intra_refresh = 1;
+	//Rate control:
+	en->param->rc.i_rc_method = X264_RC_CRF;
+	en->param->rc.f_rf_constant = 25;
+	en->param->rc.f_rf_constant_max = 35;
+	en->param->i_sps_id = 7;
+	//For streaming:
+	en->param->b_repeat_headers = 1;
 	// en->param->b_annexb = 1;
 	if((en->handle = x264_encoder_open(en->param)) == 0)
 	{
@@ -178,11 +175,7 @@ x264_encoder::x264_encoder( int width, int height)
 
 	encoded_frame=(uint8_t *)malloc(sizeof(uint8_t)*width*height*3);
 	if(encoded_frame==NULL)printf("X264缓冲区申请失败!\n");
-	std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
-	int64_t timepoint = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
-	std::string fn = "/home/demo/";
-	fn += std::to_string(timepoint);
-	file = fopen(fn.c_str(),"wa+");
+	file = fopen("/home/demo/x264_test.h264","wa+");
 	// fifo =  "/tmp/fifo";
 	// mkfifo(fifo, 0777);
 	// h264_fp = fopen(fifo, "wa+");

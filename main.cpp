@@ -95,7 +95,7 @@ std::string getDeviceName(const std::string & devicePath)
 int main(int argc, char** argv) 
 {
 	// default parameters
-	const char *dev_name = "/dev/video0";	
+	const char *dev_name = "/dev/video2";	
 	unsigned int format = ~0;
 	std::list<unsigned int> videoformatList;
 	int width = 0;
