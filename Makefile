@@ -619,33 +619,6 @@ src/V4l2RTSPServer.cpp.s:
 	$(MAKE) -f CMakeFiles/libv4l2rtspserver.dir/build.make CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.s
 .PHONY : src/V4l2RTSPServer.cpp.s
 
-src/x264_encoder.o: src/x264_encoder.cpp.o
-
-.PHONY : src/x264_encoder.o
-
-# target to build an object file
-src/x264_encoder.cpp.o:
-	$(MAKE) -f CMakeFiles/libv4l2rtspserver.dir/build.make CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o
-.PHONY : src/x264_encoder.cpp.o
-
-src/x264_encoder.i: src/x264_encoder.cpp.i
-
-.PHONY : src/x264_encoder.i
-
-# target to preprocess a source file
-src/x264_encoder.cpp.i:
-	$(MAKE) -f CMakeFiles/libv4l2rtspserver.dir/build.make CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.i
-.PHONY : src/x264_encoder.cpp.i
-
-src/x264_encoder.s: src/x264_encoder.cpp.s
-
-.PHONY : src/x264_encoder.s
-
-# target to generate assembly for a file
-src/x264_encoder.cpp.s:
-	$(MAKE) -f CMakeFiles/libv4l2rtspserver.dir/build.make CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.s
-.PHONY : src/x264_encoder.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -707,9 +680,6 @@ help:
 	@echo "... src/V4l2RTSPServer.o"
 	@echo "... src/V4l2RTSPServer.i"
 	@echo "... src/V4l2RTSPServer.s"
-	@echo "... src/x264_encoder.o"
-	@echo "... src/x264_encoder.i"
-	@echo "... src/x264_encoder.s"
 .PHONY : help
 
 

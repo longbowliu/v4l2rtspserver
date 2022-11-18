@@ -97,7 +97,7 @@ endif()
 
 # librtsp
 aux_source_directory(src LIBV4L2RTSP_SRC_FILES)
-add_library (libv4l2rtspserver STATIC ${LIVESOURCE} ${LIBV4L2RTSP_SRC_FILES} x264)	
+add_library (libv4l2rtspserver STATIC ${LIVESOURCE} ${LIBV4L2RTSP_SRC_FILES} )	
 target_include_directories(libv4l2rtspserver PUBLIC inc ${LIVEINCLUDE})
 target_link_libraries (${PROJECT_NAME} libv4l2rtspserver ${LIVE_LIBRARIES}) 
 if (OpenSSL_FOUND)
@@ -125,8 +125,8 @@ target_link_libraries (libv4l2rtspserver libv4l2cpp)
 
 # x264
 # add_subdirectory(x264 EXCLUDE_FROM_ALL)
-target_include_directories(libv4l2rtspserver PUBLIC x264/inc)
-target_link_libraries (libv4l2rtspserver x264 jpeg) 
+target_include_directories(libv4l2rtspserver PUBLIC)
+target_link_libraries (libv4l2rtspserver x264  jpeg) 
 
 # static link of stdc++ if available
 if (STATICSTDCPP)

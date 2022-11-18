@@ -11,7 +11,7 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_CXX
   "HAVE_ALSA"
-  "VERSION=\"4b27462-dirty\""
+  "VERSION=\"5f35a9f-dirty\""
   )
 
 # The include file search paths:
@@ -22,7 +22,6 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/usr/local/include/UsageEnvironment"
   "/usr/local/include/groupsock"
   "libv4l2cpp/inc"
-  "x264/inc"
   )
 
 # Targets to which this target links.

@@ -12,7 +12,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.o"
   "CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.o"
   "CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o"
-  "CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o"
   "liblibv4l2rtspserver.pdb"
   "liblibv4l2rtspserver.a"
 )

@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_FLAGS = -O3 -DNDEBUG   -std=gnu++11
 
-CXX_DEFINES = -DHAVE_ALSA -DVERSION=\"4b27462-dirty\"
+CXX_DEFINES = -DHAVE_ALSA -DVERSION=\"5f35a9f-dirty\"
 
-CXX_INCLUDES = -I/home/demo/v4l2rtspserver/inc -I/usr/local/include/liveMedia -I/usr/local/include/BasicUsageEnvironment -I/usr/local/include/UsageEnvironment -I/usr/local/include/groupsock -I/home/demo/v4l2rtspserver/libv4l2cpp/inc -I/home/demo/v4l2rtspserver/x264/inc 
+CXX_INCLUDES = -I/home/demo/v4l2rtspserver/inc -I/usr/local/include/liveMedia -I/usr/local/include/BasicUsageEnvironment -I/usr/local/include/UsageEnvironment -I/usr/local/include/groupsock -I/home/demo/v4l2rtspserver/libv4l2cpp/inc 
 

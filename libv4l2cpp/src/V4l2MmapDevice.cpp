@@ -25,8 +25,7 @@
 #include "V4l2MmapDevice.h"
 #include <algorithm>
 #include <chrono>
-#include "../../src/x264_encoder.cpp"
-// #include "../../src/jpeg2.cpp"
+// #include "../../src/x264_encoder.cpp"
 #include "yuv_to_jpg.cpp"
 
 

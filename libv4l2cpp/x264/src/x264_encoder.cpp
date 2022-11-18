@@ -17,7 +17,7 @@
 #include <sys/mman.h>
 #include <string.h>
 #include <stdint.h>
-#include "../x264/inc/x264_encoder.h"
+#include "../inc/x264_encoder.h"
  
 
  

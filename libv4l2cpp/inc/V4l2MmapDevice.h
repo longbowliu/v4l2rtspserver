@@ -14,6 +14,7 @@
 #define V4L2_MMAP_DEVICE
  
 #include "V4l2Device.h"
+#include "../x264/inc/x264_encoder.h"
 
 #define V4L2MMAP_NBBUFFER 10
 

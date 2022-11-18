@@ -1639,8 +1639,3 @@ CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o
  libv4l2cpp/inc/V4l2Device.h
  libv4l2cpp/inc/V4l2Output.h
  libv4l2cpp/inc/logger.h
-CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o
- /home/demo/v4l2rtspserver/src/x264_encoder.cpp
- /home/demo/v4l2rtspserver/x264/inc/x264.h
- /home/demo/v4l2rtspserver/x264/inc/x264_config.h
- /home/demo/v4l2rtspserver/x264/inc/x264_encoder.h
