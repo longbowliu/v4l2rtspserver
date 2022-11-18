@@ -1,1 +1,5 @@
 history/*
+CMakFiles/
+*.o
+*.a
+.gitignore

@@ -1639,16 +1639,8 @@ CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o: libv4l2cpp/inc/V4l2De
 CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o: libv4l2cpp/inc/V4l2Output.h
 CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o: libv4l2cpp/inc/logger.h
 
-CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.o: jpeg/jpeg.h
-CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.o: src/jpeg2.cpp
-
 CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o: src/x264_encoder.cpp
 CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o: x264/inc/x264.h
 CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o: x264/inc/x264_config.h
 CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.o: x264/inc/x264_encoder.h
-
-CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o: src/x264_encoder_.cpp
-CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o: x264/inc/x264.h
-CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o: x264/inc/x264_config.h
-CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o: x264/inc/x264_encoder.h
 

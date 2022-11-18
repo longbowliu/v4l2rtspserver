@@ -27,7 +27,7 @@
 #include <chrono>
 #include "../../src/x264_encoder.cpp"
 // #include "../../src/jpeg2.cpp"
-#include "yuv_to_jpg.c"
+#include "yuv_to_jpg.cpp"
 
 
 

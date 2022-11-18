@@ -619,33 +619,6 @@ src/V4l2RTSPServer.cpp.s:
 	$(MAKE) -f CMakeFiles/libv4l2rtspserver.dir/build.make CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.s
 .PHONY : src/V4l2RTSPServer.cpp.s
 
-src/jpeg2.o: src/jpeg2.cpp.o
-
-.PHONY : src/jpeg2.o
-
-# target to build an object file
-src/jpeg2.cpp.o:
-	$(MAKE) -f CMakeFiles/libv4l2rtspserver.dir/build.make CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.o
-.PHONY : src/jpeg2.cpp.o
-
-src/jpeg2.i: src/jpeg2.cpp.i
-
-.PHONY : src/jpeg2.i
-
-# target to preprocess a source file
-src/jpeg2.cpp.i:
-	$(MAKE) -f CMakeFiles/libv4l2rtspserver.dir/build.make CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.i
-.PHONY : src/jpeg2.cpp.i
-
-src/jpeg2.s: src/jpeg2.cpp.s
-
-.PHONY : src/jpeg2.s
-
-# target to generate assembly for a file
-src/jpeg2.cpp.s:
-	$(MAKE) -f CMakeFiles/libv4l2rtspserver.dir/build.make CMakeFiles/libv4l2rtspserver.dir/src/jpeg2.cpp.s
-.PHONY : src/jpeg2.cpp.s
-
 src/x264_encoder.o: src/x264_encoder.cpp.o
 
 .PHONY : src/x264_encoder.o
@@ -672,33 +645,6 @@ src/x264_encoder.s: src/x264_encoder.cpp.s
 src/x264_encoder.cpp.s:
 	$(MAKE) -f CMakeFiles/libv4l2rtspserver.dir/build.make CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder.cpp.s
 .PHONY : src/x264_encoder.cpp.s
-
-src/x264_encoder_.o: src/x264_encoder_.cpp.o
-
-.PHONY : src/x264_encoder_.o
-
-# target to build an object file
-src/x264_encoder_.cpp.o:
-	$(MAKE) -f CMakeFiles/libv4l2rtspserver.dir/build.make CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.o
-.PHONY : src/x264_encoder_.cpp.o
-
-src/x264_encoder_.i: src/x264_encoder_.cpp.i
-
-.PHONY : src/x264_encoder_.i
-
-# target to preprocess a source file
-src/x264_encoder_.cpp.i:
-	$(MAKE) -f CMakeFiles/libv4l2rtspserver.dir/build.make CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.i
-.PHONY : src/x264_encoder_.cpp.i
-
-src/x264_encoder_.s: src/x264_encoder_.cpp.s
-
-.PHONY : src/x264_encoder_.s
-
-# target to generate assembly for a file
-src/x264_encoder_.cpp.s:
-	$(MAKE) -f CMakeFiles/libv4l2rtspserver.dir/build.make CMakeFiles/libv4l2rtspserver.dir/src/x264_encoder_.cpp.s
-.PHONY : src/x264_encoder_.cpp.s
 
 # Help Target
 help:
@@ -761,15 +707,9 @@ help:
 	@echo "... src/V4l2RTSPServer.o"
 	@echo "... src/V4l2RTSPServer.i"
 	@echo "... src/V4l2RTSPServer.s"
-	@echo "... src/jpeg2.o"
-	@echo "... src/jpeg2.i"
-	@echo "... src/jpeg2.s"
 	@echo "... src/x264_encoder.o"
 	@echo "... src/x264_encoder.i"
 	@echo "... src/x264_encoder.s"
-	@echo "... src/x264_encoder_.o"
-	@echo "... src/x264_encoder_.i"
-	@echo "... src/x264_encoder_.s"
 .PHONY : help
 
 
