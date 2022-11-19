@@ -123,10 +123,18 @@ target_include_directories(libv4l2rtspserver PUBLIC libv4l2cpp/inc)
 target_link_libraries (libv4l2rtspserver libv4l2cpp) 
 
 
+# SET_TARGET_PROPERTIES(libv4l2rtspserver
+#     PROPERTIES BUILD_WITH_INSTALL_RPATH "${CMAKE_CURRENT_LIST_DIR}/lib")
+
+# SET_TARGET_PROPERTIES(libv4l2rtspserver
+#     PROPERTIES BUILD_RPATH "${CMAKE_CURRENT_LIST_DIR}/lib")
+
 # x264
 # add_subdirectory(x264 EXCLUDE_FROM_ALL)
 target_include_directories(libv4l2rtspserver PUBLIC)
-target_link_libraries (libv4l2rtspserver x264  jpeg) 
+target_link_libraries (libv4l2rtspserver ${CMAKE_CURRENT_LIST_DIR}/lib/libx264.so.164  jpeg) 
+
+
 
 # static link of stdc++ if available
 if (STATICSTDCPP)
