@@ -26,11 +26,11 @@
 #include <algorithm>
 #include <chrono>
 // #include "../../src/x264_encoder.cpp"
-#include "yuv_to_jpg.cpp"
+// #include "yuv_to_jpg.cpp"
 
 
 
- x264_encoder *encoder_;
+
 
 FILE *h264_fp = fopen("/home/demo/INNO/repos/live/testProgs/test.264","wa+");
 

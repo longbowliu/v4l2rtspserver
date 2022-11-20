@@ -15,6 +15,7 @@
  
 #include "V4l2Device.h"
 #include "../x264/inc/x264_encoder.h"
+#include "../jpg/inc/yuv_to_jpg.h"
 
 #define V4L2MMAP_NBBUFFER 10
 
@@ -35,6 +36,7 @@ class V4l2MmapDevice : public V4l2Device
 		virtual bool isReady() { return  ((m_fd != -1)&& (n_buffers != 0)); }
 		virtual bool start();
 		virtual bool stop();
+		 x264_encoder *encoder_;
 	
 	protected:
 		unsigned int  n_buffers;

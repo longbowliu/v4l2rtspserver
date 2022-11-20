@@ -1,4 +1,4 @@
-#include "yuv_to_jpg.h"
+#include "../inc/yuv_to_jpg.h"
 
 #define OUTPUT_BUF_SIZE  4096
 typedef struct 
