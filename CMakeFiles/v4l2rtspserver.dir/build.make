@@ -99,6 +99,8 @@ v4l2rtspserver: /usr/lib/x86_64-linux-gnu/libssl.so
 v4l2rtspserver: /usr/lib/x86_64-linux-gnu/libasound.so
 v4l2rtspserver: libv4l2cpp/liblibv4l2cpp.a
 v4l2rtspserver: lib/libx264.so.164
+v4l2rtspserver: lib/libredis++.so
+v4l2rtspserver: lib/libhiredis.so
 v4l2rtspserver: /usr/lib/x86_64-linux-gnu/libcrypto.so
 v4l2rtspserver: CMakeFiles/v4l2rtspserver.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable v4l2rtspserver"

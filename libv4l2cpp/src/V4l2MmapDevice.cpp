@@ -25,6 +25,12 @@
 #include "V4l2MmapDevice.h"
 #include <algorithm>
 #include <chrono>
+#include <signal.h>
+#include <thread>
+#include <sys/time.h>
+#include <boost/filesystem.hpp>
+
+
 // #include "../../src/x264_encoder.cpp"
 // #include "yuv_to_jpg.cpp"
 
@@ -32,20 +38,100 @@
 
 
 
-FILE *h264_fp = fopen("/home/demo/INNO/repos/live/testProgs/test.264","wa+");
+// FILE *h264_fp = fopen("/home/demo/INNO/repos/live/testProgs/test.264","wa+");
+
+void exit_sighandler(int sig)
+{
+	std::cout<<"signal triggered , exist now ";
+  	sleep(2);
+	exit(1);
+}
 
 V4l2MmapDevice::V4l2MmapDevice(const V4L2DeviceParameters & params, v4l2_buf_type deviceType) : V4l2Device(params, deviceType), n_buffers(0) 
 {
 	
 	memset(&m_buffer, 0, sizeof(m_buffer));
 }
-
+fstream  record_infor2;
 bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 {
 	bool ret = V4l2Device::init(mandatoryCapabilities);
 	if (ret)
 	{
+		signal(SIGINT, exit_sighandler);
+        signal(SIGSEGV, exit_sighandler);
 		encoder_ = new x264_encoder(m_width , m_height);
+		redis_ = new Redis("tcp://city@172.16.109.246:6379");
+		std::string ping_result ="";
+		while (ping_result != "PONG"){
+			try{
+				ping_result = redis_->ping();
+			}catch (const sw::redis::Error &err) {
+				std::time_t t = std::time(NULL);
+				std::tm *lctm = std::localtime(&t);
+				if ( lctm->tm_sec<3){
+					std::cout <<"\nSeem redis server not ready.  Detailed information: "  << err.what() << ",  waiting...\n";
+				}
+				usleep(2000000);
+			}
+		}
+		std::cout <<"\nRedis server connected!\n";
+		
+		auto path = redis_->get("ad_video_record_path");
+		if(path){
+			record_path = *path;
+		}else{
+			record_path = "/home/demo/data/video_record/";
+		}
+		if (!boost::filesystem::is_directory(record_path)) {
+			cout << "begin create path: " << record_path << endl;
+			if (!boost::filesystem::create_directory(record_path)) {
+			cout << "create_directories failed: " << record_path << endl;
+			return -1;
+			}
+		} else {
+			cout << record_path << " aleardy exist" << endl;
+		}
+        std::cout<< "ad_video_record_path: "<<record_path <<"\n";
+		auto pack_size =  redis_->get("ad_video_record_pack_size");
+		if(pack_size){
+			record_pack_size = std::stoi(*path);
+		}else{
+			record_pack_size =1024;
+		}
+		std::cout<< "record_pack_size: "<<std::to_string(record_pack_size) <<"\n";
+
+		std::thread sub_config_file_thread = std::thread([this]() {
+			try{
+				auto sub = redis_->subscriber();
+				sub.on_message([this](std::string channel, std::string msg) {
+							 if(msg == "true"){
+								need_record = true;
+								struct timeval time;
+								gettimeofday(&time, NULL);
+								record_start_time = time.tv_sec*1000 + time.tv_usec/1000;
+								string record_file_name = record_path+ to_string(record_start_time)  ;
+								record_file=fopen((record_file_name+".264").c_str(),"wb");
+
+								record_infor2.open((record_file_name+".infor2").c_str(),ios::out|ios::app);
+								record_infor.open((record_file_name+".infor").c_str(),ios::out|ios::app|ios::binary);
+								packed_size =0;
+								redis_->set("ad_record_video_fb",to_string(record_start_time) );
+							 }else{
+								 need_record = false;
+								 redis_->set("ad_record_video_fb","failed");
+							 }
+						});
+				sub.subscribe("ad_record_video");
+				while (true) {
+						sub.consume();
+				}
+			}catch (const Error &err) {
+				std::cout <<"RedisHandler: sub config files error "  << err.what();
+				return;
+			}
+		});
+		sub_config_file_thread.detach();
 		ret = this->start();
 	}
 	return ret;
@@ -53,6 +139,8 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 
 V4l2MmapDevice::~V4l2MmapDevice()
 {
+	delete encoder_;
+	delete redis_;
 	this->stop();
 }
 
@@ -211,29 +299,38 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 				LOG(WARN) << "Device " << m_params.m_devName << " buffer truncated available:" << bufferSize << " needed:" << buf.bytesused;
 			}
 
-			// memcpy(buffer, m_buffer[buf.index].start, size);
-			// unsigned char  temp[size+1];
-			// memcpy(temp, m_buffer[buf.index].start, size);
-			 unsigned char dest[size+1];
 			auto start = std::chrono::system_clock::now();
 
-
 		   unsigned char *jpg_p=(unsigned char *)malloc(m_height*m_width*3);
-		   int h_size = encoder_->encode_frame((unsigned char *)m_buffer[buf.index].start);
-		   fwrite(encoder_->encoded_frame, h_size,1,h264_fp);
-
 			int ret = yuv_to_jpeg(m_width,m_height,m_height*m_width*3,(unsigned char *)m_buffer[buf.index].start,jpg_p,80);
-			// int ret = compress_yuyv_to_jpeg( temp, dest, (m_width * m_height), 80);  //....
+
+		   if(need_record){
+		   	int h_size = encoder_->encode_frame((unsigned char *)m_buffer[buf.index].start);
+			fwrite(encoder_->encoded_frame, h_size,1,record_file);
+			// unsigned long t = buf.timestamp.tv_sec*1000+buf.timestamp.tv_usec/1000;
+			struct timeval time_;
+			gettimeofday(&time_, NULL);
+			unsigned long t = time_.tv_sec*1000+time_.tv_usec/1000;
+			record_info_struct tmp ;
+			tmp.tm = t;
+			packed_size += h_size;
+			tmp.size= packed_size;
+			record_infor.write((char *)&tmp,sizeof(tmp));
+			string infor = to_string(t) +"\t"+to_string(packed_size)+"\n";
+			record_infor2<<infor;
+		   }
+
 			auto end = std::chrono::system_clock::now();
 			auto duration =
 				std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
 					.count();
 			// std::cout << "capture image time:" << duration << std::endl;
-			memcpy(buffer, jpg_p, ret);
+
+			// memcpy(buffer, jpg_p, ret);
 			// fwrite(jpg_p, ret,1,h264_fp);
-			char jpg_file_name[100]; /*存放JPG图片名称*/
+			// char jpg_file_name[100]; /*存放JPG图片名称*/
 			// std::cout<<"sec:"<<buf.timestamp.tv_sec<<", usec:"<<buf.timestamp.tv_usec <<"\n";
-			sprintf(jpg_file_name,"%d.jpg",buf.timestamp.tv_usec );
+			// sprintf(jpg_file_name,"%d.jpg",buf.timestamp.tv_usec );
 			// jpg_file=fopen(jpg_file_name,"wb");
 			//  fwrite(jpg_p,1,ret,jpg_file);
 			//  fclose(jpg_file);

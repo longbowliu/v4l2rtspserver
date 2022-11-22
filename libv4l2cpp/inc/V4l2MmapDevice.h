@@ -16,9 +16,12 @@
 #include "V4l2Device.h"
 #include "../x264/inc/x264_encoder.h"
 #include "../jpg/inc/yuv_to_jpg.h"
-
+#include <../sw/redis++/redis++.h>
+#include<fstream>
+#include<iostream>
+using namespace std;
 #define V4L2MMAP_NBBUFFER 10
-
+using namespace sw::redis;
 class V4l2MmapDevice : public V4l2Device
 {	
 	protected:	
@@ -36,7 +39,17 @@ class V4l2MmapDevice : public V4l2Device
 		virtual bool isReady() { return  ((m_fd != -1)&& (n_buffers != 0)); }
 		virtual bool start();
 		virtual bool stop();
+	private:
 		 x264_encoder *encoder_;
+		 Redis * redis_;
+		 bool need_record = false;
+		 unsigned long record_start_time=0 ;
+		 std::string record_path ;
+		 int record_pack_size;   // M 
+		 unsigned long long packed_size;
+		 
+		 FILE *record_file; 
+		 ofstream record_infor;
 	
 	protected:
 		unsigned int  n_buffers;
@@ -47,6 +60,12 @@ class V4l2MmapDevice : public V4l2Device
 			size_t                  length;
 		};
 		buffer m_buffer[V4L2MMAP_NBBUFFER];
+
+		struct record_info_struct
+		{
+			unsigned long tm;
+			unsigned long long  size;
+		};
 };
 
 #endif
