@@ -58,6 +58,7 @@ void save_image_disk(std::queue<raw_ts> &raw_queue, FILE *record_file,  ofstream
 {
     // FILE *h264_fp = fopen("/home/demo/test_buf_recorder123.h264","wa+");
     int packed_size = 0;
+	
     while (true)
     {
         // std::unique_lock<std::mutex> lock(q_l);
@@ -67,11 +68,11 @@ void save_image_disk(std::queue<raw_ts> &raw_queue, FILE *record_file,  ofstream
 			if(!raw_queue.empty() ){
 				raw_ts rts = raw_queue.front();
 				fwrite(rts.prt, rts.length,1,record_file);
-				// if(rts.prt){
-				// 	free(rts.prt);
-				// }
+				if(rts.prt){
+					free(rts.prt);
+				}
 				raw_queue.pop();
-				// std::cout<<"raw_queue size " <<raw_queue.size()<<" after pop \n";
+				std::cout<<"raw_queue size " <<raw_queue.size()<<" after pop \n";
 
 				// unsigned long t = buf.timestamp.tv_sec*1000+buf.timestamp.tv_usec/1000;  //  this time start from computer boot up
 				record_info_struct tmp ;
@@ -366,13 +367,15 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 
 			if(raw_queue.size()>pre_record_seconds){
 				raw_ts temp = raw_queue.front();
-				// if(temp.prt){
-				// 	free( temp.prt);
-				// }
+				if(temp.prt){
+					free( temp.prt);
+				}
 				raw_queue.pop();
 			}
-			raw_queue.push( { (unsigned char *)encoder_->encoded_frame,h_size,time_});
-			// std::cout<<"raw_queue size "<<raw_queue.size()<<"\n";
+			unsigned char *zip_addr_=(unsigned char *)malloc(h_size+1);
+			memcpy(zip_addr_, encoder_->encoded_frame, h_size);
+			raw_queue.push( { zip_addr_,h_size,time_});
+			std::cout<<"raw_queue size "<<raw_queue.size()<<"\n";
 
 		   if(0 && need_record && raw_queue.size()){
 			raw_ts rts = raw_queue.front();
