@@ -52,7 +52,53 @@ V4l2MmapDevice::V4l2MmapDevice(const V4L2DeviceParameters & params, v4l2_buf_typ
 	
 	memset(&m_buffer, 0, sizeof(m_buffer));
 }
-fstream  record_infor2;
+
+
+void save_image_disk(std::queue<raw_ts> &raw_queue, FILE *record_file,  ofstream &record_infor, bool &need_record, int record_pack_size)
+{
+    // FILE *h264_fp = fopen("/home/demo/test_buf_recorder123.h264","wa+");
+    int packed_size = 0;
+    while (true)
+    {
+        // std::unique_lock<std::mutex> lock(q_l);
+        if ( need_record)
+        {
+			// cout<<" ************************** raw_queue size = "<<raw_queue.size()<<"\n";
+			if(!raw_queue.empty() ){
+				raw_ts rts = raw_queue.front();
+				fwrite(rts.prt, rts.length,1,record_file);
+				// if(rts.prt){
+				// 	free(rts.prt);
+				// }
+				raw_queue.pop();
+				// std::cout<<"raw_queue size " <<raw_queue.size()<<" after pop \n";
+
+				// unsigned long t = buf.timestamp.tv_sec*1000+buf.timestamp.tv_usec/1000;  //  this time start from computer boot up
+				record_info_struct tmp ;
+				unsigned long t = rts.t.tv_sec*1000+rts.t.tv_usec/1000;
+				tmp.tm = t;
+				packed_size +=  rts.length;
+				tmp.size= packed_size;
+				record_infor.write((char *)&tmp,sizeof(tmp));
+				record_infor.flush();
+			}else{
+				usleep(10000);
+			}
+			// cout <<"packed_size  record_pack_size"<<packed_size <<" ,"<<record_pack_size<<"\n";
+			if(packed_size >record_pack_size){
+				need_record = false;
+			}
+        }else{
+			cout<<"exist from here \n";
+			record_infor.close();
+			fclose(record_file);
+			 // thread exit when do not need record anymore.
+			return;
+		}
+    }
+}
+
+// fstream  record_infor2;
 bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 {
 	bool ret = V4l2Device::init(mandatoryCapabilities);
@@ -97,7 +143,7 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 		if(pack_size){
 			record_pack_size = std::stoi(*path);
 		}else{
-			record_pack_size =1024;
+			record_pack_size =1024*1024*1204;
 		}
 		std::cout<< "record_pack_size: "<<std::to_string(record_pack_size) <<"\n";
 
@@ -112,9 +158,10 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 								record_start_time = time.tv_sec*1000 + time.tv_usec/1000;
 								string record_file_name = record_path+ to_string(record_start_time)  ;
 								record_file=fopen((record_file_name+".264").c_str(),"wb");
-
-								record_infor2.open((record_file_name+".infor2").c_str(),ios::out|ios::app);
-								record_infor.open((record_file_name+".infor").c_str(),ios::out|ios::app|ios::binary);
+								// record_infor2.open((record_file_name+".infor2").c_str(),ios::out|ios::app);
+								record_infor.open((record_file_name+".info").c_str(),ios::out|ios::app|ios::binary);
+								std::thread th1(save_image_disk,std::ref(raw_queue),record_file,std::ref(record_infor),std::ref(need_record),record_pack_size);
+								th1.detach();
 								packed_size =0;
 								redis_->set("ad_record_video_fb",to_string(record_start_time) );
 							 }else{
@@ -141,6 +188,12 @@ V4l2MmapDevice::~V4l2MmapDevice()
 {
 	delete encoder_;
 	delete redis_;
+	if(record_file){
+		fclose(record_file);
+	}
+	if(record_infor.is_open()){
+		record_infor.close();
+	}
 	this->stop();
 }
 
@@ -274,7 +327,7 @@ bool V4l2MmapDevice::stop()
 	n_buffers = 0;
 	return success; 
 }
-FILE *jpg_file;
+// FILE *jpg_file;
 size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 {
 	size_t size = 0;
@@ -298,26 +351,49 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 				size = bufferSize;
 				LOG(WARN) << "Device " << m_params.m_devName << " buffer truncated available:" << bufferSize << " needed:" << buf.bytesused;
 			}
+			struct timeval time_;
+			gettimeofday(&time_, NULL);
 
 			auto start = std::chrono::system_clock::now();
 
 		   unsigned char *jpg_p=(unsigned char *)malloc(m_height*m_width*3);
-			int ret = yuv_to_jpeg(m_width,m_height,m_height*m_width*3,(unsigned char *)m_buffer[buf.index].start,jpg_p,80);
 
-		   if(need_record){
+			int ret = yuv_to_jpeg(m_width,m_height,m_height*m_width*3,(unsigned char *)m_buffer[buf.index].start,jpg_p,80);
+			// std::cout<<"jpeg size : "<<ret<<"\n";
+
 		   	int h_size = encoder_->encode_frame((unsigned char *)m_buffer[buf.index].start);
-			fwrite(encoder_->encoded_frame, h_size,1,record_file);
-			// unsigned long t = buf.timestamp.tv_sec*1000+buf.timestamp.tv_usec/1000;
-			struct timeval time_;
-			gettimeofday(&time_, NULL);
-			unsigned long t = time_.tv_sec*1000+time_.tv_usec/1000;
+			// std::cout<<"x264 size : "<<h_size<<"\n";
+
+			if(raw_queue.size()>pre_record_seconds){
+				raw_ts temp = raw_queue.front();
+				// if(temp.prt){
+				// 	free( temp.prt);
+				// }
+				raw_queue.pop();
+			}
+			raw_queue.push( { (unsigned char *)encoder_->encoded_frame,h_size,time_});
+			// std::cout<<"raw_queue size "<<raw_queue.size()<<"\n";
+
+		   if(0 && need_record && raw_queue.size()){
+			raw_ts rts = raw_queue.front();
+
+			fwrite(rts.prt, rts.length,1,record_file);
+			// if(rts.prt){
+			// 	free(rts.prt);
+			// }
+			raw_queue.pop();
+			// unsigned long t = buf.timestamp.tv_sec*1000+buf.timestamp.tv_usec/1000;  //  this time start from computer boot up
+			
+			
 			record_info_struct tmp ;
+			unsigned long t = rts.t.tv_sec*1000+rts.t.tv_usec/1000;
 			tmp.tm = t;
 			packed_size += h_size;
 			tmp.size= packed_size;
 			record_infor.write((char *)&tmp,sizeof(tmp));
-			string infor = to_string(t) +"\t"+to_string(packed_size)+"\n";
-			record_infor2<<infor;
+			record_infor.flush();
+			// string infor = to_string(t) +"\t"+to_string(packed_size)+"\n";
+			// record_infor2<<infor<<flush;
 		   }
 
 			auto end = std::chrono::system_clock::now();
@@ -326,7 +402,8 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 					.count();
 			// std::cout << "capture image time:" << duration << std::endl;
 
-			// memcpy(buffer, jpg_p, ret);
+			memcpy(buffer, jpg_p, ret);
+			free(jpg_p);
 			// fwrite(jpg_p, ret,1,h264_fp);
 			// char jpg_file_name[100]; /*存放JPG图片名称*/
 			// std::cout<<"sec:"<<buf.timestamp.tv_sec<<", usec:"<<buf.timestamp.tv_usec <<"\n";

@@ -154,7 +154,7 @@ x264_encoder::x264_encoder( int width, int height)
 	en->param->i_fps_num = 30;
 	en->param->i_fps_den = 1;
 	// Intra refres:
-	en->param->i_keyint_max = 60;
+	en->param->i_keyint_max = 30;
 	en->param->b_intra_refresh = 1;
 	//Rate control:
 	en->param->rc.i_rc_method = X264_RC_CRF;
@@ -298,7 +298,10 @@ int x264_encoder::encode_frame(uint8_t *yuv_frame)
 
 x264_encoder::~x264_encoder(){
 	// fclose(file);
-	free(encoded_frame);
+	compress_end(&my_encoder);
+	if(encoded_frame){
+		free(encoded_frame);
+	}
 	// fclose(h264_fp);
 }
  

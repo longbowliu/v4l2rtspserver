@@ -19,9 +19,24 @@
 #include <../sw/redis++/redis++.h>
 #include<fstream>
 #include<iostream>
+#include<queue>
+
 using namespace std;
 #define V4L2MMAP_NBBUFFER 10
 using namespace sw::redis;
+
+struct raw_ts{
+			raw_ts(unsigned char * p, size_t l,timeval tm):prt(p),length(l),t(tm){}
+			unsigned char * prt;
+			size_t length;
+			timeval t;
+		};
+struct record_info_struct
+		{
+			unsigned long tm;
+			unsigned long long  size;
+		};
+
 class V4l2MmapDevice : public V4l2Device
 {	
 	protected:	
@@ -30,6 +45,8 @@ class V4l2MmapDevice : public V4l2Device
 		size_t writePartialInternal(char*, size_t);
 		bool   endPartialWrite();
 		size_t readInternal(char* buffer, size_t bufferSize);
+
+		
 			
 	public:
 		V4l2MmapDevice(const V4L2DeviceParameters & params, v4l2_buf_type deviceType);		
@@ -45,11 +62,13 @@ class V4l2MmapDevice : public V4l2Device
 		 bool need_record = false;
 		 unsigned long record_start_time=0 ;
 		 std::string record_path ;
-		 int record_pack_size;   // M 
+		 int record_pack_size = 1024*1024*1204;   // M 
 		 unsigned long long packed_size;
+		 int pre_record_seconds = 15*30+10;
 		 
 		 FILE *record_file; 
 		 ofstream record_infor;
+		 std::queue<raw_ts>  raw_queue; 
 	
 	protected:
 		unsigned int  n_buffers;
@@ -61,11 +80,9 @@ class V4l2MmapDevice : public V4l2Device
 		};
 		buffer m_buffer[V4L2MMAP_NBBUFFER];
 
-		struct record_info_struct
-		{
-			unsigned long tm;
-			unsigned long long  size;
-		};
+		
+
+		
 };
 
 #endif

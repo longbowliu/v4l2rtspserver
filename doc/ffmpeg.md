@@ -10,3 +10,6 @@ ffmpeg -i test.264 -qscale:v 2  -ss 00:00:20 -vframes 5 -r 30   img-%3d.jpg
  	from test.264 file , start time 20, extract 5 frames .  30/fps
     	or use -t n extract n seconds frames.   
 原文链接：https://blog.csdn.net/Gary__123456/article/details/89154095
+
+ffmpeg -re -stream_loop -1 -i test.264 -r 30 -c copy -f rtsp rtsp://172.16.109.246:8554/h264ESVideoTest
+
