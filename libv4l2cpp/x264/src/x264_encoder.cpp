@@ -148,7 +148,7 @@ x264_encoder::x264_encoder( int width, int height)
 	x264_param_default(en->param); //编码器默认设置
  
 	/*订制编码器压缩的性能*/
-	x264_param_apply_preset(en->param,"medium");
+	x264_param_apply_preset(en->param,"faster");
 	en->param->i_width = width; //设置图像宽度
 	en->param->i_height = height; //设置图像高度
 	en->param->i_fps_num = 30;
