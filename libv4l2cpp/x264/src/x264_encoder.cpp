@@ -204,7 +204,7 @@ void x264_encoder::compress_end(Encoder *en)
 	{
 		x264_encoder_close(en->handle);
 	}
-	free(en);
+	// free(en);
 }
  
  

@@ -35,6 +35,7 @@ struct record_info_struct
 		{
 			unsigned long tm;
 			unsigned long long  size;
+			unsigned int diff;
 		};
 
 class V4l2MmapDevice : public V4l2Device
