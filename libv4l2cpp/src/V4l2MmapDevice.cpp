@@ -29,7 +29,11 @@
 #include <thread>
 #include <sys/time.h>
 #include <boost/filesystem.hpp>
+#include <opencv2/opencv.hpp>
 
+// using namespace cv;
+cv::VideoCapture cap;
+cv::Mat frame;
 
 // #include "../../src/x264_encoder.cpp"
 // #include "yuv_to_jpg.cpp"
@@ -105,10 +109,11 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 	bool ret = V4l2Device::init(mandatoryCapabilities);
 	if (ret)
 	{
+		cap.open("test.264");
 		signal(SIGINT, exit_sighandler);
         signal(SIGSEGV, exit_sighandler);
 		encoder_ = new x264_encoder(m_width , m_height);
-		redis_ = new Redis("tcp://city@172.16.109.246:6379");
+		redis_ = new Redis("tcp://city@172.16.115.180:6379");
 		std::string ping_result ="";
 		while (ping_result != "PONG"){
 			try{
@@ -333,7 +338,23 @@ bool V4l2MmapDevice::stop()
 // FILE *jpg_file;
 size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 {
-	size_t size = 0;
+	
+	cap >> frame;
+	// cout<<"llb ="<<frame.size()<<"\n";
+
+	std::vector <unsigned char> img_data;
+	cv::imencode(".jpg", frame, img_data);
+	// cv::imshow("ttt",frame);
+	// cv::waitKey(0);
+	cout << "check here : "<<img_data.size()<<" unit size:"<<sizeof(img_data[0])<<"\n";
+	// unsigned char *buf_tmp = new unsigned char[img_data.size()*3];  
+	if (!img_data.empty())  
+	{  
+		memcpy(buffer, &img_data[0], img_data.size()*sizeof(img_data[0]));  
+	}  
+
+	size_t size =img_data.size() ;
+	return size ;
 	if (n_buffers > 0)
 	{
 		struct v4l2_buffer buf;	

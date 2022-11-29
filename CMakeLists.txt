@@ -132,7 +132,8 @@ target_link_libraries (libv4l2rtspserver libv4l2cpp)
 # x264
 # add_subdirectory(x264 EXCLUDE_FROM_ALL)
 target_include_directories(libv4l2rtspserver PUBLIC)
-target_link_libraries (libv4l2rtspserver ${CMAKE_CURRENT_LIST_DIR}/lib/libx264.so.164  jpeg 
+target_link_libraries (libv4l2rtspserver ${CMAKE_CURRENT_LIST_DIR}/lib/libx264.so.164  jpeg  
+opencv_core opencv_video opencv_videoio opencv_highgui  opencv_imgcodecs
 ${CMAKE_CURRENT_LIST_DIR}/lib/libredis++.so 
 ${CMAKE_CURRENT_LIST_DIR}/lib/libhiredis.so 
 boost_system  boost_filesystem

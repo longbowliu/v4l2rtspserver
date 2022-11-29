@@ -63,8 +63,8 @@ CMAKE_BINARY_DIR = /home/demo/v4l2rtspserver
 # Target rules for target CMakeFiles/v4l2rtspserver.dir
 
 # All Build rule for target.
-CMakeFiles/v4l2rtspserver.dir/all: libv4l2cpp/CMakeFiles/libv4l2cpp.dir/all
 CMakeFiles/v4l2rtspserver.dir/all: CMakeFiles/libv4l2rtspserver.dir/all
+CMakeFiles/v4l2rtspserver.dir/all: libv4l2cpp/CMakeFiles/libv4l2cpp.dir/all
 	$(MAKE) -f CMakeFiles/v4l2rtspserver.dir/build.make CMakeFiles/v4l2rtspserver.dir/depend
 	$(MAKE) -f CMakeFiles/v4l2rtspserver.dir/build.make CMakeFiles/v4l2rtspserver.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/demo/v4l2rtspserver/CMakeFiles --progress-num=27,28 "Built target v4l2rtspserver"

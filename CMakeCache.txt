@@ -323,7 +323,7 @@ libv4l2cpp_LIB_DEPENDS:STATIC=
 libv4l2cpp_SOURCE_DIR:STATIC=/home/demo/v4l2rtspserver/libv4l2cpp
 
 //Dependencies for the target
-libv4l2rtspserver_LIB_DEPENDS:STATIC=general;libv4l2cpp;general;/home/demo/v4l2rtspserver/lib/libx264.so.164;general;jpeg;general;/home/demo/v4l2rtspserver/lib/libredis++.so;general;/home/demo/v4l2rtspserver/lib/libhiredis.so;general;boost_system;general;boost_filesystem;
+libv4l2rtspserver_LIB_DEPENDS:STATIC=general;libv4l2cpp;general;/home/demo/v4l2rtspserver/lib/libx264.so.164;general;jpeg;general;opencv_core;general;opencv_video;general;opencv_videoio;general;opencv_highgui;general;opencv_imgcodecs;general;/home/demo/v4l2rtspserver/lib/libredis++.so;general;/home/demo/v4l2rtspserver/lib/libhiredis.so;general;boost_system;general;boost_filesystem;
 
 //Value Computed by CMake
 v4l2rtspserver_BINARY_DIR:STATIC=/home/demo/v4l2rtspserver
