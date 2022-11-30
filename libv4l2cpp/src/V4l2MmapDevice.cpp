@@ -29,11 +29,7 @@
 #include <thread>
 #include <sys/time.h>
 #include <boost/filesystem.hpp>
-#include <opencv2/opencv.hpp>
 
-// using namespace cv;
-cv::VideoCapture cap;
-cv::Mat frame;
 
 // #include "../../src/x264_encoder.cpp"
 // #include "yuv_to_jpg.cpp"
@@ -109,7 +105,7 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 	bool ret = V4l2Device::init(mandatoryCapabilities);
 	if (ret)
 	{
-		cap.open("test.264");
+		// cap.open("test.264");
 		signal(SIGINT, exit_sighandler);
         signal(SIGSEGV, exit_sighandler);
 		encoder_ = new x264_encoder(m_width , m_height);
@@ -142,7 +138,7 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 			return -1;
 			}
 		} else {
-			cout << record_path << " aleardy exist" << endl;
+			// cout << record_path << " aleardy exist" << endl;
 		}
         std::cout<< "ad_video_record_path: "<<record_path <<"\n";
 		auto pack_size =  redis_->get("ad_video_record_pack_size");
@@ -153,30 +149,30 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 		}
 		std::cout<< "record_pack_size: "<<std::to_string(record_pack_size) <<"\n";
 
-		std::thread sub_config_file_thread = std::thread([this]() {
+		std::thread video_record_thread = std::thread([this]() {
 			try{
 				auto sub = redis_->subscriber();
 				sub.on_message([this](std::string channel, std::string msg) {
-							 if(msg == "true"){
-								need_record = true;
-								struct timeval time;
-								gettimeofday(&time, NULL);
-								record_start_time = time.tv_sec*1000 + time.tv_usec/1000;
-								string record_file_name = record_path+ to_string(record_start_time)  ;
-								record_file=fopen((record_file_name+".264").c_str(),"wb");
-								// record_infor2.open((record_file_name+".infor2").c_str(),ios::out|ios::app);
-								record_infor.open((record_file_name+".info").c_str(),ios::out|ios::app|ios::binary);
-								std::thread th1(save_image_disk,std::ref(raw_queue),record_file,std::ref(record_infor),std::ref(need_record),record_pack_size);
-								th1.detach();
-								packed_size =0;
-								redis_->set("ad_record_video_fb",to_string(record_start_time) );
-							 }else{
-								 need_record = false;
-								 redis_->set("ad_record_video_fb","failed");
-								 delete encoder_;
-								 encoder_ = new x264_encoder(m_width , m_height);
-							 }
-						});
+					if(msg == "true"){
+					need_record = true;
+					struct timeval time;
+					gettimeofday(&time, NULL);
+					record_start_time = time.tv_sec*1000 + time.tv_usec/1000;
+					string record_file_name = record_path+ to_string(record_start_time)  ;
+					record_file=fopen((record_file_name+".264").c_str(),"wb");
+					// record_infor2.open((record_file_name+".infor2").c_str(),ios::out|ios::app);
+					record_infor.open((record_file_name+".info").c_str(),ios::out|ios::app|ios::binary);
+					std::thread th1(save_image_disk,std::ref(raw_queue),record_file,std::ref(record_infor),std::ref(need_record),record_pack_size);
+					th1.detach();
+					packed_size =0;
+					redis_->set("ad_record_video_fb",to_string(record_start_time) );
+					}else{
+						need_record = false;
+						redis_->set("ad_record_video_fb","failed");
+						delete encoder_;
+						encoder_ = new x264_encoder(m_width , m_height);
+					}
+				});
 				sub.subscribe("ad_record_video");
 				while (true) {
 						sub.consume();
@@ -186,7 +182,33 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 				return;
 			}
 		});
-		sub_config_file_thread.detach();
+		video_record_thread.detach();
+
+		std::thread video_play_thread = std::thread([this]() {
+			try{
+					auto sub = redis_->subscriber();
+					sub.on_message([this](std::string channel, std::string msg) {
+						if(msg != ""){
+							string record_file = msg;
+							// get 
+							cout<< "record_path : "<<record_path<<" , file = "<<msg<<"\n";
+							cap.open(record_file);
+							play_model = true;
+						}else{
+							redis_->set("ad_play_video_fb","vedio record file name is empty");
+						}
+					});
+					sub.subscribe("ad_play_video");
+					while (true) {
+						sub.consume();
+					}
+				}catch (const Error &err) {
+				std::cout <<"RedisHandler: sub config files error "  << err.what();
+				return;
+			}
+		});
+		video_play_thread.detach();
+
 		ret = this->start();
 	}
 	return ret;
@@ -338,25 +360,23 @@ bool V4l2MmapDevice::stop()
 // FILE *jpg_file;
 size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 {
-	
-	cap >> frame;
-	// cout<<"llb ="<<frame.size()<<"\n";
+	size_t size = 0;
+	if(play_model){
 
-	std::vector <unsigned char> img_data;
-	cv::imencode(".jpg", frame, img_data);
-	// cv::imshow("ttt",frame);
-	// cv::waitKey(0);
-	cout << "check here : "<<img_data.size()<<" unit size:"<<sizeof(img_data[0])<<"\n";
-	// unsigned char *buf_tmp = new unsigned char[img_data.size()*3];  
-	if (!img_data.empty())  
-	{  
-		memcpy(buffer, &img_data[0], img_data.size()*sizeof(img_data[0]));  
-	}  
+		cap >> frame;
+		std::vector <unsigned char> img_data;
+		cv::imencode(".jpg", frame, img_data);
+		// cv::imshow("ttt",frame);
+		// cv::waitKey(0);
+		// cout << "check here : "<<img_data.size()<<" unit size:"<<sizeof(img_data[0])<<"\n";
+		if (!img_data.empty())  
+		{  
+			memcpy(buffer, &img_data[0], img_data.size()*sizeof(img_data[0]));  
+		}  
+		size =img_data.size() ;
+		return size ;
 
-	size_t size =img_data.size() ;
-	return size ;
-	if (n_buffers > 0)
-	{
+	}else if (n_buffers > 0){
 		struct v4l2_buffer buf;	
 		memset (&buf, 0, sizeof(buf));
 		buf.type = m_deviceType;

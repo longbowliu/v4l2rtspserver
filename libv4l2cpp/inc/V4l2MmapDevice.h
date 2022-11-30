@@ -20,6 +20,10 @@
 #include<fstream>
 #include<iostream>
 #include<queue>
+#include <opencv2/opencv.hpp>
+
+// using namespace cv;
+
 
 using namespace std;
 #define V4L2MMAP_NBBUFFER 10
@@ -70,6 +74,10 @@ class V4l2MmapDevice : public V4l2Device
 		 FILE *record_file; 
 		 ofstream record_infor;
 		 std::queue<raw_ts>  raw_queue; 
+		 cv::VideoCapture  cap;
+		 cv::Mat frame;
+		 bool play_model = false;
+
 	
 	protected:
 		unsigned int  n_buffers;
