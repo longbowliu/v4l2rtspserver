@@ -101,7 +101,7 @@ int main(int argc, char** argv)
 	int width = 0;
 	int height = 0;
 	int queueSize = 5;
-	int fps = 25;
+	int fps = 30;
 	unsigned short rtspPort = 8554;
 	unsigned short rtspOverHTTPPort = 0;
 	bool multicast = false;

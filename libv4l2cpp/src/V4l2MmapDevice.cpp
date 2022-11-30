@@ -99,6 +99,87 @@ void save_image_disk(std::queue<raw_ts> &raw_queue, FILE *record_file,  ofstream
     }
 }
 
+void string_split(const string& str, const char split, vector<string>& res)
+{
+	if (str == "")        return;
+	//在字符串末尾也加入分隔符，方便截取最后一段
+	string strs = str + split;
+	size_t pos = strs.find(split);
+
+	// 若找不到内容则字符串搜索函数返回 npos
+	while (pos != strs.npos)
+	{
+		string temp = strs.substr(0, pos);
+		res.push_back(temp);
+		//去掉已分割的字符串,在剩下的字符串中进行分割
+		strs = strs.substr(pos + 1, strs.size());
+		pos = strs.find(split);
+	}
+}
+
+void string2map(const string& str, const char split, map<string,string>& res)
+{
+	// kazam res =  {"id":"123abc","status":"true"}     
+	// publish "ad_record_video" "{\"id\":\"123abc\",\"status\":\"true\"}"  
+	
+	if (str == "")        return;
+	//在字符串末尾也加入分隔符，方便截取最后一段
+	string strs = str + split;
+	size_t pos = strs.find(split);
+
+	// 若找不到内容则字符串搜索函数返回 npos
+	while (pos != strs.npos)
+	{
+		string temp = strs.substr(0, pos);
+		int pos_temp = temp.find(":");
+
+		string first_str = temp.substr(0,pos_temp);
+		int left_p_f = first_str.find("\"");
+		int right_p_f = first_str.rfind("\"");
+		// cout<<" first********"<<first_str<<"****"<<first_str.substr(left_p_f+1,right_p_f-left_p_f-1)<<"***"<<left_p_f<<","<<right_p_f<<","<<first_str.find_last_of("\"")<<endl;
+
+		string scd_str = temp.substr(pos_temp,temp.size()-1);
+		int left_p_s= scd_str.find("\"");
+		int right_p_s = scd_str.rfind("\"");
+	
+		// cout<<" second********"<<scd_str<<"****"<<scd_str.substr(left_p_s+1,right_p_s-left_p_s-1)<<"***"<<left_p_s<<","<<right_p_s<<endl;
+		res.insert(make_pair(first_str.substr(left_p_f+1,right_p_f-left_p_f-1),scd_str.substr(left_p_s+1,right_p_s-left_p_s-1)));
+		//去掉已分割的字符串,在剩下的字符串中进行分割
+		strs = strs.substr(pos + 1, strs.size());
+		pos = strs.find(split);
+	}
+}
+
+string V4l2MmapDevice::find_file_by_id(string id){
+	ifstream srcFile((record_path+"dict.info").c_str(), ios::in); 
+	string result = "";
+	if (srcFile.is_open())
+	{
+		cout << "文件打开成功！" << endl;
+		cout << "类容如下！" << endl;
+		string str;
+		while (getline(srcFile,str))
+		{
+			cout << str << endl;
+			int position = str.find(':');
+			string id_ = str.substr(0,position);
+			cout<<"id_="<<id_<<"*"<<endl;
+			if(id.compare(id_)==0){
+				result = str.substr(position+1,str.length()-position);
+				cout << "result = "<< result <<endl;
+				return result;
+			}
+		}
+	}
+	else
+	{
+		cout << "文件打开失败！" << endl;
+	}
+    srcFile.close();
+
+	return "";
+}
+
 // fstream  record_infor2;
 bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 {
@@ -149,23 +230,36 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 		}
 		std::cout<< "record_pack_size: "<<std::to_string(record_pack_size) <<"\n";
 
+		
 		std::thread video_record_thread = std::thread([this]() {
 			try{
 				auto sub = redis_->subscriber();
 				sub.on_message([this](std::string channel, std::string msg) {
-					if(msg == "true"){
-					need_record = true;
-					struct timeval time;
-					gettimeofday(&time, NULL);
-					record_start_time = time.tv_sec*1000 + time.tv_usec/1000;
-					string record_file_name = record_path+ to_string(record_start_time)  ;
-					record_file=fopen((record_file_name+".264").c_str(),"wb");
-					// record_infor2.open((record_file_name+".infor2").c_str(),ios::out|ios::app);
-					record_infor.open((record_file_name+".info").c_str(),ios::out|ios::app|ios::binary);
-					std::thread th1(save_image_disk,std::ref(raw_queue),record_file,std::ref(record_infor),std::ref(need_record),record_pack_size);
-					th1.detach();
-					packed_size =0;
-					redis_->set("ad_record_video_fb",to_string(record_start_time) );
+					
+					map<string,string> m;
+					string2map(msg,',', m);
+					for (auto s : m){
+						cout << s.first << " =  "<<s.second << endl;
+					}
+					cout << endl;
+					if( m.end()!=m.find("status") && m.find("status")->second == "true"){
+						string id = m.find("id")->second;
+						need_record = true;
+						struct timeval time;
+						gettimeofday(&time, NULL);
+						record_start_time = time.tv_sec*1000 + time.tv_usec/1000;
+						string record_file_name = record_path+ to_string(record_start_time)  ;
+						record_file=fopen((record_file_name+".264").c_str(),"wb");
+						ofstream dict_file ((record_path+"dict.info").c_str(),ios::out|ios::app);
+						string tmp = id+":"+to_string(record_start_time)+"\n";
+						dict_file<<tmp;
+						dict_file.close();
+						record_infor.open((record_file_name+".info").c_str(),ios::out|ios::app|ios::binary);
+
+						std::thread th1(save_image_disk,std::ref(raw_queue),record_file,std::ref(record_infor),std::ref(need_record),record_pack_size);
+						th1.detach();
+						packed_size =0;
+						redis_->set("ad_record_video_fb",to_string(record_start_time) );
 					}else{
 						need_record = false;
 						redis_->set("ad_record_video_fb","failed");
@@ -188,12 +282,30 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 			try{
 					auto sub = redis_->subscriber();
 					sub.on_message([this](std::string channel, std::string msg) {
-						if(msg != ""){
-							string record_file = msg;
+						cout<< "\nhi : "<< msg <<endl;
+						map<string,string> m;
+						string2map(msg,',', m);
+						for (auto s : m){
+							cout << s.first << " =  "<<s.second << endl;
+						}
+						cout << endl;
+
+						if(m.end()!=m.find("id")){
+							
+							string record_file = find_file_by_id(m.find("id")->second);
 							// get 
-							cout<< "record_path : "<<record_path<<" , file = "<<msg<<"\n";
+							record_file = record_path + record_file+".264";
+							cout<< "record_file : "<<record_file<<" , msg = "<<msg<<"\n";
 							cap.open(record_file);
-							play_model = true;
+							if (!cap.isOpened()){
+									cout<<"vedio file "<<record_file<<" not found"<<endl;
+									redis_->set("ad_play_video_fb","vedio file "+record_file+" not found");
+							}else{
+								cout << "vedio file "<<record_file<<" start to replay"<<endl;
+								redis_->set("ad_play_video_fb","vedio file "+record_file+" start to replay");
+								play_model = true;
+							}
+							// cap.set(CV_CAP_PROP_FPS,10);  // seems not work
 						}else{
 							redis_->set("ad_play_video_fb","vedio record file name is empty");
 						}
@@ -362,18 +474,35 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 {
 	size_t size = 0;
 	if(play_model){
-
+		// cout << "\n\n check here 1"<<endl;
+		long totalFrameNumber=cap.get(CV_CAP_PROP_FRAME_COUNT);//获取视频的总帧数  not work
+		long frameToStart = 300;
+		// cap.set(CV_CAP_PROP_POS_FRAMES, frameToStart); //设置开始帧
+		double rate = cap.get(CV_CAP_PROP_FPS); //获取帧率
+		// cap.set(CV_CAP_PROP_FPS,10);
+		// cout<< "totalFrameNumber = "<<totalFrameNumber<<", rate="<<rate<<"\n";
 		cap >> frame;
+		cvWaitKey(50);
+		// cout << "\n\n check here 2 "<<endl;
 		std::vector <unsigned char> img_data;
-		cv::imencode(".jpg", frame, img_data);
+		try{
+			cv::imencode(".jpg", frame, img_data);
+		}catch(cv::Exception ex){
+			cout << " \n*************** encode error"<<endl;
+			play_model = false;
+		}
 		// cv::imshow("ttt",frame);
 		// cv::waitKey(0);
 		// cout << "check here : "<<img_data.size()<<" unit size:"<<sizeof(img_data[0])<<"\n";
 		if (!img_data.empty())  
 		{  
 			memcpy(buffer, &img_data[0], img_data.size()*sizeof(img_data[0]));  
-		}  
+		} else{
+			cout << " \n*************** data is empty "<<endl;
+			play_model = false;
+		}
 		size =img_data.size() ;
+		// cout << "\n\n check here 3"<<endl;
 		return size ;
 
 	}else if (n_buffers > 0){

@@ -1,0 +1,14 @@
+ kazam 
+
+ res =  {"id":"123abc","status":"true"}     
+
+ publish "ad_record_video" "{\"id\":\"123abc\",\"status\":\"true\"}"  
+
+ publish "ad_play_video"  "{\"id\":\"123abc3\"}" 
+
+
+
+
+
+ 1669798125066
+ 1669798125066

@@ -77,6 +77,7 @@ class V4l2MmapDevice : public V4l2Device
 		 cv::VideoCapture  cap;
 		 cv::Mat frame;
 		 bool play_model = false;
+		 string find_file_by_id(string id);
 
 	
 	protected:
