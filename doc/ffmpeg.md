@@ -1,4 +1,5 @@
 
+从视频提取图片
 ffmpeg -i test.mp4 -r 30 -ss 00:00:20 -vframes 10 image-%3d.jpg
 text.mp4视频文件
 -r 30 每秒提取30帧，一般是24帧
@@ -14,5 +15,15 @@ ffmpeg -i test.264 -qscale:v 2  -r 30   img-%3d.jpg
     	or use -t n extract n seconds frames.   
 原文链接：https://blog.csdn.net/Gary__123456/article/details/89154095
 
+
+rtsp推流： 需要simple-rtsp-server 配合
 ffmpeg -re -stream_loop -1 -i test.264 -r 30 -c copy -f rtsp rtsp://172.16.109.246:8554/h264ESVideoTest
+
+
+从图片生成视频
+ffmpeg -f image2 -i frame%4d.jpg test.mp4
+其中，image_%d.jpg表示文件夹内的有序图片，比如image_00.jpg,image_01.jpg
+
+使用ffmpeg将图片合成为视频(附完整参数介绍)
+https://blog.csdn.net/xindoo/article/details/121451318
 
