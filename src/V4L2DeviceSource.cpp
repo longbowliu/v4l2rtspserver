@@ -16,12 +16,16 @@
 // project
 #include "logger.h"
 #include "V4L2DeviceSource.h"
+#include <opencv2/opencv.hpp>
 // #include "x264_encoder.cpp"
 
 //  x264_encoder *encoder_;
 // ---------------------------------
 // V4L2 FramedSource Stats
 // ---------------------------------
+using namespace std;
+using namespace cv;
+cv::VideoCapture  cap_;
 int  V4L2DeviceSource::Stats::notify(int tv_sec, int framesize)
 {
 	m_fps++;
@@ -42,9 +46,11 @@ int  V4L2DeviceSource::Stats::notify(int tv_sec, int framesize)
 V4L2DeviceSource* V4L2DeviceSource::createNew(UsageEnvironment& env, DeviceInterface * device, int outputFd, unsigned int queueSize, CaptureMode captureMode) 
 { 	
 	// encoder_ = new x264_encoder(device->getHeight(), device->getWidth());
+	std::cout<< "\n\n************"<<device->getHeight()<< ", "<<device->getWidth() <<std::endl;
 	V4L2DeviceSource* source = NULL;
 	if (device)
 	{
+		cap_.open(0);
 		source = new V4L2DeviceSource(env, device, outputFd, queueSize, captureMode);
 	}
 	return source;
@@ -201,7 +207,13 @@ int V4L2DeviceSource::getNextFrame()
 	gettimeofday(&ref, NULL);											
 	char* buffer = new char[m_device->getBufferSize()];	
 	// usleep(100);
+
+	Mat frame;
+	cap_>>frame;
+	resize(frame, frame, Size(640, 480));
 	int frameSize = m_device->read(buffer,  m_device->getBufferSize());	
+	cout << "frame.size()"<<frame.size()<<","<<frameSize<<endl;
+	// int frameSize = m_device->read(buffer,  m_device->getBufferSize());	
 	// fwrite(buffer, frameSize,1,h264_fp);
 	// int encode_len = encoder_->encode_frame( (unsigned char*)buffer);
 	// if(encode_len>0){

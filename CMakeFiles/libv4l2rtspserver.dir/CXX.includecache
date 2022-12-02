@@ -101,6 +101,8 @@ logger.h
 /home/demo/v4l2rtspserver/src/logger.h
 V4L2DeviceSource.h
 /home/demo/v4l2rtspserver/src/V4L2DeviceSource.h
+opencv2/opencv.hpp
+-
 
 /home/demo/v4l2rtspserver/src/V4l2RTSPServer.cpp
 dirent.h

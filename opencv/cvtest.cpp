@@ -7,7 +7,7 @@ VideoWriter outputVideo;
 
 int writevideo()
 {
-	cap.open(2);
+	cap.open(0);
 	//cap.set(CAP_PROP_FRAME_WIDTH, 1024);
 	//cap.set(CAP_PROP_FRAME_HEIGHT, 768);
 
@@ -80,8 +80,8 @@ void readvideo(const string &filename)
 
 int main()
 {
-	// writevideo();
-	readvideo("test.264");
+	writevideo();
+	// readvideo("test.264");
 	
 
 	return 0;

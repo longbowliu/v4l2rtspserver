@@ -8,9 +8,9 @@ using namespace cv;
 int main()
 {
 	
-	VideoWriter video("test.avi", CV_FOURCC('X', 'V', 'I', 'D'), 30, Size(480, 320));
+	VideoWriter video("123422.264", CV_FOURCC('X', 'V', 'I', 'D'), 30, Size(480, 320));
  
-	String img_path = "/home/demo/catkin_ws/src/images/";
+	String img_path = "/home/demo/catkin_ws/src/images/123422/";
 	vector<String> img;
  
 	glob(img_path, img, false);

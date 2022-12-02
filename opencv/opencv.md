@@ -1,3 +1,7 @@
+OpenCV Mat、IplImage及unsigned char* 相互转换（C++）
+https://blog.csdn.net/chan1987818/article/details/126524324
+
+
 locate libopencv*.so
 pkg-config --modversion opencv
 g++ cvtest.cpp -o cvtest2  `pkg-config --cflags --libs opencv`

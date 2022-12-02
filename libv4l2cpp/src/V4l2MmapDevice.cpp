@@ -532,6 +532,7 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 		   unsigned char *jpg_p=(unsigned char *)malloc(m_height*m_width*3);
 
 			int ret = yuv_to_jpeg(m_width,m_height,m_height*m_width*3,(unsigned char *)m_buffer[buf.index].start,jpg_p,80);
+
 			// std::cout<<"jpeg size : "<<ret<<"\n";
 			if(need_record){
 				int h_size = encoder_->encode_frame((unsigned char *)m_buffer[buf.index].start);
