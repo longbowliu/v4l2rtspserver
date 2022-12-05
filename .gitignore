@@ -3,3 +3,5 @@ CMakFiles/
 *.o
 *.a
 .gitignore
+CMakeFiles/
+*.cmake
