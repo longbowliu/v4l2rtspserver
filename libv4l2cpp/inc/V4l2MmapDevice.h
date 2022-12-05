@@ -37,7 +37,7 @@ struct raw_ts{
 		};
 struct record_info_struct
 		{
-			unsigned long tm;
+			timeval tm;
 			unsigned long long  size;
 			unsigned int diff;
 		};
@@ -72,12 +72,14 @@ class V4l2MmapDevice : public V4l2Device
 		 int pre_record_seconds = 15*30+10;
 		 
 		 FILE *record_file; 
+		 ifstream  * record_file_dictt;
 		 ofstream record_infor;
 		 std::queue<raw_ts>  raw_queue; 
 		 cv::VideoCapture  cap;
 		 cv::Mat frame;
 		 bool play_model = false;
 		 string find_file_by_id(string id);
+		 int frames_video = 0;
 
 	
 	protected:

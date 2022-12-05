@@ -54,7 +54,7 @@ V4l2MmapDevice::V4l2MmapDevice(const V4L2DeviceParameters & params, v4l2_buf_typ
 }
 
 
-void save_image_disk(std::queue<raw_ts> &raw_queue, FILE *record_file,  ofstream &record_infor, bool &need_record, int record_pack_size)
+void save_image_disk(std::queue<raw_ts> &raw_queue, FILE *record_file,  ofstream &record_infor, bool &need_record, int record_pack_size,ifstream  * record_file_dictt)
 {
     // FILE *h264_fp = fopen("/home/demo/test_buf_recorder123.h264","wa+");
     int packed_size = 0;
@@ -76,8 +76,8 @@ void save_image_disk(std::queue<raw_ts> &raw_queue, FILE *record_file,  ofstream
 
 				// unsigned long t = buf.timestamp.tv_sec*1000+buf.timestamp.tv_usec/1000;  //  this time start from computer boot up
 				record_info_struct tmp ;
-				unsigned long t = rts.t.tv_sec*1000+rts.t.tv_usec/1000;
-				tmp.tm = t;
+				// unsigned long t = rts.t.tv_sec*1000+rts.t.tv_usec/1000;
+				tmp.tm = rts.t;
 				packed_size +=  rts.length;
 				tmp.size= packed_size;
 				record_infor.write((char *)&tmp,sizeof(tmp));
@@ -91,8 +91,14 @@ void save_image_disk(std::queue<raw_ts> &raw_queue, FILE *record_file,  ofstream
 			}
         }else{
 			cout<<"exist from here \n";
-			record_infor.close();
+			// if(record_file_dictt->is_open()){
+			// 	record_file_dictt->close();
+			// }
+			// if(record_infor.is_open()){
+				record_infor.close();
+			// }
 			fclose(record_file);
+			
 			 // thread exit when do not need record anymore.
 			return;
 		}
@@ -256,7 +262,7 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 						dict_file.close();
 						record_infor.open((record_file_name+".info").c_str(),ios::out|ios::app|ios::binary);
 
-						std::thread th1(save_image_disk,std::ref(raw_queue),record_file,std::ref(record_infor),std::ref(need_record),record_pack_size);
+						std::thread th1(save_image_disk,std::ref(raw_queue),record_file,std::ref(record_infor),std::ref(need_record),record_pack_size ,record_file_dictt);
 						th1.detach();
 						packed_size =0;
 						redis_->set("ad_record_video_fb",to_string(record_start_time) );
@@ -292,17 +298,29 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 
 						if(m.end()!=m.find("id")){
 							
-							string record_file = find_file_by_id(m.find("id")->second);
+							string record_file_name_part = find_file_by_id(m.find("id")->second);
 							// get 
-							record_file = record_path + record_file+".264";
-							cout<< "record_file : "<<record_file<<" , msg = "<<msg<<"\n";
-							cap.open(record_file);
+							string record_file_name = record_path + record_file_name_part+".264";
+
+							
+							record_file_dictt= new ifstream(record_path + record_file_name_part+".info",ios::in|ios::binary);
+							if(!record_file_dictt) {
+								cout << " \nerror\n" <<endl;
+								// return 0;
+							}
+							// record_info_struct s; 
+							// while(record_file_dictt.read((char *)&s, sizeof(s))) { //一直读到文件结束
+							// 	int readedBytes = record_file_dictt.gcount(); //看刚才读了多少字节
+							// 	cout <<"5555555555555"<< s.tm << " " << s.size << endl;   
+							// }
+							cout<< "record_file_name : "<<record_file_name<<" , msg = "<<msg<<"\n";
+							cap.open(record_file_name);
 							if (!cap.isOpened()){
-									cout<<"vedio file "<<record_file<<" not found"<<endl;
-									redis_->set("ad_play_video_fb","vedio file "+record_file+" not found");
+									cout<<"vedio file "<<record_file_name<<" not found"<<endl;
+									redis_->set("ad_play_video_fb","vedio file "+record_file_name+" not found");
 							}else{
-								cout << "vedio file "<<record_file<<" start to replay"<<endl;
-								redis_->set("ad_play_video_fb","vedio file "+record_file+" start to replay");
+								cout << "vedio file "<<record_file_name<<" start to replay"<<endl;
+								redis_->set("ad_play_video_fb","vedio file "+record_file_name+" start to replay");
 								play_model = true;
 							}
 							// cap.set(CV_CAP_PROP_FPS,10);  // seems not work
@@ -332,6 +350,9 @@ V4l2MmapDevice::~V4l2MmapDevice()
 	delete redis_;
 	if(record_file){
 		fclose(record_file);
+	}
+	if(record_file_dictt->is_open()){
+		record_file_dictt->close();
 	}
 	if(record_infor.is_open()){
 		record_infor.close();
@@ -469,9 +490,30 @@ bool V4l2MmapDevice::stop()
 	n_buffers = 0;
 	return success; 
 }
+
+
+void MatToData(cv::Mat srcImg, void*& data)
+{
+	int nFlag = srcImg.channels() * 8;//一个像素的bits
+	int nHeight = srcImg.rows;
+	int nWidth = srcImg.cols;
+ 
+	int nBytes = nHeight * nWidth * nFlag / 8;//图像总的字节
+	if (data)
+		delete[] data;
+	data = new unsigned char[nBytes];//new的单位为字节
+	memcpy(data, srcImg.data, nBytes);//转化函数,注意Mat的data成员	
+}
+
+std::string Time_t2String(time_t stamp) { 
+   tm* stamp_tm = localtime(&stamp);
+  std::ostringstream os;
+  os << std::put_time(stamp_tm, "%Y.%m.%d %H:%M:%S");
+  return os.str();
+}
+
 // FILE *jpg_file;
-int cz = 0;
-int cz_t = 33;
+
 size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 {
 	size_t size = 0;
@@ -485,6 +527,23 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 		// cout<< "totalFrameNumber = "<<totalFrameNumber<<", rate="<<rate<<"\n";
 		auto start = std::chrono::system_clock::now();
 		cap >> frame;
+	
+		string ss;
+		// std::getline(record_file_dictt,ss);
+		record_info_struct s; 
+		if(record_file_dictt->read((char *)&s, sizeof(s))) { 
+            int readedBytes = record_file_dictt->gcount(); //看刚才读了多少字节
+            cout <<"time stamp:"<< s.tm.tv_sec << ", sum size:" << s.size << endl;   
+        }else{
+			cout<<" ***********"<<endl;
+		}
+
+			cv::Point p ;
+			p.x = m_width-400;
+			p.y = 50;
+			// time_t cur_time_stamp = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+	   		std::string time_str = Time_t2String( s.tm.tv_sec);
+			cv::putText(frame, time_str, p, cv::FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv::LINE_AA);
 		// cvWaitKey(20);
 		// cout << "\n\n check here 2 "<<endl;
 		std::vector <unsigned char> img_data;
@@ -494,6 +553,8 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 			cout << " \n*************** encode error"<<endl;
 			play_model = false;
 		}
+
+	
 		// cv::imshow("ttt",frame);
 		// cv::waitKey(0);
 		// cout << "check here : "<<img_data.size()<<" unit size:"<<sizeof(img_data[0])<<"\n";
@@ -508,10 +569,8 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 		auto end = std::chrono::system_clock::now();
 		auto duration =
 			std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-		std::cout << "decode image time:" << duration << std::endl;
-		cz++;
-		cz_t = cz%30 ==0?34:33;
-		cv::waitKey(cz_t-duration);
+		// std::cout << "decode image time:" << duration << std::endl;
+		cv::waitKey(  (++frames_video%30 ==0?34:33)-duration);
 		// cout << "\n\n check here 3"<<endl;
 		return size ;
 
