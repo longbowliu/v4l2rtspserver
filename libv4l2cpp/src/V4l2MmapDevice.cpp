@@ -470,19 +470,22 @@ bool V4l2MmapDevice::stop()
 	return success; 
 }
 // FILE *jpg_file;
+int cz = 0;
+int cz_t = 33;
 size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 {
 	size_t size = 0;
 	if(play_model){
 		// cout << "\n\n check here 1"<<endl;
-		long totalFrameNumber=cap.get(CV_CAP_PROP_FRAME_COUNT);//获取视频的总帧数  not work
-		long frameToStart = 300;
+		// long totalFrameNumber=cap.get(CV_CAP_PROP_FRAME_COUNT);//获取视频的总帧数  not work
+		// long frameToStart = 300;
 		// cap.set(CV_CAP_PROP_POS_FRAMES, frameToStart); //设置开始帧
-		double rate = cap.get(CV_CAP_PROP_FPS); //获取帧率
+		// double rate = cap.get(CV_CAP_PROP_FPS); //获取帧率
 		// cap.set(CV_CAP_PROP_FPS,10);
 		// cout<< "totalFrameNumber = "<<totalFrameNumber<<", rate="<<rate<<"\n";
+		auto start = std::chrono::system_clock::now();
 		cap >> frame;
-		cvWaitKey(50);
+		// cvWaitKey(20);
 		// cout << "\n\n check here 2 "<<endl;
 		std::vector <unsigned char> img_data;
 		try{
@@ -502,6 +505,13 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 			play_model = false;
 		}
 		size =img_data.size() ;
+		auto end = std::chrono::system_clock::now();
+		auto duration =
+			std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+		std::cout << "decode image time:" << duration << std::endl;
+		cz++;
+		cz_t = cz%30 ==0?34:33;
+		cv::waitKey(cz_t-duration);
 		// cout << "\n\n check here 3"<<endl;
 		return size ;
 
