@@ -181,6 +181,11 @@ string V4l2MmapDevice::find_file_by_id(string id){
 }
 
 // fstream  record_infor2;
+
+cv::VideoWriter outputVideo;
+string outputVideoPath = "./test1.avi";
+
+			
 bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 {
 	bool ret = V4l2Device::init(mandatoryCapabilities);
@@ -190,6 +195,7 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 		signal(SIGINT, exit_sighandler);
         signal(SIGSEGV, exit_sighandler);
 		encoder_ = new x264_encoder(m_width , m_height);
+		outputVideo.open(outputVideoPath, CV_FOURCC('M', 'J', 'P', 'G'), 30.0, cv::Size(m_width,m_height));
 		redis_ = new Redis("tcp://city@172.16.115.180:6379");
 		std::string ping_result ="";
 		while (ping_result != "PONG"){
@@ -339,6 +345,13 @@ V4l2MmapDevice::~V4l2MmapDevice()
 	this->stop();
 }
 
+std::string Time_t2String(time_t stamp) { 
+   tm* stamp_tm = localtime(&stamp);
+  std::ostringstream os;
+  os << std::put_time(stamp_tm, "%Y:%m:%d %H:%M:%S");
+  return os.str();
+}
+
 
 bool V4l2MmapDevice::start() 
 {
@@ -469,6 +482,20 @@ bool V4l2MmapDevice::stop()
 	n_buffers = 0;
 	return success; 
 }
+
+bool DataToMat(void* data, int nH, int nW, int nFlag, cv::Mat& outImg)//nH,nW为BYTE*类型图像的高和宽,nFlag为通道数
+{
+	if (data == nullptr)
+	{
+		return false;
+	}
+	int nByte = nH * nW * nFlag / 8;//字节计算
+	int nType = nFlag == 8 ? CV_8UC1 : CV_8UC3;
+	outImg = cv::Mat::zeros(nH, nW, nType);
+	memcpy(outImg.data, (unsigned char*)data, nByte);
+	return true;
+}
+
 // FILE *jpg_file;
 size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 {
@@ -531,7 +558,64 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 
 		   unsigned char *jpg_p=(unsigned char *)malloc(m_height*m_width*3);
 
+			// vector<char> vdata((unsigned char *)m_buffer[buf.index].start, (unsigned char *)m_buffer[buf.index].start + size);
+			// cv::Mat image = imdecode(cv::Mat(vdata), cv::IMREAD_UNCHANGED);
+
+			// cv::Mat image;
+			// DataToMat(m_buffer[buf.index].start,m_height,m_height,4,image);
+
+			// cv::Mat image = cv::Mat(m_height, m_width, CV_8UC1, m_buffer[buf.index].start );
+
 			int ret = yuv_to_jpeg(m_width,m_height,m_height*m_width*3,(unsigned char *)m_buffer[buf.index].start,jpg_p,80);
+			// cv::Mat image( m_height + m_height / 2, m_width, CV_8UC1,jpg_p);
+			std::vector<char> data;
+			data.insert(data.end(),jpg_p,jpg_p+ret);
+			cv::Mat image = imdecode(cv::Mat(data), CV_LOAD_IMAGE_COLOR);
+			cv::Point p ;
+			p.x = 10;
+			p.y = 50;
+			time_t cur_time_stamp = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+	   		std::string time_str = Time_t2String(cur_time_stamp);
+			cv::putText(image, time_str, p, cv::FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2, cv::LINE_AA);
+			// cv::Mat image;
+			// cvtColor(image_or, image, cv::COLOR_YUV2GRAY_YVYU);
+
+
+
+
+			// std::vector <unsigned char> img_data;
+
+			// try{
+			// 	cv::imencode(".jpg", image, img_data);
+			// }catch(cv::Exception ex){
+			// 	cout << " \n*************** encode error"<<endl;
+			// 	play_model = false;
+			// }
+
+			// cv::Mat image2 = cv:: Mat(m_height,m_height, CV_8UC1, jpg_p);		
+		
+			// resize(frame, frame, cv::Size(m_width,m_height));
+			outputVideo.write(image);
+			// IplImage* IpImg = cvDecodeImage(&mCvmat, 1);
+			// cv::Mat image = cv::cvarrToMat(IpImg);
+
+			cv::imshow("show", image);
+			cv::waitKey(10);
+			// if (cv::waitKey(30) == 27 )// 空格暂停
+			// {
+			// 	cv::waitKey(0);
+			// 	// break;
+			// }
+			// std::vector <unsigned char> img_data;
+			// try{
+			// 	cv::imencode(".jpg", image, img_data);
+			// }catch(cv::Exception ex){
+			// 	cout << " \n*************** encode error"<<endl;
+			// 	play_model = false;
+			// }
+
+
+			
 			// std::cout<<"jpeg size : "<<ret<<"\n";
 			if(need_record){
 				int h_size = encoder_->encode_frame((unsigned char *)m_buffer[buf.index].start);

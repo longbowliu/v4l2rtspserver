@@ -1,3 +1,7 @@
+OpenCV 读取内存图片
+https://blog.csdn.net/m0_37346206/article/details/116496437
+
+
 locate libopencv*.so
 pkg-config --modversion opencv
 g++ cvtest.cpp -o cvtest2  `pkg-config --cflags --libs opencv`
