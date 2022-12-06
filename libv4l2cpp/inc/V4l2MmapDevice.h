@@ -80,6 +80,8 @@ class V4l2MmapDevice : public V4l2Device
 		 bool play_model = false;
 		 string find_file_by_id(string id);
 		 int frames_video = 0;
+		 std::mutex mtx_replay;    
+		 std::mutex mtx_record;
 
 	
 	protected:

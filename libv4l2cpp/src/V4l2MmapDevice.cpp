@@ -111,7 +111,6 @@ void string_split(const string& str, const char split, vector<string>& res)
 	//在字符串末尾也加入分隔符，方便截取最后一段
 	string strs = str + split;
 	size_t pos = strs.find(split);
-
 	// 若找不到内容则字符串搜索函数返回 npos
 	while (pos != strs.npos)
 	{
@@ -125,30 +124,22 @@ void string_split(const string& str, const char split, vector<string>& res)
 
 void string2map(const string& str, const char split, map<string,string>& res)
 {
-	// kazam res =  {"id":"123abc","status":"true"}     
-	// publish "ad_record_video" "{\"id\":\"123abc\",\"status\":\"true\"}"  
-	
+	//  res =  {"id":"123abc","status":"true"}     
 	if (str == "")        return;
 	//在字符串末尾也加入分隔符，方便截取最后一段
 	string strs = str + split;
 	size_t pos = strs.find(split);
-
 	// 若找不到内容则字符串搜索函数返回 npos
 	while (pos != strs.npos)
 	{
 		string temp = strs.substr(0, pos);
 		int pos_temp = temp.find(":");
-
 		string first_str = temp.substr(0,pos_temp);
 		int left_p_f = first_str.find("\"");
 		int right_p_f = first_str.rfind("\"");
-		// cout<<" first********"<<first_str<<"****"<<first_str.substr(left_p_f+1,right_p_f-left_p_f-1)<<"***"<<left_p_f<<","<<right_p_f<<","<<first_str.find_last_of("\"")<<endl;
-
 		string scd_str = temp.substr(pos_temp,temp.size()-1);
 		int left_p_s= scd_str.find("\"");
 		int right_p_s = scd_str.rfind("\"");
-	
-		// cout<<" second********"<<scd_str<<"****"<<scd_str.substr(left_p_s+1,right_p_s-left_p_s-1)<<"***"<<left_p_s<<","<<right_p_s<<endl;
 		res.insert(make_pair(first_str.substr(left_p_f+1,right_p_f-left_p_f-1),scd_str.substr(left_p_s+1,right_p_s-left_p_s-1)));
 		//去掉已分割的字符串,在剩下的字符串中进行分割
 		strs = strs.substr(pos + 1, strs.size());
@@ -161,28 +152,22 @@ string V4l2MmapDevice::find_file_by_id(string id){
 	string result = "";
 	if (srcFile.is_open())
 	{
-		cout << "文件打开成功！" << endl;
-		cout << "类容如下！" << endl;
 		string str;
 		while (getline(srcFile,str))
 		{
-			cout << str << endl;
 			int position = str.find(':');
 			string id_ = str.substr(0,position);
-			cout<<"id_="<<id_<<"*"<<endl;
 			if(id.compare(id_)==0){
 				result = str.substr(position+1,str.length()-position);
-				cout << "result = "<< result <<endl;
 				return result;
 			}
 		}
 	}
 	else
 	{
-		cout << "文件打开失败！" << endl;
+		cout << "find_file_by_id( "<<id<<") failed!" << endl;
 	}
     srcFile.close();
-
 	return "";
 }
 
@@ -283,38 +268,30 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 			}
 		});
 		video_record_thread.detach();
-
 		std::thread video_play_thread = std::thread([this]() {
 			try{
 					auto sub = redis_->subscriber();
 					sub.on_message([this](std::string channel, std::string msg) {
-						cout<< "\nhi : "<< msg <<endl;
+						cout<< "\n play video msg : "<< msg <<endl;
+						mtx_replay.lock();
+						// cout << "check me : "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
+						// if(cap && cap.isOpened()){
+						// 	cap.release();
+						// }
+						// if(record_file_dictt && record_file_dictt->is_open()){
+						// 	record_file_dictt->close();
+						// }
 						map<string,string> m;
 						string2map(msg,',', m);
-						for (auto s : m){
-							cout << s.first << " =  "<<s.second << endl;
-						}
-						cout << endl;
-
-						if(m.end()!=m.find("id")){
-							
+						if( m.end()!=m.find("status") && m.find("status")->second == "true" ){
 							string record_file_name_part = find_file_by_id(m.find("id")->second);
-							// get 
 							string record_file_name = record_path + record_file_name_part+".264";
-
-							
 							record_file_dictt= new ifstream(record_path + record_file_name_part+".info",ios::in|ios::binary);
 							if(!record_file_dictt) {
-								cout << " \nerror\n" <<endl;
-								// return 0;
+								cout << " create dict file failed" <<endl;
 							}
-							// record_info_struct s; 
-							// while(record_file_dictt.read((char *)&s, sizeof(s))) { //一直读到文件结束
-							// 	int readedBytes = record_file_dictt.gcount(); //看刚才读了多少字节
-							// 	cout <<"5555555555555"<< s.tm << " " << s.size << endl;   
-							// }
-							cout<< "record_file_name : "<<record_file_name<<" , msg = "<<msg<<"\n";
 							cap.open(record_file_name);
+							// cout << "check files open status in play stage: "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
 							if (!cap.isOpened()){
 									cout<<"vedio file "<<record_file_name<<" not found"<<endl;
 									redis_->set("ad_play_video_fb","vedio file "+record_file_name+" not found");
@@ -323,10 +300,19 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 								redis_->set("ad_play_video_fb","vedio file "+record_file_name+" start to replay");
 								play_model = true;
 							}
-							// cap.set(CV_CAP_PROP_FPS,10);  // seems not work
-						}else{
-							redis_->set("ad_play_video_fb","vedio record file name is empty");
+						}else if( m.end()!=m.find("status") && m.find("status")->second == "false"  ){
+							play_model = false;
+							// cout << "check files open status in stop stage: "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
+							if(record_file_dictt->is_open()){
+								record_file_dictt->close();
+							}
+							if(cap.isOpened()){
+								cap.release();
+							}
+							// cout<< " files closed";
+							redis_->set("ad_play_video_fb",m.find("id")->second+" stoped");
 						}
+						mtx_replay.unlock();
 					});
 					sub.subscribe("ad_play_video");
 					while (true) {
@@ -518,63 +504,43 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 {
 	size_t size = 0;
 	if(play_model){
-		// cout << "\n\n check here 1"<<endl;
-		// long totalFrameNumber=cap.get(CV_CAP_PROP_FRAME_COUNT);//获取视频的总帧数  not work
-		// long frameToStart = 300;
-		// cap.set(CV_CAP_PROP_POS_FRAMES, frameToStart); //设置开始帧
-		// double rate = cap.get(CV_CAP_PROP_FPS); //获取帧率
-		// cap.set(CV_CAP_PROP_FPS,10);
-		// cout<< "totalFrameNumber = "<<totalFrameNumber<<", rate="<<rate<<"\n";
 		auto start = std::chrono::system_clock::now();
+		mtx_replay.lock();
 		cap >> frame;
-	
-		string ss;
-		// std::getline(record_file_dictt,ss);
 		record_info_struct s; 
 		if(record_file_dictt->read((char *)&s, sizeof(s))) { 
-            int readedBytes = record_file_dictt->gcount(); //看刚才读了多少字节
-            cout <<"time stamp:"<< s.tm.tv_sec << ", sum size:" << s.size << endl;   
+            // int readedBytes = record_file_dictt->gcount(); //看刚才读了多少字节
         }else{
-			cout<<" ***********"<<endl;
+			cout<<"read dict file error"<<endl;
 		}
-
-			cv::Point p ;
-			p.x = m_width-400;
-			p.y = 50;
-			// time_t cur_time_stamp = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-	   		std::string time_str = Time_t2String( s.tm.tv_sec);
-			cv::putText(frame, time_str, p, cv::FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv::LINE_AA);
-		// cvWaitKey(20);
-		// cout << "\n\n check here 2 "<<endl;
+		cv::Point p ;
+		p.x = m_width-400;
+		p.y = 50;
+		std::string time_str = Time_t2String( s.tm.tv_sec);
+		cv::putText(frame, time_str, p, cv::FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv::LINE_AA);
 		std::vector <unsigned char> img_data;
 		try{
 			cv::imencode(".jpg", frame, img_data);
 		}catch(cv::Exception ex){
-			cout << " \n*************** encode error"<<endl;
+			cout << " encode error exist replay model"<<endl;
 			play_model = false;
 		}
-
-	
-		// cv::imshow("ttt",frame);
-		// cv::waitKey(0);
-		// cout << "check here : "<<img_data.size()<<" unit size:"<<sizeof(img_data[0])<<"\n";
 		if (!img_data.empty())  
 		{  
 			memcpy(buffer, &img_data[0], img_data.size()*sizeof(img_data[0]));  
 		} else{
-			cout << " \n*************** data is empty "<<endl;
+			cout << "frame is empty "<<endl;
 			play_model = false;
 		}
 		size =img_data.size() ;
 		auto end = std::chrono::system_clock::now();
-		auto duration =
-			std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+		auto duration =std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 		// std::cout << "decode image time:" << duration << std::endl;
 		cv::waitKey(  (++frames_video%30 ==0?34:33)-duration);
-		// cout << "\n\n check here 3"<<endl;
+		mtx_replay.unlock();
 		return size ;
-
 	}else if (n_buffers > 0){
+		// cout<<"\n why2 \n";
 		struct v4l2_buffer buf;	
 		memset (&buf, 0, sizeof(buf));
 		buf.type = m_deviceType;
