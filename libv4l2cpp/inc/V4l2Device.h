@@ -50,6 +50,7 @@ struct V4L2DeviceParameters
 	}
 		
 	std::string m_devName;
+	std::string redis_server_ip;
 	std::list<unsigned int> m_formatList;
 	unsigned int m_width;
 	unsigned int m_height;

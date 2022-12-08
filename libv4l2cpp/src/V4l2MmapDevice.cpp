@@ -181,7 +181,7 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 		signal(SIGINT, exit_sighandler);
         signal(SIGSEGV, exit_sighandler);
 		encoder_ = new x264_encoder(m_width , m_height);
-		redis_ = new Redis("tcp://city@172.16.115.180:6379");
+		redis_ = new Redis("tcp://city@"+m_params.redis_server_ip+":6379");
 		std::string ping_result ="";
 		while (ping_result != "PONG"){
 			try{
@@ -195,13 +195,16 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 				usleep(2000000);
 			}
 		}
-		std::cout <<"\nRedis server connected!\n";
+		std::cout <<"\nRedis server connected! "<<m_params.m_devName<<","<<m_params.redis_server_ip<<"\n";
+		int ttt = m_params.m_devName.rfind("/");
+		string sub_folder = m_params.m_devName.substr(ttt+1,m_params.m_devName.length()-ttt);
+		cout << ttt <<", "<<sub_folder<<endl;
 		
 		auto path = redis_->get("ad_video_record_path");
 		if(path){
 			record_path = *path;
 		}else{
-			record_path = "/home/demo/data/video_record/";
+			record_path = "/home/demo/data/video_record/"+sub_folder+"/";
 		}
 		if (!boost::filesystem::is_directory(record_path)) {
 			cout << "begin create path: " << record_path << endl;
