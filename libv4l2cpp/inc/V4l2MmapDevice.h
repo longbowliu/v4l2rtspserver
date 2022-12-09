@@ -39,7 +39,7 @@ struct record_info_struct
 		{
 			timeval tm;
 			unsigned long long  size;
-			unsigned int diff;
+			// unsigned int diff;
 		};
 
 class V4l2MmapDevice : public V4l2Device
@@ -82,6 +82,7 @@ class V4l2MmapDevice : public V4l2Device
 		 int frames_video = 0;
 		 std::mutex mtx_replay;    
 		 std::mutex mtx_record;
+		 bool findSPS = false;
 
 	
 	protected:

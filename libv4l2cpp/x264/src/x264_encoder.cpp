@@ -256,6 +256,10 @@ int x264_encoder::compress_frame(Encoder *en, int type, uint8_t *in, uint8_t *ou
 	case 2:
 		en->picture->i_type = X264_TYPE_I;
 		break;
+	case 3:
+		en->picture->i_type = X264_TYPE_KEYFRAME;
+		// printf( " I X264_TYPE_KEYFRAME \n");
+		break;
 	default:
 		en->picture->i_type = X264_TYPE_AUTO;
 		break;
@@ -278,12 +282,14 @@ int x264_encoder::compress_frame(Encoder *en, int type, uint8_t *in, uint8_t *ou
 	return result;
 	//return nNal;
 }
- 
+ int count = 0;
 //编码并写入一帧数据
 int x264_encoder::encode_frame(uint8_t *yuv_frame)
 {
 	int h264_length = 0;
 	//压缩一帧数据
+	int type = (++count %20 ==0)?3:-1;
+
 	h264_length = compress_frame(&my_encoder, -1, yuv_frame, encoded_frame);
 	if(h264_length > 0)
 	{

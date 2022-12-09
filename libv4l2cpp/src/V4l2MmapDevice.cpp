@@ -54,7 +54,7 @@ V4l2MmapDevice::V4l2MmapDevice(const V4L2DeviceParameters & params, v4l2_buf_typ
 }
 
 
-void save_image_disk(std::queue<raw_ts> &raw_queue, FILE *record_file,  ofstream &record_infor, bool &need_record, int record_pack_size,ifstream  * record_file_dictt)
+void save_image_disk(std::queue<raw_ts> &raw_queue, FILE *record_file,  ofstream &record_infor, bool &need_record, int record_pack_size,ifstream  * record_file_dictt ,bool &findSPS)
 {
     // FILE *h264_fp = fopen("/home/demo/test_buf_recorder123.h264","wa+");
     int packed_size = 0;
@@ -67,7 +67,48 @@ void save_image_disk(std::queue<raw_ts> &raw_queue, FILE *record_file,  ofstream
 			// cout<<" ************************** raw_queue size = "<<raw_queue.size()<<"\n";
 			if(!raw_queue.empty() ){
 				raw_ts rts = raw_queue.front();
-				fwrite(rts.prt, rts.length,1,record_file);
+				cout<< "rts.length = " <<rts.length<<endl;
+				int truncateBytes = 0;
+				int h_size =  rts.length;
+				if (h_size >= 4 &&
+					 rts.prt[0] == 0 &&
+					rts.prt[1] == 0 &&
+					rts.prt[2] == 0 &&
+					rts.prt[3] == 1)
+				{
+					truncateBytes = 4;
+				}
+				else if (h_size >= 3 &&
+					rts.prt[0] == 0 &&
+					rts.prt[1] == 0 &&
+					rts.prt[2] == 1)
+				{
+					truncateBytes = 3;
+				}
+				u_int8_t* newFrameDataStart = (u_int8_t*)(rts.prt + truncateBytes);
+				h_size = h_size -truncateBytes;
+				u_int8_t nal_unit_type = newFrameDataStart[0] & 31;
+				if (nal_unit_type == 8) // PPS
+				{
+					std::cout << "PPS seen\n";
+				}
+				else if (nal_unit_type == 7) // SPS
+				{
+					std::cout  << "SPS seen; siz\n";
+					findSPS = true;
+				}
+				else if (nal_unit_type == 5)
+				{
+					std::cout <<" I  frame \n";
+				}else{
+					// std::cout <<"nal_unit_type:"<<nal_unit_type <<"\n";
+				}
+
+				
+				if(findSPS){
+					fwrite(rts.prt, rts.length,1,record_file);
+				}
+
 				if(rts.prt){
 					free(rts.prt);
 				}
@@ -80,8 +121,10 @@ void save_image_disk(std::queue<raw_ts> &raw_queue, FILE *record_file,  ofstream
 				tmp.tm = rts.t;
 				packed_size +=  rts.length;
 				tmp.size= packed_size;
-				record_infor.write((char *)&tmp,sizeof(tmp));
-				record_infor.flush();
+				if(findSPS){
+					record_infor.write((char *)&tmp,sizeof(tmp));
+					record_infor.flush();
+				}
 			}else{
 				usleep(10000);
 			}
@@ -239,6 +282,7 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 					if( m.end()!=m.find("status") && m.find("status")->second == "true"){
 						string id = m.find("id")->second;
 						need_record = true;
+						findSPS = false;
 						struct timeval time;
 						gettimeofday(&time, NULL);
 						record_start_time = time.tv_sec*1000 + time.tv_usec/1000;
@@ -250,12 +294,13 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 						dict_file.close();
 						record_infor.open((record_file_name+".info").c_str(),ios::out|ios::app|ios::binary);
 
-						std::thread th1(save_image_disk,std::ref(raw_queue),record_file,std::ref(record_infor),std::ref(need_record),record_pack_size ,record_file_dictt);
+						std::thread th1(save_image_disk,std::ref(raw_queue),record_file,std::ref(record_infor),std::ref(need_record),record_pack_size ,record_file_dictt,std::ref(findSPS));
 						th1.detach();
 						packed_size =0;
 						redis_->set("ad_record_video_fb",to_string(record_start_time) );
 					}else{
 						need_record = false;
+						findSPS = false;
 						redis_->set("ad_record_video_fb","failed");
 						delete encoder_;
 						encoder_ = new x264_encoder(m_width , m_height);
@@ -571,7 +616,7 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 
 			int ret = yuv_to_jpeg(m_width,m_height,m_height*m_width*3,(unsigned char *)m_buffer[buf.index].start,jpg_p,80);
 			// std::cout<<"jpeg size : "<<ret<<"\n";
-			if(need_record){
+			// if(need_record){
 				int h_size = encoder_->encode_frame((unsigned char *)m_buffer[buf.index].start);
 				// std::cout<<"x264 size : "<<h_size<<"\n";
 				if(raw_queue.size()>pre_record_seconds){
@@ -584,7 +629,51 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 				unsigned char *zip_addr_=(unsigned char *)malloc(m_height*m_width*3);
 				memcpy(zip_addr_, encoder_->encoded_frame, h_size);
 				raw_queue.push( { zip_addr_,h_size,time_});
-			}
+			// }
+
+/*
+				int truncateBytes = 0;
+				if (h_size >= 4 &&
+					encoder_->encoded_frame[0] == 0 &&
+					encoder_->encoded_frame[1] == 0 &&
+					encoder_->encoded_frame[2] == 0 &&
+					encoder_->encoded_frame[3] == 1)
+				{
+					truncateBytes = 4;
+				}
+				else if (h_size >= 3 &&
+					encoder_->encoded_frame[0] == 0 &&
+					encoder_->encoded_frame[1] == 0 &&
+					encoder_->encoded_frame[2] == 1)
+				{
+					truncateBytes = 3;
+				}
+				// printf("*************** truncateBytes = %d \n",truncateBytes);
+
+				u_int8_t* newFrameDataStart = (u_int8_t*)(encoder_->encoded_frame + truncateBytes);
+				h_size = h_size -truncateBytes;
+				// unsigned char * tttt = (unsigned char *)malloc(h_size);
+				// memcpy(tttt, newFrameDataStart, h_size);
+
+				u_int8_t nal_unit_type = newFrameDataStart[0] & 31;
+				// std::cout << "sent NALU type " << (int)nal_unit_type << " (" << h_size << ")" << std::endl;
+				// std::cout <<"nal_unit_type:"<<(int)nal_unit_type <<"\n";
+				if (nal_unit_type == 8) // PPS
+				{
+					std::cout << "PPS seen\n";
+				}
+				else if (nal_unit_type == 7) // SPS
+				{
+					std::cout  << "SPS seen; siz\n";
+				}
+				else if (nal_unit_type == 5)
+				{
+					std::cout <<" I  frame \n";
+				}else{
+					// std::cout <<"nal_unit_type:"<<nal_unit_type <<"\n";
+				}
+*/
+			// }
 			// std::cout<<"raw_queue size "<<raw_queue.size()<<"\n";
 
 
@@ -610,48 +699,10 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 /*
 			
 			h_size = encoder_->encode_frame((unsigned char *)m_buffer[buf.index].start);
-			int truncateBytes = 0;
-			if (h_size >= 4 &&
-				encoder_->encoded_frame[0] == 0 &&
-				encoder_->encoded_frame[1] == 0 &&
-				encoder_->encoded_frame[2] == 0 &&
-				encoder_->encoded_frame[3] == 1)
-			{
-				truncateBytes = 4;
-			}
-			else if (h_size >= 3 &&
-				encoder_->encoded_frame[0] == 0 &&
-				encoder_->encoded_frame[1] == 0 &&
-				encoder_->encoded_frame[2] == 1)
-			{
-				truncateBytes = 3;
-			}
-			// printf("*************** truncateBytes = %d \n",truncateBytes);
-
-			u_int8_t* newFrameDataStart = (u_int8_t*)(encoder_->encoded_frame + truncateBytes);
-			h_size = h_size -truncateBytes;
-			// unsigned char * tttt = (unsigned char *)malloc(h_size);
-			// memcpy(tttt, newFrameDataStart, h_size);
-
-			u_int8_t nal_unit_type = newFrameDataStart[0] & 31;
-			// std::cout << "sent NALU type " << (int)nal_unit_type << " (" << h_size << ")" << std::endl;
-			std::cout <<"nal_unit_type:"<<(int)nal_unit_type <<"\n";
-			if (nal_unit_type == 8) // PPS
-			{
-				std::cout << "PPS seen\n";
-			}
-			else if (nal_unit_type == 7) // SPS
-			{
-				std::cout  << "SPS seen; siz\n";
-			}
-			else if (nal_unit_type == 5)
-			{
-				std::cout <<" I  frame \n";
-			}else{
-				std::cout <<"nal_unit_type:"<<nal_unit_type <<"\n";
-			}
-			
 */
+			
+			
+
 			// fwrite(encoder_->encoded_frame, size,1,h264_fp);
 			/*
 			memcpy(buffer, m_buffer[buf.index].start, size);
