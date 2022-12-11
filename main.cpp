@@ -96,6 +96,7 @@ int main(int argc, char** argv)
 {
 	// default parameters
 	const char *dev_name = "/dev/video2";	
+	const char * redis_server_ip = "localhost";
 	unsigned int format = ~0;
 	std::list<unsigned int> videoformatList;
 	int width = 0;
@@ -136,7 +137,7 @@ int main(int argc, char** argv)
 
 	// decode parameters
 	int c = 0;     
-	while ((c = getopt (argc, argv, "v::Q:O:b:" "I:P:p:m::u:M::ct:S::x:" "R:U:" "rwBsf::F:W:H:G:" "A:C:a:" "Vh")) != -1)
+	while ((c = getopt (argc, argv, "v::Q:O:b:" "I:P:p:m::u:M::ct:S::x:z:" "R:U:" "rwBsf::F:W:H:G:" "A:C:a:" "Vh")) != -1)
 	{
 		switch (c)
 		{
@@ -156,6 +157,7 @@ int main(int argc, char** argv)
 			case 't':	timeout                 = atoi(optarg); break;
 			case 'S':	hlsSegment              = optarg ? atoi(optarg) : defaultHlsSegment; break;
 			case 'x':	sslKeyCert              = optarg; break;
+			case 'z':	redis_server_ip                     = optarg; break;
 
 			// users
 			case 'R':       realm                   = optarg; break;
@@ -308,6 +310,7 @@ int main(int argc, char** argv)
 
 			V4l2Output* out = NULL;
 			V4L2DeviceParameters inParam(videoDev.c_str(), videoformatList, width, height, fps, ioTypeIn, verbose, openflags);
+			inParam.redis_server_ip = redis_server_ip;
 			StreamReplicator* videoReplicator = rtspServer.CreateVideoReplicator( 
 					inParam,
 					queueSize, captureMode, repeatConfig,
