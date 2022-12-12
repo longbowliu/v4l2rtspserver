@@ -1,11 +1,11 @@
 Determining if the pthread_create exist failed with the following output:
-Change Dir: /home/demo/v4l2rtspserver/CMakeFiles/CMakeTmp
+Change Dir: /home/scjy/v4l2rtspserver/CMakeFiles/CMakeTmp
 
 Run Build Command:"/usr/bin/make" "cmTC_824a3/fast"
 /usr/bin/make -f CMakeFiles/cmTC_824a3.dir/build.make CMakeFiles/cmTC_824a3.dir/build
-make[1]: 进入目录“/home/demo/v4l2rtspserver/CMakeFiles/CMakeTmp”
+make[1]: 进入目录“/home/scjy/v4l2rtspserver/CMakeFiles/CMakeTmp”
 Building C object CMakeFiles/cmTC_824a3.dir/CheckSymbolExists.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_824a3.dir/CheckSymbolExists.c.o   -c /home/demo/v4l2rtspserver/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/usr/bin/cc    -o CMakeFiles/cmTC_824a3.dir/CheckSymbolExists.c.o   -c /home/scjy/v4l2rtspserver/CMakeFiles/CMakeTmp/CheckSymbolExists.c
 Linking C executable cmTC_824a3
 /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_824a3.dir/link.txt --verbose=1
 /usr/bin/cc      -rdynamic CMakeFiles/cmTC_824a3.dir/CheckSymbolExists.c.o  -o cmTC_824a3 
@@ -14,11 +14,11 @@ CheckSymbolExists.c:(.text+0x1b)：对‘pthread_create’未定义的引用
 collect2: error: ld returned 1 exit status
 CMakeFiles/cmTC_824a3.dir/build.make:97: recipe for target 'cmTC_824a3' failed
 make[1]: *** [cmTC_824a3] Error 1
-make[1]: 离开目录“/home/demo/v4l2rtspserver/CMakeFiles/CMakeTmp”
+make[1]: 离开目录“/home/scjy/v4l2rtspserver/CMakeFiles/CMakeTmp”
 Makefile:126: recipe for target 'cmTC_824a3/fast' failed
 make: *** [cmTC_824a3/fast] Error 2
 
-File /home/demo/v4l2rtspserver/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+File /home/scjy/v4l2rtspserver/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
 #include <pthread.h>
 

@@ -4,6 +4,9 @@ cmake_minimum_required(VERSION 3.0)
 get_filename_component(BASENAME ${CMAKE_CURRENT_LIST_DIR} NAME)
 project(${BASENAME})
 
+set(CMAKE_CXX_FLAGS -pthread)
+
+
 set (CMAKE_CXX_STANDARD 11)
 
 aux_source_directory(src SRC_FILES  )
@@ -14,3 +17,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_LIST_DIR}/inc
 
 add_executable (${PROJECT_NAME}test main.cpp)
 target_link_libraries (${PROJECT_NAME}test ${PROJECT_NAME}) 
+
+target_link_libraries (${PROJECT_NAME}test /home/scjy/v4l2rtspserver/lib/libx264.so.164  jpeg  
+opencv_core opencv_video opencv_videoio opencv_highgui  opencv_imgcodecs opencv_imgproc
+/home/scjy/v4l2rtspserver/lib/libredis++.so 
+/home/scjy/v4l2rtspserver/lib/libhiredis.so 
+boost_system  boost_filesystem
+     ) 

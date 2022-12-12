@@ -1,34 +1,20 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
-  "CXX"
-  )
-# The set of files for implicit dependencies of each language:
-set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/demo/v4l2rtspserver/main.cpp" "/home/demo/v4l2rtspserver/CMakeFiles/v4l2rtspserver.dir/main.cpp.o"
-  )
-set(CMAKE_CXX_COMPILER_ID "GNU")
-
-# Preprocessor definitions for this target.
-set(CMAKE_TARGET_DEFINITIONS_CXX
-  "HAVE_ALSA"
-  "VERSION=\"b3ac5a0-dirty\""
   )
 
-# The include file search paths:
-set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "inc"
-  "/usr/local/include/liveMedia"
-  "/usr/local/include/BasicUsageEnvironment"
-  "/usr/local/include/UsageEnvironment"
-  "/usr/local/include/groupsock"
-  "libv4l2cpp/inc"
-  "libv4l2cpp/sw/redis++"
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/scjy/v4l2rtspserver/main.cpp" "CMakeFiles/v4l2rtspserver.dir/main.cpp.o" "gcc" "CMakeFiles/v4l2rtspserver.dir/main.cpp.o.d"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/demo/v4l2rtspserver/CMakeFiles/libv4l2rtspserver.dir/DependInfo.cmake"
-  "/home/demo/v4l2rtspserver/libv4l2cpp/CMakeFiles/libv4l2cpp.dir/DependInfo.cmake"
+  "/home/scjy/v4l2rtspserver/CMakeFiles/libv4l2rtspserver.dir/DependInfo.cmake"
+  "/home/scjy/v4l2rtspserver/libv4l2cpp/CMakeFiles/libv4l2cpp.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

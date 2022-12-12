@@ -1,3 +1,14 @@
+Base64.hh: No such file or directory
+install live555
+
+
+
+alsa/asoundlib.h: No such file or directory
+sudo apt-get install libasound2-dev
+
+
+
+
 g++ -o jpeg jpeg2.cpp -ljpeg
 
 https://www.it1352.com/2687048.html

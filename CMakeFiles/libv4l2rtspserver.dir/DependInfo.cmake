@@ -1,45 +1,31 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
-  "CXX"
-  )
-# The set of files for implicit dependencies of each language:
-set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/demo/v4l2rtspserver/src/ALSACapture.cpp" "/home/demo/v4l2rtspserver/CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.o"
-  "/home/demo/v4l2rtspserver/src/H264_V4l2DeviceSource.cpp" "/home/demo/v4l2rtspserver/CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.o"
-  "/home/demo/v4l2rtspserver/src/H265_V4l2DeviceSource.cpp" "/home/demo/v4l2rtspserver/CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.o"
-  "/home/demo/v4l2rtspserver/src/H26x_V4l2DeviceSource.cpp" "/home/demo/v4l2rtspserver/CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.o"
-  "/home/demo/v4l2rtspserver/src/HTTPServer.cpp" "/home/demo/v4l2rtspserver/CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.o"
-  "/home/demo/v4l2rtspserver/src/MJPEGVideoSource.cpp" "/home/demo/v4l2rtspserver/CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.o"
-  "/home/demo/v4l2rtspserver/src/MemoryBufferSink.cpp" "/home/demo/v4l2rtspserver/CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.o"
-  "/home/demo/v4l2rtspserver/src/MulticastServerMediaSubsession.cpp" "/home/demo/v4l2rtspserver/CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.o"
-  "/home/demo/v4l2rtspserver/src/ServerMediaSubsession.cpp" "/home/demo/v4l2rtspserver/CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.o"
-  "/home/demo/v4l2rtspserver/src/TSServerMediaSubsession.cpp" "/home/demo/v4l2rtspserver/CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.o"
-  "/home/demo/v4l2rtspserver/src/UnicastServerMediaSubsession.cpp" "/home/demo/v4l2rtspserver/CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.o"
-  "/home/demo/v4l2rtspserver/src/V4L2DeviceSource.cpp" "/home/demo/v4l2rtspserver/CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.o"
-  "/home/demo/v4l2rtspserver/src/V4l2RTSPServer.cpp" "/home/demo/v4l2rtspserver/CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o"
-  )
-set(CMAKE_CXX_COMPILER_ID "GNU")
-
-# Preprocessor definitions for this target.
-set(CMAKE_TARGET_DEFINITIONS_CXX
-  "HAVE_ALSA"
-  "VERSION=\"b3ac5a0-dirty\""
   )
 
-# The include file search paths:
-set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "inc"
-  "/usr/local/include/liveMedia"
-  "/usr/local/include/BasicUsageEnvironment"
-  "/usr/local/include/UsageEnvironment"
-  "/usr/local/include/groupsock"
-  "libv4l2cpp/inc"
-  "libv4l2cpp/sw/redis++"
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/scjy/v4l2rtspserver/src/ALSACapture.cpp" "CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.o" "gcc" "CMakeFiles/libv4l2rtspserver.dir/src/ALSACapture.cpp.o.d"
+  "/home/scjy/v4l2rtspserver/src/H264_V4l2DeviceSource.cpp" "CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.o" "gcc" "CMakeFiles/libv4l2rtspserver.dir/src/H264_V4l2DeviceSource.cpp.o.d"
+  "/home/scjy/v4l2rtspserver/src/H265_V4l2DeviceSource.cpp" "CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.o" "gcc" "CMakeFiles/libv4l2rtspserver.dir/src/H265_V4l2DeviceSource.cpp.o.d"
+  "/home/scjy/v4l2rtspserver/src/H26x_V4l2DeviceSource.cpp" "CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.o" "gcc" "CMakeFiles/libv4l2rtspserver.dir/src/H26x_V4l2DeviceSource.cpp.o.d"
+  "/home/scjy/v4l2rtspserver/src/HTTPServer.cpp" "CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.o" "gcc" "CMakeFiles/libv4l2rtspserver.dir/src/HTTPServer.cpp.o.d"
+  "/home/scjy/v4l2rtspserver/src/MJPEGVideoSource.cpp" "CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.o" "gcc" "CMakeFiles/libv4l2rtspserver.dir/src/MJPEGVideoSource.cpp.o.d"
+  "/home/scjy/v4l2rtspserver/src/MemoryBufferSink.cpp" "CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.o" "gcc" "CMakeFiles/libv4l2rtspserver.dir/src/MemoryBufferSink.cpp.o.d"
+  "/home/scjy/v4l2rtspserver/src/MulticastServerMediaSubsession.cpp" "CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.o" "gcc" "CMakeFiles/libv4l2rtspserver.dir/src/MulticastServerMediaSubsession.cpp.o.d"
+  "/home/scjy/v4l2rtspserver/src/ServerMediaSubsession.cpp" "CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.o" "gcc" "CMakeFiles/libv4l2rtspserver.dir/src/ServerMediaSubsession.cpp.o.d"
+  "/home/scjy/v4l2rtspserver/src/TSServerMediaSubsession.cpp" "CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.o" "gcc" "CMakeFiles/libv4l2rtspserver.dir/src/TSServerMediaSubsession.cpp.o.d"
+  "/home/scjy/v4l2rtspserver/src/UnicastServerMediaSubsession.cpp" "CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.o" "gcc" "CMakeFiles/libv4l2rtspserver.dir/src/UnicastServerMediaSubsession.cpp.o.d"
+  "/home/scjy/v4l2rtspserver/src/V4L2DeviceSource.cpp" "CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.o" "gcc" "CMakeFiles/libv4l2rtspserver.dir/src/V4L2DeviceSource.cpp.o.d"
+  "/home/scjy/v4l2rtspserver/src/V4l2RTSPServer.cpp" "CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o" "gcc" "CMakeFiles/libv4l2rtspserver.dir/src/V4l2RTSPServer.cpp.o.d"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/demo/v4l2rtspserver/libv4l2cpp/CMakeFiles/libv4l2cpp.dir/DependInfo.cmake"
+  "/home/scjy/v4l2rtspserver/libv4l2cpp/CMakeFiles/libv4l2cpp.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

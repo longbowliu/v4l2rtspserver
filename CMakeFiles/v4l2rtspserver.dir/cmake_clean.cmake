@@ -1,7 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/v4l2rtspserver.dir/main.cpp.o"
-  "v4l2rtspserver.pdb"
+  "CMakeFiles/v4l2rtspserver.dir/main.cpp.o.d"
   "v4l2rtspserver"
+  "v4l2rtspserver.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

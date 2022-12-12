@@ -1,4 +1,4 @@
-# Install script for directory: /home/demo/v4l2rtspserver
+# Install script for directory: /home/scjy/v4l2rtspserver
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -37,6 +37,11 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
 endif()
 
+# Set default install directory permissions.
+if(NOT DEFINED CMAKE_OBJDUMP)
+  set(CMAKE_OBJDUMP "/usr/bin/objdump")
+endif()
+
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
    "/lib/systemd/system/v4l2rtspserver.service")
@@ -46,7 +51,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/lib/systemd/system" TYPE FILE FILES "/home/demo/v4l2rtspserver/v4l2rtspserver.service")
+  file(INSTALL DESTINATION "/lib/systemd/system" TYPE FILE FILES "/home/scjy/v4l2rtspserver/v4l2rtspserver.service")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -56,12 +61,12 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/v4l2rtspserver"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/home/demo/v4l2rtspserver/v4l2rtspserver")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/home/scjy/v4l2rtspserver/v4l2rtspserver")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/v4l2rtspserver" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/v4l2rtspserver")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/v4l2rtspserver"
-         OLD_RPATH "/home/demo/v4l2rtspserver/lib:"
+         OLD_RPATH "/home/scjy/v4l2rtspserver/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/v4l2rtspserver")
@@ -70,11 +75,11 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/v4l2rtspserver" TYPE FILE FILES "/home/demo/v4l2rtspserver/index.html")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/v4l2rtspserver" TYPE FILE FILES "/home/scjy/v4l2rtspserver/index.html")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/v4l2rtspserver/hls.js/dist" TYPE FILE FILES "/home/demo/v4l2rtspserver/hls.js/dist/hls.light.min.js")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/v4l2rtspserver/hls.js/dist" TYPE FILE FILES "/home/scjy/v4l2rtspserver/hls.js/dist/hls.light.min.js")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
@@ -90,5 +95,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/demo/v4l2rtspserver/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/scjy/v4l2rtspserver/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

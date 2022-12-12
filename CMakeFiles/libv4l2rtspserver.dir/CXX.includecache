@@ -6,41 +6,41 @@
 
 #IncludeRegexTransform: 
 
-/home/demo/v4l2rtspserver/src/ALSACapture.cpp
+/home/scjy/v4l2rtspserver/src/ALSACapture.cpp
 ALSACapture.h
-/home/demo/v4l2rtspserver/src/ALSACapture.h
+/home/scjy/v4l2rtspserver/src/ALSACapture.h
 
-/home/demo/v4l2rtspserver/src/H264_V4l2DeviceSource.cpp
+/home/scjy/v4l2rtspserver/src/H264_V4l2DeviceSource.cpp
 sstream
 -
 Base64.hh
 -
 logger.h
-/home/demo/v4l2rtspserver/src/logger.h
+/home/scjy/v4l2rtspserver/src/logger.h
 H264_V4l2DeviceSource.h
-/home/demo/v4l2rtspserver/src/H264_V4l2DeviceSource.h
+/home/scjy/v4l2rtspserver/src/H264_V4l2DeviceSource.h
 
-/home/demo/v4l2rtspserver/src/H265_V4l2DeviceSource.cpp
+/home/scjy/v4l2rtspserver/src/H265_V4l2DeviceSource.cpp
 sstream
 -
 Base64.hh
 -
 logger.h
-/home/demo/v4l2rtspserver/src/logger.h
+/home/scjy/v4l2rtspserver/src/logger.h
 H265_V4l2DeviceSource.h
-/home/demo/v4l2rtspserver/src/H265_V4l2DeviceSource.h
+/home/scjy/v4l2rtspserver/src/H265_V4l2DeviceSource.h
 
-/home/demo/v4l2rtspserver/src/H26x_V4l2DeviceSource.cpp
+/home/scjy/v4l2rtspserver/src/H26x_V4l2DeviceSource.cpp
 sstream
 -
 Base64.hh
 -
 logger.h
-/home/demo/v4l2rtspserver/src/logger.h
+/home/scjy/v4l2rtspserver/src/logger.h
 H26x_V4l2DeviceSource.h
-/home/demo/v4l2rtspserver/src/H26x_V4l2DeviceSource.h
+/home/scjy/v4l2rtspserver/src/H26x_V4l2DeviceSource.h
 
-/home/demo/v4l2rtspserver/src/HTTPServer.cpp
+/home/scjy/v4l2rtspserver/src/HTTPServer.cpp
 sstream
 -
 fstream
@@ -48,49 +48,49 @@ fstream
 algorithm
 -
 RTSPServer.hh
-/home/demo/v4l2rtspserver/src/RTSPServer.hh
+/home/scjy/v4l2rtspserver/src/RTSPServer.hh
 RTSPCommon.hh
-/home/demo/v4l2rtspserver/src/RTSPCommon.hh
+/home/scjy/v4l2rtspserver/src/RTSPCommon.hh
 time.h
 -
 ByteStreamMemoryBufferSource.hh
-/home/demo/v4l2rtspserver/src/ByteStreamMemoryBufferSource.hh
+/home/scjy/v4l2rtspserver/src/ByteStreamMemoryBufferSource.hh
 HTTPServer.h
-/home/demo/v4l2rtspserver/src/HTTPServer.h
+/home/scjy/v4l2rtspserver/src/HTTPServer.h
 
-/home/demo/v4l2rtspserver/src/MJPEGVideoSource.cpp
+/home/scjy/v4l2rtspserver/src/MJPEGVideoSource.cpp
 MJPEGVideoSource.h
-/home/demo/v4l2rtspserver/src/MJPEGVideoSource.h
+/home/scjy/v4l2rtspserver/src/MJPEGVideoSource.h
 
-/home/demo/v4l2rtspserver/src/MemoryBufferSink.cpp
+/home/scjy/v4l2rtspserver/src/MemoryBufferSink.cpp
 MemoryBufferSink.h
-/home/demo/v4l2rtspserver/src/MemoryBufferSink.h
+/home/scjy/v4l2rtspserver/src/MemoryBufferSink.h
 
-/home/demo/v4l2rtspserver/src/MulticastServerMediaSubsession.cpp
+/home/scjy/v4l2rtspserver/src/MulticastServerMediaSubsession.cpp
 MulticastServerMediaSubsession.h
-/home/demo/v4l2rtspserver/src/MulticastServerMediaSubsession.h
+/home/scjy/v4l2rtspserver/src/MulticastServerMediaSubsession.h
 
-/home/demo/v4l2rtspserver/src/ServerMediaSubsession.cpp
+/home/scjy/v4l2rtspserver/src/ServerMediaSubsession.cpp
 sstream
 -
 linux/videodev2.h
 -
 BaseServerMediaSubsession.h
-/home/demo/v4l2rtspserver/src/BaseServerMediaSubsession.h
+/home/scjy/v4l2rtspserver/src/BaseServerMediaSubsession.h
 MJPEGVideoSource.h
-/home/demo/v4l2rtspserver/src/MJPEGVideoSource.h
+/home/scjy/v4l2rtspserver/src/MJPEGVideoSource.h
 
-/home/demo/v4l2rtspserver/src/TSServerMediaSubsession.cpp
+/home/scjy/v4l2rtspserver/src/TSServerMediaSubsession.cpp
 TSServerMediaSubsession.h
-/home/demo/v4l2rtspserver/src/TSServerMediaSubsession.h
+/home/scjy/v4l2rtspserver/src/TSServerMediaSubsession.h
 AddH26xMarkerFilter.h
-/home/demo/v4l2rtspserver/src/AddH26xMarkerFilter.h
+/home/scjy/v4l2rtspserver/src/AddH26xMarkerFilter.h
 
-/home/demo/v4l2rtspserver/src/UnicastServerMediaSubsession.cpp
+/home/scjy/v4l2rtspserver/src/UnicastServerMediaSubsession.cpp
 UnicastServerMediaSubsession.h
-/home/demo/v4l2rtspserver/src/UnicastServerMediaSubsession.h
+/home/scjy/v4l2rtspserver/src/UnicastServerMediaSubsession.h
 
-/home/demo/v4l2rtspserver/src/V4L2DeviceSource.cpp
+/home/scjy/v4l2rtspserver/src/V4L2DeviceSource.cpp
 fcntl.h
 -
 iomanip
@@ -98,29 +98,29 @@ iomanip
 sstream
 -
 logger.h
-/home/demo/v4l2rtspserver/src/logger.h
+/home/scjy/v4l2rtspserver/src/logger.h
 V4L2DeviceSource.h
-/home/demo/v4l2rtspserver/src/V4L2DeviceSource.h
+/home/scjy/v4l2rtspserver/src/V4L2DeviceSource.h
 
-/home/demo/v4l2rtspserver/src/V4l2RTSPServer.cpp
+/home/scjy/v4l2rtspserver/src/V4l2RTSPServer.cpp
 dirent.h
 -
 sstream
 -
 logger.h
-/home/demo/v4l2rtspserver/src/logger.h
+/home/scjy/v4l2rtspserver/src/logger.h
 V4l2Capture.h
-/home/demo/v4l2rtspserver/src/V4l2Capture.h
+/home/scjy/v4l2rtspserver/src/V4l2Capture.h
 V4l2Output.h
-/home/demo/v4l2rtspserver/src/V4l2Output.h
+/home/scjy/v4l2rtspserver/src/V4l2Output.h
 DeviceSourceFactory.h
-/home/demo/v4l2rtspserver/src/DeviceSourceFactory.h
+/home/scjy/v4l2rtspserver/src/DeviceSourceFactory.h
 V4l2RTSPServer.h
-/home/demo/v4l2rtspserver/src/V4l2RTSPServer.h
+/home/scjy/v4l2rtspserver/src/V4l2RTSPServer.h
 VideoCaptureAccess.h
-/home/demo/v4l2rtspserver/src/VideoCaptureAccess.h
+/home/scjy/v4l2rtspserver/src/VideoCaptureAccess.h
 ALSACapture.h
-/home/demo/v4l2rtspserver/src/ALSACapture.h
+/home/scjy/v4l2rtspserver/src/ALSACapture.h
 
 /usr/local/include/BasicUsageEnvironment/BasicUsageEnvironment.hh
 BasicUsageEnvironment0.hh
