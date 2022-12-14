@@ -534,9 +534,10 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 			cout<<"read dict file error"<<endl;
 		}
 		cv::Point p ;
-		p.x = m_width-400;
+		p.x = m_width-420;
 		p.y = 50;
 		std::string time_str = Time_t2String( s.tm.tv_sec);
+		time_str +="."+std::to_string((int)s.tm.tv_usec/1000);
 		cv::putText(frame, time_str, p, cv::FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv::LINE_AA);
 		std::vector <unsigned char> img_data;
 		try{
@@ -556,8 +557,9 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 		auto end = std::chrono::system_clock::now();
 		auto duration =std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 		// std::cout << "decode image time:" << duration << std::endl;
-		if(duration<=33){
-			cv::waitKey(  (++frames_video%30 ==0?34:33)-duration);
+		if(duration<33){
+			// cv::waitKey(  (++frames_video%30 ==0?34:33)-duration);
+			usleep(    ((++frames_video%30 ==0?34:33)-duration)*1000 );
 		}
 		mtx_replay.unlock();
 		return size ;
