@@ -1,5 +1,8 @@
 Base64.hh: No such file or directory
 install live555
+    ./genMakefiles linux
+    make
+    sudo make install
 
 
 

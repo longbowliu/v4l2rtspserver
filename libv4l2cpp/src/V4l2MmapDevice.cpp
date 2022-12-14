@@ -181,7 +181,7 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 		signal(SIGINT, exit_sighandler);
         signal(SIGSEGV, exit_sighandler);
 		encoder_ = new x264_encoder(m_width , m_height);
-		redis_ = new Redis("tcp://city@"+m_params.redis_server_ip+":6379");
+		redis_ = new Redis("tcp://ad@"+m_params.redis_server_ip+":6379");
 		std::string ping_result ="";
 		while (ping_result != "PONG"){
 			try{
@@ -276,7 +276,20 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 					auto sub = redis_->subscriber();
 					sub.on_message([this](std::string channel, std::string msg) {
 						cout<< "\n play video msg : "<< msg <<endl;
-						mtx_replay.lock();
+						if(play_model){
+							mtx_replay.lock();
+							// cout << "check files open status in stop stage: "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
+							if(record_file_dictt->is_open()){
+								record_file_dictt->close();
+							}
+							if(cap.isOpened()){
+								cap.release();
+							}
+							play_model = false;
+							mtx_replay.unlock();
+							sleep(1);
+						}
+						
 						// cout << "check me : "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
 						// if(cap && cap.isOpened()){
 						// 	cap.release();
@@ -287,6 +300,8 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 						map<string,string> m;
 						string2map(msg,',', m);
 						if( m.end()!=m.find("status") && m.find("status")->second == "true" ){
+							sleep(3);
+							mtx_replay.lock();
 							string record_file_name_part = find_file_by_id(m.find("id")->second);
 							string record_file_name = record_path + record_file_name_part+".264";
 							record_file_dictt= new ifstream(record_path + record_file_name_part+".info",ios::in|ios::binary);
@@ -303,7 +318,9 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 								redis_->set("ad_play_video_fb","vedio file "+record_file_name+" start to replay");
 								play_model = true;
 							}
+							mtx_replay.unlock();
 						}else if( m.end()!=m.find("status") && m.find("status")->second == "false"  ){
+							mtx_replay.lock();
 							play_model = false;
 							// cout << "check files open status in stop stage: "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
 							if(record_file_dictt->is_open()){
@@ -314,8 +331,8 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 							}
 							// cout<< " files closed";
 							redis_->set("ad_play_video_fb",m.find("id")->second+" stoped");
+							mtx_replay.unlock();
 						}
-						mtx_replay.unlock();
 					});
 					sub.subscribe("ad_play_video");
 					while (true) {
@@ -517,9 +534,10 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 			cout<<"read dict file error"<<endl;
 		}
 		cv::Point p ;
-		p.x = m_width-400;
+		p.x = m_width-420;
 		p.y = 50;
 		std::string time_str = Time_t2String( s.tm.tv_sec);
+		time_str +="."+std::to_string((int)s.tm.tv_usec/1000);
 		cv::putText(frame, time_str, p, cv::FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv::LINE_AA);
 		std::vector <unsigned char> img_data;
 		try{
@@ -539,7 +557,10 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 		auto end = std::chrono::system_clock::now();
 		auto duration =std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 		// std::cout << "decode image time:" << duration << std::endl;
-		cv::waitKey(  (++frames_video%30 ==0?34:33)-duration);
+		if(duration<33){
+			// cv::waitKey(  (++frames_video%30 ==0?34:33)-duration);
+			usleep(    ((++frames_video%30 ==0?34:33)-duration)*1000 );
+		}
 		mtx_replay.unlock();
 		return size ;
 	}else if (n_buffers > 0){
