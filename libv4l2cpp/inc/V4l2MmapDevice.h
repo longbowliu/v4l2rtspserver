@@ -38,7 +38,7 @@ struct raw_ts{
 struct record_info_struct
 		{
 			timeval tm;
-			unsigned long long  size;
+			unsigned int  size;   // max size is 1 G
 			// unsigned int diff;
 		};
 
