@@ -82,6 +82,9 @@ class V4l2MmapDevice : public V4l2Device
 		 int frames_video = 0;
 		 std::mutex mtx_replay;    
 		 std::mutex mtx_record;
+		 string cali_time_n_str = "";
+		 bool got_new_cali_time = false;
+		 std::chrono::_V2::system_clock::time_point last_pic_time ;
 
 	
 	protected:
