@@ -73,6 +73,7 @@ class V4l2MmapDevice : public V4l2Device
 		 
 		 FILE *record_file; 
 		 ifstream  * record_file_dictt;
+		 ifstream  * pcd_file_dictt;
 		 ofstream record_infor;
 		 std::queue<raw_ts>  raw_queue; 
 		 cv::VideoCapture  cap;
@@ -85,6 +86,8 @@ class V4l2MmapDevice : public V4l2Device
 		 string cali_time_n_str = "";
 		 bool got_new_cali_time = false;
 		 std::chrono::_V2::system_clock::time_point last_pic_time ;
+		 std::string device_name;
+
 
 	
 	protected:

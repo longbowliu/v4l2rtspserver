@@ -5,6 +5,8 @@
  publish "ad_record_video" "{\"id\":\"1234abcd\",\"status\":\"true\"}"  
 
  publish "ad_play_video"  "{\"id\":\"1\",\"status\":\"true\"}" 
+ 
+ publish "ad_play_video"  "{\"id\":\"20221222112500\",\"status\":\"image\"}" 
 
 
 
@@ -13,3 +15,4 @@
 
  1669798125066
  1669798125066
+ id =20221222112500, tm = 1671679500327:video5, device_name=video5
