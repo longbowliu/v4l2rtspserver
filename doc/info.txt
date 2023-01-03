@@ -4,7 +4,7 @@
 
  publish "ad_record_video" "{\"id\":\"1234abcd\",\"status\":\"true\"}"  
 
- publish "ad_play_video"  "{\"id\":\"1\",\"status\":\"true\"}" 
+ publish "ad_play_video"  "{\"id\":\"test\",\"status\":\"true\"}" 
  
  publish "ad_play_video"  "{\"id\":\"20221222112500\",\"status\":\"image\"}" 
 

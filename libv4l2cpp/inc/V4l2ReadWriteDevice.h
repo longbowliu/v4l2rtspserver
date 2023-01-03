@@ -21,9 +21,11 @@
 #include<iostream>
 // #include<queue>
 #include <opencv2/opencv.hpp>
+#include "Utils.hpp"
 
 using namespace sw::redis;
 using namespace std;
+using namespace utils_ns;
 
 class V4l2ReadWriteDevice : public V4l2Device
 {	

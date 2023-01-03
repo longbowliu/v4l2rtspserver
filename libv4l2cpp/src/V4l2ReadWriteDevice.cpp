@@ -14,7 +14,7 @@
 #include "V4l2ReadWriteDevice.h"
 #include <boost/filesystem.hpp>
 #include <thread>
-#include "Utils.hpp"
+
 
 using namespace std;
 using namespace utils_ns;
@@ -106,15 +106,15 @@ std::string ping_result ="";
 						if(true){
 							// mtx_replay.lock();
 							// cout << "check files open status in stop stage: "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
-							if(record_file_dictt->is_open()){
+							if(record_file_dictt && record_file_dictt->is_open()){
 								record_file_dictt->close();
 							}
-							if(cap.isOpened()){
+							if(  cap.isOpened()){
 								cap.release();
 							}
 							// play_model = false;
 							// mtx_replay.unlock();
-							sleep(1);
+							// sleep(1);
 						}
 						
 						// cout << "check me : "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
@@ -126,11 +126,11 @@ std::string ping_result ="";
 						// }
 						map<string,string> m;
 						Utils::string2map(msg,',', m);
-						string * device_name ; 
+						string  device_name ="" ; 
 						if( m.end()!=m.find("status") &&   m.find("status")->second == "true" ){
 							// sleep(3);
 							// mtx_replay.lock();
-							string record_file_name_part = Utils::find_file_by_id(m.find("id")->second,record_path,*device_name);
+							string record_file_name_part = Utils::find_file_by_id(m.find("id")->second,record_path,device_name);
 							string record_file_name = record_path + record_file_name_part+".264";
 							string pcd_file_list =  record_path +"pcd_dict.info";
 							record_file_dictt= new ifstream(record_path + record_file_name_part+".info",ios::in|ios::binary);
@@ -168,7 +168,7 @@ std::string ping_result ="";
 							redis_->set("ad_play_video_fb",m.find("id")->second+" stoped");
 							// mtx_replay.unlock();
 						}else if (m.end()!=m.find("status") &&   m.find("status")->second == "image"){
-							string record_file_name_part = Utils::find_file_by_id(m.find("id")->second,record_path,*device_name);
+							string record_file_name_part = Utils::find_file_by_id(m.find("id")->second,record_path, device_name);
 							string record_file_name = record_path + record_file_name_part+".264";
 							string pcd_file_list =  record_path +"pcd_dict.info";
 							record_file_dictt= new ifstream(record_path + record_file_name_part+".info",ios::in|ios::binary);
@@ -191,7 +191,7 @@ std::string ping_result ="";
 								cap.set(CV_CAP_PROP_FRAME_HEIGHT,h);
 							}
 							string str;
-							string image_dir = record_path+*device_name+"/";
+							string image_dir = record_path+ device_name+"/";
 							if (!boost::filesystem::is_directory(image_dir)) {
 								cout << "begin create path: " << image_dir << endl;
 								if (!boost::filesystem::create_directory(image_dir)) {
