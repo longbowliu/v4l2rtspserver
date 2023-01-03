@@ -29,18 +29,7 @@ using namespace std;
 #define V4L2MMAP_NBBUFFER 10
 using namespace sw::redis;
 
-struct raw_ts{
-			raw_ts(unsigned char * p, size_t l,timeval tm):prt(p),length(l),t(tm){}
-			unsigned char * prt;
-			size_t length;
-			timeval t;
-		};
-struct record_info_struct
-		{
-			timeval tm;
-			unsigned int  size;   // max size is 1 G
-			// unsigned int diff;
-		};
+
 
 class V4l2MmapDevice : public V4l2Device
 {	

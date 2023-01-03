@@ -76,8 +76,12 @@ void V4l2Device::queryFormat()
 bool V4l2Device::init(unsigned int mandatoryCapabilities)
 {
 	struct stat sb;
-	if ( (stat(m_params.m_devName.c_str(), &sb)==0) && ((sb.st_mode & S_IFMT) == S_IFCHR) )
+	if ( (stat(m_params.m_devName.c_str(), &sb)==0) && ((sb.st_mode & S_IFMT) == S_IFREG) ){
+		std::cout << " Regular file"<< std::endl;
+		m_fd = open(m_params.m_devName.c_str(), O_WRONLY );
+	} else if ( (stat(m_params.m_devName.c_str(), &sb)==0) && ((sb.st_mode & S_IFMT) == S_IFCHR) )
 	{
+		std::cout<< "character special  device file"<<std::endl;
 		if (initdevice(m_params.m_devName.c_str(), mandatoryCapabilities) == -1)
 		{
 			LOG(ERROR) << "Cannot init device:" << m_params.m_devName;
@@ -86,7 +90,7 @@ bool V4l2Device::init(unsigned int mandatoryCapabilities)
 	else
 	{
 		// open a normal file
-		m_fd = open(m_params.m_devName.c_str(), O_WRONLY );
+		std::cout << " other type of file"<<std::endl;
 	}
 	return (m_fd!=-1);
 }

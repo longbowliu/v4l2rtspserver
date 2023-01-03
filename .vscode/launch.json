@@ -10,8 +10,10 @@
             "request": "launch",
             "program": "/home/demo/v4l2rtspserver/v4l2rtspserver",
             "args": [
-                // "/dev/video2"
-                "/home/demo/data/video_record/1671701583241.264"
+                // "/dev/video2",
+                "/home/demo/data/video_record/1671701583241.264",
+                "-W",
+                "1980"
             ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",

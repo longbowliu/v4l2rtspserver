@@ -34,6 +34,19 @@ enum V4l2IoType
 	IOTYPE_MMAP
 };
 
+struct raw_ts{
+			raw_ts(unsigned char * p, size_t l,timeval tm):prt(p),length(l),t(tm){}
+			unsigned char * prt;
+			size_t length;
+			timeval t;
+		};
+struct record_info_struct
+		{
+			timeval tm;
+			unsigned int  size;   // max size is 1 G
+			// unsigned int diff;
+		};
+
 // ---------------------------------
 // V4L2 Device parameters
 // ---------------------------------

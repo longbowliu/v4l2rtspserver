@@ -108,10 +108,8 @@ int main(int argc, char** argv)
 	bool multicast = false;
 	int verbose = 0;
 	std::string outputFile;
-	V4l2IoType ioTypeIn  = IOTYPE_READWRITE;
-	V4l2IoType ioTypeOut = IOTYPE_READWRITE;
-	// V4l2IoType ioTypeIn  = IOTYPE_MMAP;
-	// V4l2IoType ioTypeOut = IOTYPE_MMAP;
+	V4l2IoType ioTypeIn;
+	V4l2IoType ioTypeOut;
 	int openflags = O_RDWR | O_NONBLOCK; 
 	std::string url = "unicast";
 	std::string murl = "multicast";
@@ -295,7 +293,22 @@ int main(int argc, char** argv)
 		for ( devIt=devList.begin() ; devIt!=devList.end() ; ++devIt)
 		{
 			std::string deviceName(*devIt);
-			
+			std::cout << "\nDeviceName = "<<deviceName<<std::endl;
+			struct stat sb;
+			if ( (stat(deviceName.c_str(), &sb)==0) && ((sb.st_mode & S_IFMT) == S_IFREG) ){
+				std::cout << " Regular file"<< std::endl;
+				ioTypeIn  = IOTYPE_READWRITE;
+				ioTypeOut = IOTYPE_READWRITE;
+			} else if ( (stat(deviceName.c_str(), &sb)==0) && ((sb.st_mode & S_IFMT) == S_IFCHR) )
+			{
+				std::cout<< "character special  device file"<<std::endl;
+				ioTypeIn  = IOTYPE_MMAP;
+				ioTypeOut = IOTYPE_MMAP;
+			}
+			else
+			{
+				std::cout << "Atention!!! other type of file"<<std::endl;
+			}
 			std::string videoDev;
 			std::string audioDev;
 			decodeDevice(deviceName, videoDev, audioDev);
