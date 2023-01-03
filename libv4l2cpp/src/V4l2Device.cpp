@@ -86,7 +86,7 @@ bool V4l2Device::init(unsigned int mandatoryCapabilities)
 	else
 	{
 		// open a normal file
-		m_fd = open(m_params.m_devName.c_str(), O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
+		m_fd = open(m_params.m_devName.c_str(), O_WRONLY );
 	}
 	return (m_fd!=-1);
 }

@@ -11,7 +11,7 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_CXX
   "HAVE_ALSA"
-  "VERSION=\"b3ac5a0-dirty\""
+  "VERSION=\"db4d1e4-dirty\""
   )
 
 # The include file search paths:

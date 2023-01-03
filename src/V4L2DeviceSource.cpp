@@ -104,12 +104,13 @@ void* V4L2DeviceSource::thread()
 		tv.tv_sec=1;
 		tv.tv_usec=0;	
 		int ret = select(fd+1, &fdset, NULL, NULL, &tv);
+		// std::cout<< "m_device->getFd() ="<<fd<<", ret="<<ret<<std::endl;
 		if (ret == 1)
 		{
 			if (FD_ISSET(fd, &fdset))
 			{
 				LOG(DEBUG) << "waitingFrame\tdelay:" << (1000-(tv.tv_usec/1000)) << "ms"; 
-				if (this->getNextFrame() < 0)
+ 				if (this->getNextFrame() < 0)
 				{
 					LOG(ERROR) << "error:" << strerror(errno); 						
 					stop=1;

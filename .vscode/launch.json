@@ -9,7 +9,10 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "/home/demo/v4l2rtspserver/v4l2rtspserver",
-            "args": [],
+            "args": [
+                // "/dev/video2"
+                "/home/demo/data/video_record/1671701583241.264"
+            ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

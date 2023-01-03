@@ -108,8 +108,10 @@ int main(int argc, char** argv)
 	bool multicast = false;
 	int verbose = 0;
 	std::string outputFile;
-	V4l2IoType ioTypeIn  = IOTYPE_MMAP;
-	V4l2IoType ioTypeOut = IOTYPE_MMAP;
+	V4l2IoType ioTypeIn  = IOTYPE_READWRITE;
+	V4l2IoType ioTypeOut = IOTYPE_READWRITE;
+	// V4l2IoType ioTypeIn  = IOTYPE_MMAP;
+	// V4l2IoType ioTypeOut = IOTYPE_MMAP;
 	int openflags = O_RDWR | O_NONBLOCK; 
 	std::string url = "unicast";
 	std::string murl = "multicast";
