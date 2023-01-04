@@ -16,14 +16,39 @@
 
 using namespace std;
 
-    
-
-
 namespace utils_ns {
-
     class Utils{
         public:
+        
+            static void MatToData(cv::Mat srcImg, void*& data)
+            {
+                int nFlag = srcImg.channels() * 8;//一个像素的bits
+                int nHeight = srcImg.rows;
+                int nWidth = srcImg.cols;
+            
+                int nBytes = nHeight * nWidth * nFlag / 8;//图像总的字节
+                if (data)
+                    delete[] data;
+                data = new unsigned char[nBytes];//new的单位为字节
+                memcpy(data, srcImg.data, nBytes);//转化函数,注意Mat的data成员	
+            }
 
+            static void string_split(const string& str, const char split, vector<string>& res)
+            {
+                if (str == "")        return;
+                //在字符串末尾也加入分隔符，方便截取最后一段
+                string strs = str + split;
+                size_t pos = strs.find(split);
+                // 若找不到内容则字符串搜索函数返回 npos
+                while (pos != strs.npos)
+                {
+                    string temp = strs.substr(0, pos);
+                    res.push_back(temp);
+                    //去掉已分割的字符串,在剩下的字符串中进行分割
+                    strs = strs.substr(pos + 1, strs.size());
+                    pos = strs.find(split);
+                }
+            }
 
             static string find_file_by_id(string id,string record_path, string &device_name){
                 ifstream srcFile((record_path+"dict.info").c_str(), ios::in); 
@@ -99,8 +124,5 @@ namespace utils_ns {
                 }
             }
     };
-
 }
-
-
 #endif 

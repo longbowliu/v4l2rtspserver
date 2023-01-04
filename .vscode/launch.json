@@ -11,7 +11,7 @@
             "program": "/home/demo/v4l2rtspserver/v4l2rtspserver",
             "args": [
                 // "/dev/video2",
-                "/home/demo/data/video_record/1671701583241.264",
+                "/home/demo/v4l2rtspserver/test.264",
                 "-W",
                 "1980"
             ],

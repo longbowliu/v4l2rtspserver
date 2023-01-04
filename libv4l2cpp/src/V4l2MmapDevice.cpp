@@ -31,15 +31,6 @@
 #include <boost/filesystem.hpp>
 
 
-// #include "../../src/x264_encoder.cpp"
-// #include "yuv_to_jpg.cpp"
-
-
-
-
-
-// FILE *h264_fp = fopen("/home/demo/INNO/repos/live/testProgs/test.264","wa+");
-
 void exit_sighandler(int sig)
 {
 	std::cout<<"signal triggered , exist now ";
@@ -49,22 +40,16 @@ void exit_sighandler(int sig)
 
 V4l2MmapDevice::V4l2MmapDevice(const V4L2DeviceParameters & params, v4l2_buf_type deviceType) : V4l2Device(params, deviceType), n_buffers(0) 
 {
-	
 	memset(&m_buffer, 0, sizeof(m_buffer));
 }
 
-
 void save_image_disk(std::queue<raw_ts> &raw_queue, FILE *record_file,  ofstream &record_infor, bool &need_record, int record_pack_size,ifstream  * record_file_dictt)
 {
-    // FILE *h264_fp = fopen("/home/demo/test_buf_recorder123.h264","wa+");
     int packed_size = 0;
-	
     while (true)
     {
-        // std::unique_lock<std::mutex> lock(q_l);
         if ( need_record)
         {
-			// cout<<" ************************** raw_queue size = "<<raw_queue.size()<<"\n";
 			if(!raw_queue.empty() ){
 				raw_ts rts = raw_queue.front();
 				fwrite(rts.prt, rts.length,1,record_file);
@@ -72,11 +57,7 @@ void save_image_disk(std::queue<raw_ts> &raw_queue, FILE *record_file,  ofstream
 					free(rts.prt);
 				}
 				raw_queue.pop();
-				// std::cout<<"raw_queue size " <<raw_queue.size()<<" after pop \n";
-
-				// unsigned long t = buf.timestamp.tv_sec*1000+buf.timestamp.tv_usec/1000;  //  this time start from computer boot up
 				record_info_struct tmp ;
-				// unsigned long t = rts.t.tv_sec*1000+rts.t.tv_usec/1000;
 				tmp.tm = rts.t;
 				packed_size +=  rts.length;
 				tmp.size= packed_size;
@@ -85,90 +66,24 @@ void save_image_disk(std::queue<raw_ts> &raw_queue, FILE *record_file,  ofstream
 			}else{
 				usleep(10000);
 			}
-			// cout <<"packed_size  record_pack_size"<<packed_size <<" ,"<<record_pack_size<<"\n";
 			if(packed_size >record_pack_size){
 				need_record = false;
 			}
         }else{
 			cout<<"exist from here \n";
-			// if(record_file_dictt->is_open()){
-			// 	record_file_dictt->close();
-			// }
-			// if(record_infor.is_open()){
-				record_infor.close();
-			// }
+			record_infor.close();
 			fclose(record_file);
-			
 			 // thread exit when do not need record anymore.
 			return;
 		}
     }
 }
 
-void string_split(const string& str, const char split, vector<string>& res)
-{
-	if (str == "")        return;
-	//在字符串末尾也加入分隔符，方便截取最后一段
-	string strs = str + split;
-	size_t pos = strs.find(split);
-	// 若找不到内容则字符串搜索函数返回 npos
-	while (pos != strs.npos)
-	{
-		string temp = strs.substr(0, pos);
-		res.push_back(temp);
-		//去掉已分割的字符串,在剩下的字符串中进行分割
-		strs = strs.substr(pos + 1, strs.size());
-		pos = strs.find(split);
-	}
-}
-
-void string2map(const string& str, const char split, map<string,string>& res)
-{
-	//  res =  {"id":"123abc","status":"true"}     
-	if (str == "")        return;
-	//在字符串末尾也加入分隔符，方便截取最后一段
-	string strs = str + split;
-	size_t pos = strs.find(split);
-	// 若找不到内容则字符串搜索函数返回 npos
-	while (pos != strs.npos)
-	{
-		string temp = strs.substr(0, pos);
-		int pos_temp = temp.find(":");
-		string first_str = temp.substr(0,pos_temp);
-		int left_p_f = first_str.find("\"");
-		int right_p_f = first_str.rfind("\"");
-		string scd_str = temp.substr(pos_temp,temp.size()-1);
-		if(scd_str.find("\"") != string::npos  &&  scd_str.rfind("\"") != string::npos){
-			int left_p_s= scd_str.find("\"");
-			int right_p_s = scd_str.rfind("\"");
-			// cout << "yes left_p_s:"<<left_p_s<<", right_p_s:"<<right_p_s<<endl;
-			res.insert(make_pair(first_str.substr(left_p_f+1,right_p_f-left_p_f-1),scd_str.substr(left_p_s+1,right_p_s-left_p_s-1)));
-		}else{
-			int left_p_s= scd_str.find(":");
-			int right_p_s = scd_str.rfind("}");
-			// cout << " not left_p_s:"<<left_p_s<<", right_p_s:"<<right_p_s<<endl;
-			res.insert(make_pair(first_str.substr(left_p_f+1,right_p_f-left_p_f-1),scd_str.substr(left_p_s+1,right_p_s-left_p_s-1)));
-		}
-		//去掉已分割的字符串,在剩下的字符串中进行分割
-		strs = strs.substr(pos + 1, strs.size());
-		pos = strs.find(split);
-	}
-}
-
-
-// std::string Time_t2String(time_t stamp) { 
-//    tm* stamp_tm = localtime(&stamp);
-//   std::ostringstream os;
-//   os << std::put_time(stamp_tm, "%Y.%m.%d %H:%M:%S");
-//   return os.str();
-// }
-// fstream  record_infor2;
 bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 {
 	bool ret = V4l2Device::init(mandatoryCapabilities);
 	if (ret)
 	{
-		// cap.open("test.264");
 		signal(SIGINT, exit_sighandler);
         signal(SIGSEGV, exit_sighandler);
 		encoder_ = new x264_encoder(m_width , m_height);
@@ -189,8 +104,6 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 		std::cout <<"\nRedis server connected! "<<m_params.m_devName<<","<<m_params.redis_server_ip<<"\n";
 		int ttt = m_params.m_devName.rfind("/");
 		device_name = m_params.m_devName.substr(ttt+1,m_params.m_devName.length()-ttt);
-		
-		
 		auto path = redis_->get("ad_video_record_path");
 		if(path){
 			record_path = *path;
@@ -214,20 +127,13 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 			record_pack_size =1024*1024*1204;
 		}
 		std::cout<< "record_pack_size: "<<std::to_string(record_pack_size) <<"\n";
-
-	
 		
 		std::thread video_record_thread = std::thread([this]() {
 			try{
 				auto sub = redis_->subscriber();
 				sub.on_message([this](std::string channel, std::string msg) {
-					
 					map<string,string> m;
-					string2map(msg,',', m);
-					for (auto s : m){
-						cout << s.first << " =  "<<s.second << endl;
-					}
-					cout << endl;
+					Utils::string2map(msg,',', m);
 					if( m.end()!=m.find("status") && m.find("status")->second == "true"){
 						string id = m.find("id")->second;
 						need_record = true;
@@ -241,7 +147,6 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 						dict_file<<tmp;
 						dict_file.close();
 						record_infor.open((record_file_name+".info").c_str(),ios::out|ios::app|ios::binary);
-
 						std::thread th1(save_image_disk,std::ref(raw_queue),record_file,std::ref(record_infor),std::ref(need_record),record_pack_size ,record_file_dictt);
 						th1.detach();
 						packed_size =0;
@@ -263,7 +168,6 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 			}
 		});
 		video_record_thread.detach();
-	
 
 		ret = this->start();
 	}
@@ -417,34 +321,14 @@ bool V4l2MmapDevice::stop()
 	return success; 
 }
 
-
-void MatToData(cv::Mat srcImg, void*& data)
-{
-	int nFlag = srcImg.channels() * 8;//一个像素的bits
-	int nHeight = srcImg.rows;
-	int nWidth = srcImg.cols;
- 
-	int nBytes = nHeight * nWidth * nFlag / 8;//图像总的字节
-	if (data)
-		delete[] data;
-	data = new unsigned char[nBytes];//new的单位为字节
-	memcpy(data, srcImg.data, nBytes);//转化函数,注意Mat的data成员	
-}
-
-
-
-// FILE *jpg_file;
-
 size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 {
 	size_t size = 0;
 	 if (n_buffers > 0){
-		// cout<<"\n why2 \n";
 		struct v4l2_buffer buf;	
 		memset (&buf, 0, sizeof(buf));
 		buf.type = m_deviceType;
 		buf.memory = V4L2_MEMORY_MMAP;
-
 		if (-1 == ioctl(m_fd, VIDIOC_DQBUF, &buf)) 
 		{
 			perror("VIDIOC_DQBUF");
@@ -460,16 +344,11 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 			}
 			struct timeval time_;
 			gettimeofday(&time_, NULL);
-
 			auto start = std::chrono::system_clock::now();
-
 		   unsigned char *jpg_p=(unsigned char *)malloc(m_height*m_width*3);
-
 			int ret = yuv_to_jpeg(m_width,m_height,m_height*m_width*3,(unsigned char *)m_buffer[buf.index].start,jpg_p,80);
-			// std::cout<<"jpeg size : "<<ret<<"\n";
 			if(need_record){
 				int h_size = encoder_->encode_frame((unsigned char *)m_buffer[buf.index].start);
-				// std::cout<<"x264 size : "<<h_size<<"\n";
 				if(raw_queue.size()>pre_record_seconds){
 					raw_ts temp = raw_queue.front();
 					if(temp.prt){
@@ -481,80 +360,9 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 				memcpy(zip_addr_, encoder_->encoded_frame, h_size);
 				raw_queue.push( { zip_addr_,h_size,time_});
 			}
-			// std::cout<<"raw_queue size "<<raw_queue.size()<<"\n";
-
-
-
-			// auto end = std::chrono::system_clock::now();
-			// auto duration =
-			// 	std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
-			// 		.count();
-			// std::cout << "capture image time:" << duration << std::endl;
-
 			memcpy(buffer, jpg_p, ret);
 			free(jpg_p);
-			// fwrite(jpg_p, ret,1,h264_fp);
-			// char jpg_file_name[100]; /*存放JPG图片名称*/
-			// std::cout<<"sec:"<<buf.timestamp.tv_sec<<", usec:"<<buf.timestamp.tv_usec <<"\n";
-			// sprintf(jpg_file_name,"%d.jpg",buf.timestamp.tv_usec );
-			// jpg_file=fopen(jpg_file_name,"wb");
-			//  fwrite(jpg_p,1,ret,jpg_file);
-			//  fclose(jpg_file);
 			size = ret;
-
-			
-/*
-			
-			h_size = encoder_->encode_frame((unsigned char *)m_buffer[buf.index].start);
-			int truncateBytes = 0;
-			if (h_size >= 4 &&
-				encoder_->encoded_frame[0] == 0 &&
-				encoder_->encoded_frame[1] == 0 &&
-				encoder_->encoded_frame[2] == 0 &&
-				encoder_->encoded_frame[3] == 1)
-			{
-				truncateBytes = 4;
-			}
-			else if (h_size >= 3 &&
-				encoder_->encoded_frame[0] == 0 &&
-				encoder_->encoded_frame[1] == 0 &&
-				encoder_->encoded_frame[2] == 1)
-			{
-				truncateBytes = 3;
-			}
-			// printf("*************** truncateBytes = %d \n",truncateBytes);
-
-			u_int8_t* newFrameDataStart = (u_int8_t*)(encoder_->encoded_frame + truncateBytes);
-			h_size = h_size -truncateBytes;
-			// unsigned char * tttt = (unsigned char *)malloc(h_size);
-			// memcpy(tttt, newFrameDataStart, h_size);
-
-			u_int8_t nal_unit_type = newFrameDataStart[0] & 31;
-			// std::cout << "sent NALU type " << (int)nal_unit_type << " (" << h_size << ")" << std::endl;
-			std::cout <<"nal_unit_type:"<<(int)nal_unit_type <<"\n";
-			if (nal_unit_type == 8) // PPS
-			{
-				std::cout << "PPS seen\n";
-			}
-			else if (nal_unit_type == 7) // SPS
-			{
-				std::cout  << "SPS seen; siz\n";
-			}
-			else if (nal_unit_type == 5)
-			{
-				std::cout <<" I  frame \n";
-			}else{
-				std::cout <<"nal_unit_type:"<<nal_unit_type <<"\n";
-			}
-			
-*/
-			// fwrite(encoder_->encoded_frame, size,1,h264_fp);
-			/*
-			memcpy(buffer, m_buffer[buf.index].start, size);
-			int encode_len = encoder_->encode_frame((unsigned char *)buffer);
-			fwrite(encoder_->encoded_frame, encode_len,1,h264_fp);
-			memcpy(buffer, encoder_->encoded_frame, encode_len);
-			*/
 			if (-1 == ioctl(m_fd, VIDIOC_QBUF, &buf))
 			{
 				perror("VIDIOC_QBUF");

@@ -2,9 +2,9 @@
 
  res =  {"id":"123abc","status":"true"}     
 
- publish "ad_record_video" "{\"id\":\"llb1\",\"status\":\"true\"}"  
+ publish "ad_record_video" "{\"id\":\"llb3\",\"status\":\"true\"}"  
 
- publish "ad_play_video"  "{\"id\":\"llb1\",\"status\":\"true\"}" 
+ publish "ad_play_video"  "{\"id\":\"llb4\",\"status\":\"true\"}" 
  
  publish "ad_play_video"  "{\"id\":\"20221222112500\",\"status\":\"image\"}" 
 

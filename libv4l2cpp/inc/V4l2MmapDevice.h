@@ -64,8 +64,8 @@ class V4l2MmapDevice : public V4l2Device
 		 int pre_record_seconds = 15*30+10;
 		 
 		 FILE *record_file; 
-		 ifstream  * record_file_dictt;
-		 ifstream  * pcd_file_dictt;
+		 ifstream  * record_file_dictt = nullptr;
+		 ifstream  * pcd_file_dictt = nullptr;
 		 ofstream record_infor;
 		 std::queue<raw_ts>  raw_queue; 
 		 cv::VideoCapture  cap;

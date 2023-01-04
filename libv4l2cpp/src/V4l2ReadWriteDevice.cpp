@@ -10,19 +10,14 @@
 ** -------------------------------------------------------------------------*/
 
 #include <unistd.h>
-
 #include "V4l2ReadWriteDevice.h"
 #include <boost/filesystem.hpp>
 #include <thread>
 
-
 using namespace std;
 using namespace utils_ns;
-
-
 V4l2ReadWriteDevice::V4l2ReadWriteDevice(const V4L2DeviceParameters&  params, v4l2_buf_type deviceType) : V4l2Device(params, deviceType) {
 }
-
 
 size_t V4l2ReadWriteDevice::writeInternal(char* buffer, size_t bufferSize) { 
 	return ::write(m_fd, buffer,  bufferSize); 
@@ -40,13 +35,6 @@ size_t V4l2ReadWriteDevice::readInternal(char* buffer, size_t bufferSize)  {
 		if(!readable){
 			return size;
 		}
-	// if(!cap.isOpened()){
-	// 	return size;
-	// }
-		// index_ = cap.get(cv::CAP_PROP_POS_FRAMES);
-		// frames_total_ = cap.get(cv::CAP_PROP_FRAME_COUNT);
-		// cap >> frame;
-		// ;
 		if(record_file_dictt && record_file_dictt->is_open()){
 			record_info_struct s; 
 			if(record_file_dictt->read((char *)&s, sizeof(s))) { 
@@ -54,16 +42,12 @@ size_t V4l2ReadWriteDevice::readInternal(char* buffer, size_t bufferSize)  {
 			}else{
 				cout<<"read dict file error"<<endl;
 			}
-			
 			cv::Point p ;
 			p.x = m_width-420;
 			p.y = 50;
 			std::string time_str = Utils::Time_t2String( s.tm.tv_sec);
 			time_str +="."+std::to_string((int)s.tm.tv_usec/1000);
-			// cout <<time_str<<endl;
 			cv::putText(frame, time_str, p, cv::FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv::LINE_AA);
-
-
 			if(got_new_cali_time ){
 				stringstream ss ;
 				long long ll_compare_time_mili ;
@@ -94,14 +78,12 @@ size_t V4l2ReadWriteDevice::readInternal(char* buffer, size_t bufferSize)  {
 				got_new_cali_time = false;
 			}
 		}
-
-
 		std::vector <unsigned char> img_data;
 		try{
 			cv::imencode(".jpg", frame, img_data);
 		}catch(cv::Exception ex){
-			cout << " encode error exist replay model"<<endl;
-			// play_model = false;
+			cout << "opencv encode error replay model"<<endl;
+			return size;
 		}
 		// cv::imshow("test",frame);
 		// if (cv::waitKey(30) == 27 )// 空格暂停
@@ -113,33 +95,22 @@ size_t V4l2ReadWriteDevice::readInternal(char* buffer, size_t bufferSize)  {
 		{  
 			memcpy(buffer, &img_data[0], img_data.size()*sizeof(img_data[0]));  
 		} else{
-			cout << " why frame is empty "<<endl;
-			// play_model = false;
+			cout << "Note,  frame is empty! "<<endl;
+			return size;
 		}
 		size =img_data.size() ;
-
 		auto this_pic_time = std::chrono::system_clock::now(); 
-
-		
-
 		auto duration =std::chrono::duration_cast<std::chrono::milliseconds>(this_pic_time - last_pic_time).count();
 		if(duration<33 && duration >0){
-			// cv::waitKey(  (++frames_video%30 ==0?34:33)-duration);
-			// cout << " sleep  "<< duration<<endl;
 			usleep(    ((++frames_video%30 ==0?34:33)-duration)*1000  );
 		}
 		last_pic_time = std::chrono::system_clock::now(); 
 		return size;
-	
 }
 
 bool V4l2ReadWriteDevice::init(unsigned int mandatoryCapabilities)
 {
-		/*   TODO :  V4l2Device.cpp  line 220
-	m_format     = fmt.fmt.pix.pixelformat;
-	m_width      = fmt.fmt.pix.width;
-	m_height     = fmt.fmt.pix.height;	
-	*/
+
 bool ret = V4l2Device::init(mandatoryCapabilities);
 redis_ = new Redis("tcp://ad@"+m_params.redis_server_ip+":6379");
 
@@ -178,12 +149,10 @@ std::string ping_result ="";
 			try{
 				auto sub = redis_->subscriber();
 				sub.on_message([this](std::string channel, std::string msg) {
-					// cout <<"appolo_record_calibration_time_pub = "<< msg<<endl;
 					map<string,string> m;
 					Utils::string2map(msg,',', m);
 					if( m.end()!=m.find("calibration")  ){
 						cali_time_n_str = m.find("calibration")->second;
-						// cout << "cali_time_n_str ="<<cali_time_n_str<<endl;
 						got_new_cali_time = true;
 					}
 				});
@@ -382,23 +351,20 @@ std::string ping_result ="";
 		video_play_thread.detach();
 
 	m_format = V4L2_PIX_FMT_YUYV;
-	record_file_name = "/home/demo/data/video_record/1671701583241.264";
+	record_file_name = m_params.m_devName;
 	cap.open(record_file_name);
 	if (!cap.isOpened()){
 			cout<<"vedio file "<<record_file_name<<" not found"<<endl;
-			// redis_->set("ad_play_video_fb","vedio file "+record_file_name+" not found");
+			redis_->set("ad_play_video_fb","vedio file "+record_file_name+" not found");
 	}else{
 		cout << "video file "<<record_file_name<<" start to replay"<<endl;
-		// redis_->set("ad_play_video_fb","vedio file "+record_file_name+" start to replay");
+		redis_->set("ad_play_video_fb","vedio file "+record_file_name+" start to replay");
 		int w = cap.get(CV_CAP_PROP_FRAME_WIDTH);
 		int h = cap.get(CV_CAP_PROP_FRAME_HEIGHT);
 		cout<< "video width:"<<w<<", hight:"<<h<<endl;
 		m_width      = w;
 		m_height     = h;	
 		m_bufferSize = 4147200;
-		// cap.set(CV_CAP_PROP_FRAME_WIDTH,w);
-		// cap.set(CV_CAP_PROP_FRAME_HEIGHT,h);
-		// play_model = true;
 	}
 	return ret;
 }
