@@ -174,30 +174,18 @@ std::string ping_result ="";
 						cout<< "\n play video msg : "<< msg <<endl;
 						if(true){
 							mtx_replay.lock();
-							// cout << "check files open status in stop stage: "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
 							if(record_file_dictt && record_file_dictt->is_open()){
 								record_file_dictt->close();
 							}
 							if(  cap.isOpened()){
 								cap.release();
 							}
-							// play_model = false;
 							mtx_replay.unlock();
-							// sleep(1);
 						}
-						
-						// cout << "check me : "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
-						// if(cap && cap.isOpened()){
-						// 	cap.release();
-						// }
-						// if(record_file_dictt && record_file_dictt->is_open()){
-						// 	record_file_dictt->close();
-						// }
 						map<string,string> m;
 						Utils::string2map(msg,',', m);
 						string  device_name ="" ; 
 						if( m.end()!=m.find("status") &&   m.find("status")->second == "true" ){
-							// sleep(3);
 							mtx_replay.lock();
 							string record_file_name_part = Utils::find_file_by_id(m.find("id")->second,record_path,device_name);
 							string record_file_name = record_path + record_file_name_part+".264";
@@ -220,26 +208,23 @@ std::string ping_result ="";
 								cout<< "video width:"<<w<<", hight:"<<h<<endl;
 								cap.set(CV_CAP_PROP_FRAME_WIDTH,w);
 								cap.set(CV_CAP_PROP_FRAME_HEIGHT,h);
-								// play_model = true;
 							}
 							mtx_replay.unlock();
 						}else if( m.end()!=m.find("status") && m.find("status")->second == "false"  ){
 							mtx_replay.lock();
-							// play_model = false;
-							// cout << "check files open status in stop stage: "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
 							if(record_file_dictt->is_open()){
 								record_file_dictt->close();
 							}
 							if(cap.isOpened()){
 								cap.release();
 							}
-							// cout<< " files closed";
 							redis_->set("ad_play_video_fb",m.find("id")->second+" stoped");
 							mtx_replay.unlock();
 						}else if (m.end()!=m.find("status") &&   m.find("status")->second == "image"){
 							string record_file_name_part = Utils::find_file_by_id(m.find("id")->second,record_path, device_name);
 							string record_file_name = record_path + record_file_name_part+".264";
 							string pcd_file_list =  record_path +"pcd_dict.info";
+							mtx_replay.lock();
 							record_file_dictt= new ifstream(record_path + record_file_name_part+".info",ios::in|ios::binary);
 							pcd_file_dictt= new ifstream(pcd_file_list,ios::in);
 							if(!record_file_dictt) {
@@ -269,13 +254,12 @@ std::string ping_result ="";
 								}
 							} 
 							while (getline(*pcd_file_dictt,str)){
-								 stringstream strIn;
+								stringstream strIn;
 								strIn<<str;
 								long long orig_pcd_ts_mili;  // as it is from micro-seconds
 								strIn>>orig_pcd_ts_mili;
 								long long pcd_ts_mili= orig_pcd_ts_mili/1000000;
 								long long last_matched_pcd;
-
 								while(true){
 									cap >> frame;
 									record_info_struct s; 
@@ -294,7 +278,6 @@ std::string ping_result ="";
 										p.y = 50;
 										std::string time_str = Utils::Time_t2String( s.tm.tv_sec);
 										time_str +="."+std::to_string((int)s.tm.tv_usec/1000);
-										// cout <<time_str<<endl;
 										cv::putText(frame, time_str, p, cv::FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv::LINE_AA);
 										cout <<" < 50 pcd ts="<<pcd_ts_mili<<",img ts="<<pic_ts_mili<<", diff_mili="<<diff_mili<<endl;
 										string img_name = image_dir+str+".jpg";
@@ -317,7 +300,6 @@ std::string ping_result ="";
 													cout<<"read dict file error"<<endl;
 												}
 												 pic_ts_mili = s.tm.tv_sec*1000+s.tm.tv_usec/1000;
-												// cout << " skipped "<< pic_ts_mili<<endl;
 										}
 										long diff_mili = pcd_ts_mili - pic_ts_mili;
 										cv::Point p ;
@@ -332,11 +314,9 @@ std::string ping_result ="";
 										cv::imwrite(img_name,	frame);
 										break;
 									}
-
 								}
 							}
-							
-			// cv::imwrite("name",frame);
+							mtx_replay.unlock();
 						}
 					});
 					sub.subscribe("ad_play_video");

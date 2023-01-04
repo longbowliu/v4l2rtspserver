@@ -6,7 +6,7 @@
 
  publish "ad_play_video"  "{\"id\":\"llb4\",\"status\":\"true\"}" 
  
- publish "ad_play_video"  "{\"id\":\"20221222112500\",\"status\":\"image\"}" 
+ publish "ad_play_video"  "{\"id\":\"test9\",\"status\":\"image\"}" 
 
 
 
