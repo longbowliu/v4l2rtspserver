@@ -30,10 +30,11 @@ size_t V4l2ReadWriteDevice::writeInternal(char* buffer, size_t bufferSize) {
 int index_ = 0;
 int frames_total_  = 0;
 bool finished = false;
+auto last_pic_time = std::chrono::system_clock::now(); 
 size_t V4l2ReadWriteDevice::readInternal(char* buffer, size_t bufferSize)  { 
-	mtx_replay.lock();
-	cap.read(frame);
-	mtx_replay.unlock();
+		mtx_replay.lock();
+		cap.read(frame);
+		mtx_replay.unlock();
 		size_t size = 0;
 	// if(!cap.isOpened()){
 	// 	return size;
@@ -42,10 +43,23 @@ size_t V4l2ReadWriteDevice::readInternal(char* buffer, size_t bufferSize)  {
 		// frames_total_ = cap.get(cv::CAP_PROP_FRAME_COUNT);
 		// cap >> frame;
 		// ;
-		if(  !frame.data ){
-			std::cout <<"/n file finished "<<std::endl;
-			finished = true;
+		if(record_file_dictt && record_file_dictt->is_open()){
+			record_info_struct s; 
+			if(record_file_dictt->read((char *)&s, sizeof(s))) { 
+				// int readedBytes = record_file_dictt->gcount(); //看刚才读了多少字节
+			}else{
+				cout<<"read dict file error"<<endl;
+			}
+			
+			cv::Point p ;
+			p.x = m_width-420;
+			p.y = 50;
+			std::string time_str = Utils::Time_t2String( s.tm.tv_sec);
+			time_str +="."+std::to_string((int)s.tm.tv_usec/1000);
+			// cout <<time_str<<endl;
+			cv::putText(frame, time_str, p, cv::FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv::LINE_AA);
 		}
+
 
 		std::vector <unsigned char> img_data;
 		try{
@@ -69,7 +83,15 @@ size_t V4l2ReadWriteDevice::readInternal(char* buffer, size_t bufferSize)  {
 		}
 		size =img_data.size() ;
 
-	
+		auto this_pic_time = std::chrono::system_clock::now(); 
+
+		auto duration =std::chrono::duration_cast<std::chrono::milliseconds>(this_pic_time - last_pic_time).count();
+		if(duration<33 && duration >0){
+			// cv::waitKey(  (++frames_video%30 ==0?34:33)-duration);
+			// cout << " sleep  "<< duration<<endl;
+			usleep(    ((++frames_video%30 ==0?34:33)-duration)*1000  );
+		}
+		last_pic_time = std::chrono::system_clock::now(); 
 		return size;
 	
 }

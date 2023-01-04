@@ -42,6 +42,7 @@ class V4l2ReadWriteDevice : public V4l2Device
 		ifstream  * record_file_dictt;
 		ifstream  * pcd_file_dictt;
 		 std::mutex mtx_replay;    
+		 int frames_video = 0;
 		
 		
 	public:
