@@ -155,33 +155,7 @@ void string2map(const string& str, const char split, map<string,string>& res)
 	}
 }
 
-string V4l2MmapDevice::find_file_by_id(string id){
-	ifstream srcFile((record_path+"dict.info").c_str(), ios::in); 
-	string result = "";
-	if (srcFile.is_open())
-	{
-		string str;
-		while (getline(srcFile,str))
-		{
-			int first = str.find(':');
-			string id_ = str.substr(0,first);
-			if(id.compare(id_)==0){
-				string tm_devname =  str.substr(first+1,str.length()-first);;
-				int second = tm_devname.find(':');
-				result = tm_devname.substr(0,second);
-				device_name = tm_devname.substr(second+1,tm_devname.length()-second);
-				cout <<" id="<<id_<<", tm="<<result<<", device_name="<<device_name<<endl;
-				return result;
-			}
-		}
-	}
-	else
-	{
-		cout << "find_file_by_id( "<<id<<") failed!" << endl;
-	}
-    srcFile.close();
-	return "";
-}
+
 // std::string Time_t2String(time_t stamp) { 
 //    tm* stamp_tm = localtime(&stamp);
 //   std::ostringstream os;
@@ -241,29 +215,7 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 		}
 		std::cout<< "record_pack_size: "<<std::to_string(record_pack_size) <<"\n";
 
-		std::thread replay_cali_time_thread = std::thread([this]() {
-			try{
-				auto sub = redis_->subscriber();
-				sub.on_message([this](std::string channel, std::string msg) {
-					// cout <<"appolo_record_calibration_time_pub = "<< msg<<endl;
-					map<string,string> m;
-					string2map(msg,',', m);
-					if( m.end()!=m.find("calibration")  ){
-						cali_time_n_str = m.find("calibration")->second;
-						// cout << "cali_time_n_str ="<<cali_time_n_str<<endl;
-						got_new_cali_time = true;
-					}
-				});
-				sub.subscribe("apollo_record_calibration_time_pub");
-				while (true) {
-						sub.consume();
-				}
-			}catch (const Error &err) {
-				std::cout <<"RedisHandler: sub config files error "  << err.what();
-				return;
-			}
-		});
-		replay_cali_time_thread.detach();
+	
 		
 		std::thread video_record_thread = std::thread([this]() {
 			try{
@@ -311,187 +263,7 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 			}
 		});
 		video_record_thread.detach();
-		std::thread video_play_thread = std::thread([this]() {
-			try{
-					auto sub = redis_->subscriber();
-					sub.on_message([this](std::string channel, std::string msg) {
-						cout<< "\n play video msg : "<< msg <<endl;
-						if(play_model){
-							mtx_replay.lock();
-							// cout << "check files open status in stop stage: "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
-							if(record_file_dictt->is_open()){
-								record_file_dictt->close();
-							}
-							if(cap.isOpened()){
-								cap.release();
-							}
-							play_model = false;
-							mtx_replay.unlock();
-							sleep(1);
-						}
-						
-						// cout << "check me : "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
-						// if(cap && cap.isOpened()){
-						// 	cap.release();
-						// }
-						// if(record_file_dictt && record_file_dictt->is_open()){
-						// 	record_file_dictt->close();
-						// }
-						map<string,string> m;
-						string2map(msg,',', m);
-						if( m.end()!=m.find("status") &&   m.find("status")->second == "true" ){
-							// sleep(3);
-							mtx_replay.lock();
-							string record_file_name_part = find_file_by_id(m.find("id")->second);
-							string record_file_name = record_path + record_file_name_part+".264";
-							string pcd_file_list =  record_path +"pcd_dict.info";
-							record_file_dictt= new ifstream(record_path + record_file_name_part+".info",ios::in|ios::binary);
-							pcd_file_dictt= new ifstream(pcd_file_list,ios::in);
-							if(!record_file_dictt) {
-								cout << " create dict file failed" <<endl;
-							}
-							cap.open(record_file_name);
-							// cout << "check files open status in play stage: "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
-							if (!cap.isOpened()){
-									cout<<"vedio file "<<record_file_name<<" not found"<<endl;
-									redis_->set("ad_play_video_fb","vedio file "+record_file_name+" not found");
-							}else{
-								cout << "video file "<<record_file_name<<" start to replay"<<endl;
-								redis_->set("ad_play_video_fb","vedio file "+record_file_name+" start to replay");
-								int w = cap.get(CV_CAP_PROP_FRAME_WIDTH);
-								int h = cap.get(CV_CAP_PROP_FRAME_HEIGHT);
-								cout<< "video width:"<<w<<", hight:"<<h<<endl;
-								cap.set(CV_CAP_PROP_FRAME_WIDTH,w);
-								cap.set(CV_CAP_PROP_FRAME_HEIGHT,h);
-								play_model = true;
-							}
-							mtx_replay.unlock();
-						}else if( m.end()!=m.find("status") && m.find("status")->second == "false"  ){
-							mtx_replay.lock();
-							play_model = false;
-							// cout << "check files open status in stop stage: "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
-							if(record_file_dictt->is_open()){
-								record_file_dictt->close();
-							}
-							if(cap.isOpened()){
-								cap.release();
-							}
-							// cout<< " files closed";
-							redis_->set("ad_play_video_fb",m.find("id")->second+" stoped");
-							mtx_replay.unlock();
-						}else if (m.end()!=m.find("status") &&   m.find("status")->second == "image"){
-							string record_file_name_part = find_file_by_id(m.find("id")->second);
-							string record_file_name = record_path + record_file_name_part+".264";
-							string pcd_file_list =  record_path +"pcd_dict.info";
-							record_file_dictt= new ifstream(record_path + record_file_name_part+".info",ios::in|ios::binary);
-							pcd_file_dictt= new ifstream(pcd_file_list,ios::in);
-							if(!record_file_dictt) {
-								cout << " create dict file failed" <<endl;
-							}
-							cap.open(record_file_name);
-							// cout << "check files open status in play stage: "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
-							if (!cap.isOpened()){
-									cout<<"vedio file "<<record_file_name<<" not found"<<endl;
-									redis_->set("ad_play_video_fb","vedio file "+record_file_name+" not found");
-							}else{
-								cout << "video file "<<record_file_name<<" start to replay"<<endl;
-								redis_->set("ad_play_video_fb","vedio file "+record_file_name+" start to replay");
-								int w = cap.get(CV_CAP_PROP_FRAME_WIDTH);
-								int h = cap.get(CV_CAP_PROP_FRAME_HEIGHT);
-								cout<< "video width:"<<w<<", hight:"<<h<<endl;
-								cap.set(CV_CAP_PROP_FRAME_WIDTH,w);
-								cap.set(CV_CAP_PROP_FRAME_HEIGHT,h);
-							}
-							string str;
-							string image_dir = record_path+device_name+"/";
-							if (!boost::filesystem::is_directory(image_dir)) {
-								cout << "begin create path: " << image_dir << endl;
-								if (!boost::filesystem::create_directory(image_dir)) {
-								cout << "create_directories failed: " << image_dir << endl;
-								return -1;
-								}
-							} 
-							while (getline(*pcd_file_dictt,str)){
-								 stringstream strIn;
-								strIn<<str;
-								long long orig_pcd_ts_mili;  // as it is from micro-seconds
-								strIn>>orig_pcd_ts_mili;
-								long long pcd_ts_mili= orig_pcd_ts_mili/1000000;
-								long long last_matched_pcd;
-
-								while(true){
-									cap >> frame;
-									record_info_struct s; 
-									if(record_file_dictt->read((char *)&s, sizeof(s))) { 
-										// int readedBytes = record_file_dictt->gcount(); //看刚才读了多少字节
-									}else{
-										cout<<"read dict file error"<<endl;
-									}
-									long pic_ts_mili = s.tm.tv_sec*1000+s.tm.tv_usec/1000;
-									long diff_mili = pcd_ts_mili - pic_ts_mili;
-									// cout <<" read next pcd ts="<<pcd_ts_mili<<",img ts="<<pic_ts_mili<<", diff_mili="<<diff_mili<<endl;
-									// cout <<" hi  pcd ts="<<pcd_ts_mili<<",img ts="<<pic_ts_mili<<", diff_mili="<<diff_mili<<endl;
-									if(std::abs(diff_mili)<50 && ( last_matched_pcd != pcd_ts_mili)){
-										cv::Point p ;
-										p.x = m_width-420;
-										p.y = 50;
-										std::string time_str = Utils::Time_t2String( s.tm.tv_sec);
-										time_str +="."+std::to_string((int)s.tm.tv_usec/1000);
-										// cout <<time_str<<endl;
-										cv::putText(frame, time_str, p, cv::FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv::LINE_AA);
-										cout <<" < 50 pcd ts="<<pcd_ts_mili<<",img ts="<<pic_ts_mili<<", diff_mili="<<diff_mili<<endl;
-										string img_name = image_dir+str+".jpg";
-										cv::imwrite(img_name,	frame);
-										last_matched_pcd = pcd_ts_mili;
-										break;
-									}else if(diff_mili < 0){   // pcd before , no picture match  . both pic and pcd is just forward
-										cout << " * NOTICE :  PCD "<<str<< " no matched , neerliest pictrue(" << "diff is "<<diff_mili<< ") abord"<<endl;
-										break;
-									}else if (diff_mili > 0){  // skip some pictures to match
-										// cout << "origianl diff_mili = "<<diff_mili<<endl;
-										int skip_numb = diff_mili/33;
-										long pic_ts_mili ;
-										for(int i=0;i<=skip_numb;i++){  //  "=" means use the last pic to save
-												cap >> frame;
-												record_info_struct s; 
-												if(record_file_dictt->read((char *)&s, sizeof(s))) { 
-													// int readedBytes = record_file_dictt->gcount(); //看刚才读了多少字节
-												}else{
-													cout<<"read dict file error"<<endl;
-												}
-												 pic_ts_mili = s.tm.tv_sec*1000+s.tm.tv_usec/1000;
-												// cout << " skipped "<< pic_ts_mili<<endl;
-										}
-										long diff_mili = pcd_ts_mili - pic_ts_mili;
-										cv::Point p ;
-										p.x = m_width-420;
-										p.y = 50;
-										std::string time_str = Utils::Time_t2String( s.tm.tv_sec);
-										time_str +="."+std::to_string((int)s.tm.tv_usec/1000);
-										// cout <<time_str<<endl;
-										cv::putText(frame, time_str, p, cv::FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv::LINE_AA);
-										cout <<"after skipped pcd ts="<<pcd_ts_mili<<",img ts="<<pic_ts_mili<<", diff_mili="<< diff_mili<<endl;
-										string img_name = image_dir+str+".jpg";
-										cv::imwrite(img_name,	frame);
-										break;
-									}
-
-								}
-							}
-							
-			// cv::imwrite("name",frame);
-						}
-					});
-					sub.subscribe("ad_play_video");
-					while (true) {
-						sub.consume();
-					}
-				}catch (const Error &err) {
-				std::cout <<"RedisHandler:video_play_thread error "  << err.what();
-				return;
-			}
-		});
-		video_play_thread.detach();
+	
 
 		ret = this->start();
 	}
@@ -666,92 +438,7 @@ void MatToData(cv::Mat srcImg, void*& data)
 size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 {
 	size_t size = 0;
-	if(play_model){
-		
-		mtx_replay.lock();
-		cap >> frame;
-		record_info_struct s; 
-		if(record_file_dictt->read((char *)&s, sizeof(s))) { 
-            // int readedBytes = record_file_dictt->gcount(); //看刚才读了多少字节
-        }else{
-			cout<<"read dict file error"<<endl;
-		}
-		
-		cv::Point p ;
-		p.x = m_width-420;
-		p.y = 50;
-		std::string time_str = Utils::Time_t2String( s.tm.tv_sec);
-		time_str +="."+std::to_string((int)s.tm.tv_usec/1000);
-		// cout <<time_str<<endl;
-		cv::putText(frame, time_str, p, cv::FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv::LINE_AA);
-		
-		std::vector <unsigned char> img_data;
-		try{
-			cv::imencode(".jpg", frame, img_data);
-		}catch(cv::Exception ex){
-			cout << " encode error exist replay model"<<endl;
-			play_model = false;
-		}
-		if (!img_data.empty())  
-		{  
-			memcpy(buffer, &img_data[0], img_data.size()*sizeof(img_data[0]));  
-		} else{
-			cout << "frame is empty "<<endl;
-			play_model = false;
-		}
-		size =img_data.size() ;
-		// cout << "size = "<<size;
-		auto this_pic_time = std::chrono::system_clock::now(); 
-		
-		// cout << "hi "<<got_new_cali_time<< endl;
-		if(got_new_cali_time ){
-			stringstream ss ;
-			long long ll_compare_time_mili ;
-			ss << cali_time_n_str;
-			ss >> ll_compare_time_mili; 
-			ll_compare_time_mili = ll_compare_time_mili/1000000;  //   nanosecond -> millisecond   ： mili (hao),micro(wei),nana(na)
-			long long temp_diff = s.tm.tv_sec*1000 +s.tm.tv_usec/1000 - ll_compare_time_mili;   // pic faster than point could.
-			cout << "camera time stamp : "<< s.tm.tv_sec*1000 +s.tm.tv_usec/1000 << " ;  lidar time stamp:"<<ll_compare_time_mili<<endl;
-			if( std::abs(temp_diff) > 150 ){   // point cloud 100 + picture 30
-				if(temp_diff > 0){ //  camera fast
-					cout<< "camera is faster than lidar " << temp_diff <<" mili seconds, sleep to wait"<< endl;
-					usleep(temp_diff*1000);
-					cout<<"wake up to continue now"<<endl;
-				}else{
-					int skip_frame_num = -temp_diff/33;
-					cout<< "camera slow " << -temp_diff <<" mili seconds ,  we need skip "<<skip_frame_num<< " frames"<< endl;
-					for(int i =0;i<skip_frame_num;i++){
-						cap >> frame;
-						if(record_file_dictt->read((char *)&s, sizeof(s))) { 
-							// int readedBytes = record_file_dictt->gcount(); //看刚才读了多少字节
-						}else{
-							cout<<"read dict file error in skip loop"<<endl;
-						}
-					}
-					cout << skip_frame_num<< " frames skipped , ready to continue"<<endl;
-				} 
-			}
-			got_new_cali_time = false;
-		}
-		// cout << "hi"<<endl;
-		auto duration =std::chrono::duration_cast<std::chrono::milliseconds>(this_pic_time - last_pic_time).count();
-		// cout << "hi 2"<<endl;
-		// std::cout << "decode image time:" << duration << std::endl;
-		// duration = duration - just_time;
-
-		// cout << "after ajusted " <<duration<<endl;
-		// if(duration<0){
-
-		// }else 
-		if(duration<33 && duration >0){
-			// cv::waitKey(  (++frames_video%30 ==0?34:33)-duration);
-			// cout << " sleep  "<< duration<<endl;
-			usleep(    ((++frames_video%30 ==0?34:33)-duration)*1000  );
-		}
-		mtx_replay.unlock();
-		last_pic_time = std::chrono::system_clock::now();
-		return size ;
-	}else if (n_buffers > 0){
+	 if (n_buffers > 0){
 		// cout<<"\n why2 \n";
 		struct v4l2_buffer buf;	
 		memset (&buf, 0, sizeof(buf));
@@ -798,10 +485,10 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 
 
 
-			auto end = std::chrono::system_clock::now();
-			auto duration =
-				std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
-					.count();
+			// auto end = std::chrono::system_clock::now();
+			// auto duration =
+			// 	std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
+			// 		.count();
 			// std::cout << "capture image time:" << duration << std::endl;
 
 			memcpy(buffer, jpg_p, ret);

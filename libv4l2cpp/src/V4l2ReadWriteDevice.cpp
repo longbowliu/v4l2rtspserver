@@ -62,6 +62,37 @@ size_t V4l2ReadWriteDevice::readInternal(char* buffer, size_t bufferSize)  {
 			time_str +="."+std::to_string((int)s.tm.tv_usec/1000);
 			// cout <<time_str<<endl;
 			cv::putText(frame, time_str, p, cv::FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv::LINE_AA);
+
+
+			if(got_new_cali_time ){
+				stringstream ss ;
+				long long ll_compare_time_mili ;
+				ss << cali_time_n_str;
+				ss >> ll_compare_time_mili; 
+				ll_compare_time_mili = ll_compare_time_mili/1000000;  //   nanosecond -> millisecond   ： mili (hao),micro(wei),nana(na)
+				long long temp_diff = s.tm.tv_sec*1000 +s.tm.tv_usec/1000 - ll_compare_time_mili;   // pic faster than point could.
+				cout << "camera time stamp : "<< s.tm.tv_sec*1000 +s.tm.tv_usec/1000 << " ;  lidar time stamp:"<<ll_compare_time_mili<<endl;
+				if( std::abs(temp_diff) > 150 ){   // point cloud 100 + picture 30
+					if(temp_diff > 0){ //  camera fast
+						cout<< "camera is faster than lidar " << temp_diff <<" mili seconds, sleep to wait"<< endl;
+						usleep(temp_diff*1000);
+						cout<<"wake up to continue now"<<endl;
+					}else{
+						int skip_frame_num = -temp_diff/33;
+						cout<< "camera slow " << -temp_diff <<" mili seconds ,  we need skip "<<skip_frame_num<< " frames"<< endl;
+						for(int i =0;i<skip_frame_num;i++){
+							cap >> frame;
+							if(record_file_dictt->read((char *)&s, sizeof(s))) { 
+								// int readedBytes = record_file_dictt->gcount(); //看刚才读了多少字节
+							}else{
+								cout<<"read dict file error in skip loop"<<endl;
+							}
+						}
+						cout << skip_frame_num<< " frames skipped , ready to continue"<<endl;
+					} 
+				}
+				got_new_cali_time = false;
+			}
 		}
 
 
@@ -88,6 +119,8 @@ size_t V4l2ReadWriteDevice::readInternal(char* buffer, size_t bufferSize)  {
 		size =img_data.size() ;
 
 		auto this_pic_time = std::chrono::system_clock::now(); 
+
+		
 
 		auto duration =std::chrono::duration_cast<std::chrono::milliseconds>(this_pic_time - last_pic_time).count();
 		if(duration<33 && duration >0){
@@ -141,6 +174,29 @@ std::string ping_result ="";
 			// cout << record_path << " aleardy exist" << endl;
 		}
         std::cout<< "ad_video_record_path: "<<record_path <<"\n";
+			std::thread replay_cali_time_thread = std::thread([this]() {
+			try{
+				auto sub = redis_->subscriber();
+				sub.on_message([this](std::string channel, std::string msg) {
+					// cout <<"appolo_record_calibration_time_pub = "<< msg<<endl;
+					map<string,string> m;
+					Utils::string2map(msg,',', m);
+					if( m.end()!=m.find("calibration")  ){
+						cali_time_n_str = m.find("calibration")->second;
+						// cout << "cali_time_n_str ="<<cali_time_n_str<<endl;
+						got_new_cali_time = true;
+					}
+				});
+				sub.subscribe("apollo_record_calibration_time_pub");
+				while (true) {
+						sub.consume();
+				}
+			}catch (const Error &err) {
+				std::cout <<"RedisHandler: sub config files error "  << err.what();
+				return;
+			}
+		});
+		replay_cali_time_thread.detach();
 
 		std::thread video_play_thread = std::thread([this]() {
 			try{
