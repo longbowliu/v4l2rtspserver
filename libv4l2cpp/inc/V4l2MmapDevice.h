@@ -21,6 +21,8 @@
 #include<iostream>
 #include<queue>
 #include <opencv2/opencv.hpp>
+#include "Utils.hpp"
+
 
 // using namespace cv;
 
@@ -28,6 +30,7 @@
 using namespace std;
 #define V4L2MMAP_NBBUFFER 10
 using namespace sw::redis;
+using namespace utils_ns;
 
 
 

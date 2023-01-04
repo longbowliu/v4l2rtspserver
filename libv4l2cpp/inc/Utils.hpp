@@ -1,3 +1,5 @@
+#ifndef UTILS_HPP
+#define UTILS_HPP
 
 #include <sys/stat.h>
 #include <unistd.h>
@@ -99,3 +101,6 @@ namespace utils_ns {
     };
 
 }
+
+
+#endif 

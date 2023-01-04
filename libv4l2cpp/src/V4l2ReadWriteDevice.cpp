@@ -27,33 +27,51 @@ V4l2ReadWriteDevice::V4l2ReadWriteDevice(const V4L2DeviceParameters&  params, v4
 size_t V4l2ReadWriteDevice::writeInternal(char* buffer, size_t bufferSize) { 
 	return ::write(m_fd, buffer,  bufferSize); 
 }
-
+int index_ = 0;
+int frames_total_  = 0;
+bool finished = false;
 size_t V4l2ReadWriteDevice::readInternal(char* buffer, size_t bufferSize)  { 
-	size_t size = 0;
-	cap >> frame;
-	std::vector <unsigned char> img_data;
-	try{
-		cv::imencode(".jpg", frame, img_data);
-	}catch(cv::Exception ex){
-		cout << " encode error exist replay model"<<endl;
-		// play_model = false;
-	}
-	// cv::imshow("test",frame);
-	// if (cv::waitKey(30) == 27 )// 空格暂停
-	// 	{
-	// 		cv::waitKey(0);
-	// 		// break;
-	// 	}
-	if (!img_data.empty())  
-	{  
-		memcpy(buffer, &img_data[0], img_data.size()*sizeof(img_data[0]));  
-	} else{
-		cout << " why frame is empty "<<endl;
-		// play_model = false;
-	}
-	size =img_data.size() ;
+	mtx_replay.lock();
+	cap.read(frame);
+	mtx_replay.unlock();
+		size_t size = 0;
+	// if(!cap.isOpened()){
+	// 	return size;
+	// }
+		// index_ = cap.get(cv::CAP_PROP_POS_FRAMES);
+		// frames_total_ = cap.get(cv::CAP_PROP_FRAME_COUNT);
+		// cap >> frame;
+		// ;
+		if(  !frame.data ){
+			std::cout <<"/n file finished "<<std::endl;
+			finished = true;
+		}
 
-	return size;
+		std::vector <unsigned char> img_data;
+		try{
+			cv::imencode(".jpg", frame, img_data);
+		}catch(cv::Exception ex){
+			cout << " encode error exist replay model"<<endl;
+			// play_model = false;
+		}
+		// cv::imshow("test",frame);
+		// if (cv::waitKey(30) == 27 )// 空格暂停
+		// 	{
+		// 		cv::waitKey(0);
+		// 		// break;
+		// 	}
+		if (!img_data.empty())  
+		{  
+			memcpy(buffer, &img_data[0], img_data.size()*sizeof(img_data[0]));  
+		} else{
+			cout << " why frame is empty "<<endl;
+			// play_model = false;
+		}
+		size =img_data.size() ;
+
+	
+		return size;
+	
 }
 
 bool V4l2ReadWriteDevice::init(unsigned int mandatoryCapabilities)
@@ -104,7 +122,7 @@ std::string ping_result ="";
 					sub.on_message([this](std::string channel, std::string msg) {
 						cout<< "\n play video msg : "<< msg <<endl;
 						if(true){
-							// mtx_replay.lock();
+							mtx_replay.lock();
 							// cout << "check files open status in stop stage: "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
 							if(record_file_dictt && record_file_dictt->is_open()){
 								record_file_dictt->close();
@@ -113,7 +131,7 @@ std::string ping_result ="";
 								cap.release();
 							}
 							// play_model = false;
-							// mtx_replay.unlock();
+							mtx_replay.unlock();
 							// sleep(1);
 						}
 						
@@ -129,7 +147,7 @@ std::string ping_result ="";
 						string  device_name ="" ; 
 						if( m.end()!=m.find("status") &&   m.find("status")->second == "true" ){
 							// sleep(3);
-							// mtx_replay.lock();
+							mtx_replay.lock();
 							string record_file_name_part = Utils::find_file_by_id(m.find("id")->second,record_path,device_name);
 							string record_file_name = record_path + record_file_name_part+".264";
 							string pcd_file_list =  record_path +"pcd_dict.info";
@@ -153,9 +171,9 @@ std::string ping_result ="";
 								cap.set(CV_CAP_PROP_FRAME_HEIGHT,h);
 								// play_model = true;
 							}
-							// mtx_replay.unlock();
+							mtx_replay.unlock();
 						}else if( m.end()!=m.find("status") && m.find("status")->second == "false"  ){
-							// mtx_replay.lock();
+							mtx_replay.lock();
 							// play_model = false;
 							// cout << "check files open status in stop stage: "<< record_file_dictt->is_open()<<","<<cap.isOpened()<<endl;
 							if(record_file_dictt->is_open()){
@@ -166,7 +184,7 @@ std::string ping_result ="";
 							}
 							// cout<< " files closed";
 							redis_->set("ad_play_video_fb",m.find("id")->second+" stoped");
-							// mtx_replay.unlock();
+							mtx_replay.unlock();
 						}else if (m.end()!=m.find("status") &&   m.find("status")->second == "image"){
 							string record_file_name_part = Utils::find_file_by_id(m.find("id")->second,record_path, device_name);
 							string record_file_name = record_path + record_file_name_part+".264";

@@ -182,12 +182,12 @@ string V4l2MmapDevice::find_file_by_id(string id){
     srcFile.close();
 	return "";
 }
-std::string Time_t2String(time_t stamp) { 
-   tm* stamp_tm = localtime(&stamp);
-  std::ostringstream os;
-  os << std::put_time(stamp_tm, "%Y.%m.%d %H:%M:%S");
-  return os.str();
-}
+// std::string Time_t2String(time_t stamp) { 
+//    tm* stamp_tm = localtime(&stamp);
+//   std::ostringstream os;
+//   os << std::put_time(stamp_tm, "%Y.%m.%d %H:%M:%S");
+//   return os.str();
+// }
 // fstream  record_infor2;
 bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 {
@@ -435,7 +435,7 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 										cv::Point p ;
 										p.x = m_width-420;
 										p.y = 50;
-										std::string time_str = Time_t2String( s.tm.tv_sec);
+										std::string time_str = Utils::Time_t2String( s.tm.tv_sec);
 										time_str +="."+std::to_string((int)s.tm.tv_usec/1000);
 										// cout <<time_str<<endl;
 										cv::putText(frame, time_str, p, cv::FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv::LINE_AA);
@@ -466,7 +466,7 @@ bool V4l2MmapDevice::init(unsigned int mandatoryCapabilities)
 										cv::Point p ;
 										p.x = m_width-420;
 										p.y = 50;
-										std::string time_str = Time_t2String( s.tm.tv_sec);
+										std::string time_str = Utils::Time_t2String( s.tm.tv_sec);
 										time_str +="."+std::to_string((int)s.tm.tv_usec/1000);
 										// cout <<time_str<<endl;
 										cv::putText(frame, time_str, p, cv::FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv::LINE_AA);
@@ -680,7 +680,7 @@ size_t V4l2MmapDevice::readInternal(char* buffer, size_t bufferSize)
 		cv::Point p ;
 		p.x = m_width-420;
 		p.y = 50;
-		std::string time_str = Time_t2String( s.tm.tv_sec);
+		std::string time_str = Utils::Time_t2String( s.tm.tv_sec);
 		time_str +="."+std::to_string((int)s.tm.tv_usec/1000);
 		// cout <<time_str<<endl;
 		cv::putText(frame, time_str, p, cv::FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1, cv::LINE_AA);
