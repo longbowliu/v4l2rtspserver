@@ -31,11 +31,15 @@ int index_ = 0;
 int frames_total_  = 0;
 bool finished = false;
 auto last_pic_time = std::chrono::system_clock::now(); 
+bool readable = false;
 size_t V4l2ReadWriteDevice::readInternal(char* buffer, size_t bufferSize)  { 
 		mtx_replay.lock();
-		cap.read(frame);
+		readable = cap.read(frame);
 		mtx_replay.unlock();
 		size_t size = 0;
+		if(!readable){
+			return size;
+		}
 	// if(!cap.isOpened()){
 	// 	return size;
 	// }

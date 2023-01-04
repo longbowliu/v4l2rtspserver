@@ -39,8 +39,8 @@ class V4l2ReadWriteDevice : public V4l2Device
 		std::string record_file_name;
 		cv::Mat frame;
 		std::string record_path ;
-		ifstream  * record_file_dictt;
-		ifstream  * pcd_file_dictt;
+		ifstream  * record_file_dictt = nullptr;
+		ifstream  * pcd_file_dictt = nullptr;
 		 std::mutex mtx_replay;    
 		 int frames_video = 0;
 		

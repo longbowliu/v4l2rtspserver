@@ -215,7 +215,7 @@ int V4L2DeviceSource::getNextFrame()
 	}
 	else if (frameSize == 0)
 	{
-		LOG(NOTICE) << "V4L2DeviceSource::getNextFrame no data errno:" << errno << " "  << strerror(errno);		
+		// LOG(NOTICE) << "V4L2DeviceSource::getNextFrame no data errno:" << errno << " "  << strerror(errno);		
 		// pthread_mutex_lock (&m_mutex);
 		// delete m_captureQueue.front();
 		// m_captureQueue.pop_front();
