@@ -22,19 +22,17 @@ V4l2ReadWriteDevice::V4l2ReadWriteDevice(const V4L2DeviceParameters&  params, v4
 size_t V4l2ReadWriteDevice::writeInternal(char* buffer, size_t bufferSize) { 
 	return ::write(m_fd, buffer,  bufferSize); 
 }
-int index_ = 0;
-int frames_total_  = 0;
-bool finished = false;
-auto last_pic_time = std::chrono::system_clock::now(); 
-bool readable = false;
+
+
 size_t V4l2ReadWriteDevice::readInternal(char* buffer, size_t bufferSize)  { 
 		mtx_replay.lock();
 		readable = cap.read(frame);
 		mtx_replay.unlock();
 		size_t size = 0;
-		if(!readable){
-			return size;
+		while(!readable){
+			sleep(1);
 		}
+		
 		if(record_file_dictt && record_file_dictt->is_open()){
 			record_info_struct s; 
 			if(record_file_dictt->read((char *)&s, sizeof(s))) { 
@@ -208,6 +206,7 @@ std::string ping_result ="";
 								cout<< "video width:"<<w<<", hight:"<<h<<endl;
 								cap.set(CV_CAP_PROP_FRAME_WIDTH,w);
 								cap.set(CV_CAP_PROP_FRAME_HEIGHT,h);
+								readable = true;
 							}
 							mtx_replay.unlock();
 						}else if( m.end()!=m.find("status") && m.find("status")->second == "false"  ){
@@ -345,6 +344,7 @@ std::string ping_result ="";
 		m_width      = w;
 		m_height     = h;	
 		m_bufferSize = 4147200;
+		 last_pic_time = std::chrono::system_clock::now(); 
 	}
 	return ret;
 }

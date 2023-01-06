@@ -41,10 +41,12 @@ class V4l2ReadWriteDevice : public V4l2Device
 		std::string record_path ;
 		ifstream  * record_file_dictt = nullptr;
 		ifstream  * pcd_file_dictt = nullptr;
-		 std::mutex mtx_replay;    
-		 int frames_video = 0;
-		 string cali_time_n_str = "";
-		 bool got_new_cali_time = false;
+		std::mutex mtx_replay;    
+		int frames_video = 0;
+		string cali_time_n_str = "";
+		bool got_new_cali_time = false;
+		bool readable = false;
+		std::chrono::_V2::system_clock::time_point last_pic_time ;
 		
 		
 	public:
